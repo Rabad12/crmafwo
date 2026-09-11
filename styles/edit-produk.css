@@ -1,0 +1,72 @@
+﻿/* ==========================================================================
+   AFWO HAIR DESIGN - EDIT / ADD PRODUCT STYLES (RESPONSIVE)
+   ========================================================================== */
+
+/* Form Header Title */
+.edit-produk-header {
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+.edit-produk-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+/* Form Stack */
+.edit-produk-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Stepper within Edit Product */
+.stepper-row-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stepper-box-group {
+  display: inline-flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 4px 8px;
+  gap: 6px;
+}
+
+.btn-stepper-square {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background-color: #F1F3F5;
+  border: none;
+  color: var(--text-primary);
+  font-weight: 800;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
+}
+
+.btn-stepper-square:hover {
+  background-color: #E2E8F0;
+}
+
+.stepper-number-field {
+  width: 50px;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  outline: none;
+}

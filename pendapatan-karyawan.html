@@ -1,0 +1,405 @@
+﻿<!--
+  TODO INTEGRASI BACKEND:
+  - GET /api/reports/monthly-income (Mengambil rekap pendapatan bulanan lengkap dengan kehadiran & uang makan)
+  - GET /api/reports/slip/:workerId (Mengambil slip gaji & komisi individual)
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pendapatan Bulanan Karyawan - AFWO Hair Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/global.css">
+  <link rel="stylesheet" href="styles/nav.css">
+  <link rel="stylesheet" href="styles/pendapatan-karyawan.css">
+</head>
+<body>
+
+  <!-- Navigation Backdrop Overlay (for mobile drawer) -->
+  <div id="nav-overlay" class="nav-overlay" aria-hidden="true"></div>
+
+  <div class="app-layout">
+    
+    <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
+    <aside id="admin-sidebar" class="admin-sidebar" aria-label="Menu Navigasi Admin">
+      <!-- Sidebar Brand Header -->
+      <div class="sidebar-brand-header">
+        <div class="brand-text-group">
+          <a href="index.html" class="sidebar-brand-title">Afwo.</a>
+          <span class="sidebar-brand-badge">Hair Design CRM</span>
+        </div>
+        <button type="button" id="nav-close-btn" class="nav-close-btn mobile-only" aria-label="Tutup Menu">
+          <svg class="svg-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Vertical Navigation Menu with Section Groups -->
+      <nav class="sidebar-nav-container">
+        
+        <!-- Section: MENU -->
+        <div class="sidebar-section-label">MENU</div>
+        <ul class="sidebar-menu-list">
+          <li class="sidebar-nav-item">
+            <a href="index.html" class="sidebar-nav-link" id="nav-dashboard" data-field="nav-menu-dashboard">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+              </svg>
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="clients.html" class="sidebar-nav-link" id="nav-customers" data-field="nav-menu-customers">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <span>Pelanggan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="worker.html" class="sidebar-nav-link" id="nav-workers" data-field="nav-menu-workers">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span>Karyawan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="services.html" class="sidebar-nav-link" id="nav-services" data-field="nav-menu-services">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="6" cy="6" r="3"></circle>
+                <circle cx="6" cy="18" r="3"></circle>
+                <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+                <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+                <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+              </svg>
+              <span>Layanan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="produk.html" class="sidebar-nav-link" id="nav-products" data-field="nav-menu-products">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m7.5 4.27 9 5.15"></path>
+                <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                <path d="m3.3 7 8.7 5 8.7-5"></path>
+                <path d="M12 22V12"></path>
+              </svg>
+              <span>Produk</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="riwayat.html" class="sidebar-nav-link" id="nav-history" data-field="nav-menu-history">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Transaksi</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="appointment.html" class="sidebar-nav-link" id="nav-appointment" data-field="nav-menu-appointment">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>Appointment</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Section: LAPORAN -->
+        <div class="sidebar-section-label" style="margin-top: 14px;">LAPORAN</div>
+        <ul class="sidebar-menu-list">
+          <li class="sidebar-nav-item">
+            <a href="laporan.html" class="sidebar-nav-link" id="nav-reports-sales" data-field="nav-menu-reports-sales">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+              <span>Laporan Penjualan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="pelanggan-aktif.html" class="sidebar-nav-link" id="nav-reports-active-clients" data-field="nav-menu-reports-active-clients">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <polyline points="16 11 18 13 22 9"></polyline>
+              </svg>
+              <span>Pelanggan Aktif</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="rekap-komisi.html" class="sidebar-nav-link" id="nav-reports-commission" data-field="nav-menu-reports-commission">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              <span>Rekap Komisi &amp; Slip</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="pendapatan-karyawan.html" class="sidebar-nav-link active" id="nav-reports-income" data-field="nav-menu-reports-income">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+              <span>Pendapatan Karyawan</span>
+            </a>
+          </li>
+        </ul>
+
+      </nav>
+
+      <!-- Sidebar User Footer -->
+      <div class="sidebar-user-footer">
+        <div class="sidebar-user-card">
+          <div class="user-avatar-circle">O</div>
+          <div class="sidebar-user-meta">
+            <span class="user-name">Owner Afwo</span>
+            <span class="user-role">Administrator</span>
+          </div>
+        </div>
+        <a href="#" class="sidebar-logout-btn" id="nav-logout-link" title="Keluar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Keluar</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main-content">
+      
+      <!-- Mobile Top Header Bar -->
+      <header class="mobile-top-header">
+        <a href="index.html" class="brand-logo">Afwo.</a>
+        <button type="button" class="icon-btn js-menu-toggle" aria-label="Buka Menu Navigasi" id="btn-open-menu">
+          <svg class="svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Main Content -->
+      <main class="app-main">
+        
+        <!-- Header Section (Sesuai Referensi Gambar 2) -->
+        <div class="income-header-row">
+          <div class="income-title-group">
+            <h1 class="income-title">Pendapatan Bulanan Karyawan</h1>
+            <p class="income-subtitle">Gaji pokok + komisi + uang makan yang diterima tiap karyawan dalam satu bulan.</p>
+          </div>
+        </div>
+
+        <!-- Filter Bar Card (Sesuai Referensi Gambar 2) -->
+        <div class="income-filter-card" data-field="income-filter-card">
+          <div class="income-filter-row">
+            <div class="filter-month-item">
+              <label class="month-label" for="select-month-picker">Bulan</label>
+              <div class="month-select-wrapper">
+                <select id="select-month-picker" class="month-select-field" data-field="select-month-picker">
+                  <option value="2026-09" selected>September 2026</option>
+                  <option value="2026-08">Agustus 2026</option>
+                  <option value="2026-07">Juli 2026</option>
+                  <option value="2026-06">Juni 2026</option>
+                  <option value="2026-05">Mei 2026</option>
+                </select>
+              </div>
+            </div>
+            <button type="button" id="btn-show-month" class="btn-show-dark" data-field="btn-show-month">Tampilkan</button>
+          </div>
+        </div>
+
+        <!-- Total Summary Highlight Banner (Sesuai Referensi Gambar 2) -->
+        <div class="income-summary-banner" data-field="income-summary-banner">
+          <span class="income-banner-label" id="summary-month-title">Total Pendapatan Semua Karyawan — September 2026</span>
+          <div class="income-banner-amount" id="summary-total-all-income">Rp 15.275.000</div>
+          <span class="income-banner-subtext" id="summary-breakdown-subtext">Komisi Rp0 + Gaji Pokok Rp15.250.000 + Uang Makan Rp25.000</span>
+        </div>
+
+        <!-- Detail Table Card (Sesuai Referensi Gambar 2) -->
+        <div class="income-table-card" data-field="income-table-card">
+          
+          <div class="table-responsive-wrapper">
+            <table class="income-detail-table" id="monthly-income-table">
+              <thead>
+                <tr>
+                  <th>KARYAWAN</th>
+                  <th>SKEMA</th>
+                  <th>KOMISI PER LAYANAN</th>
+                  <th>KOMISI HARIAN (%)</th>
+                  <th>TOTAL KOMISI</th>
+                  <th>GAJI POKOK</th>
+                  <th>HADIR (HARI)</th>
+                  <th>UANG MAKAN</th>
+                  <th>TOTAL PENDAPATAN</th>
+                  <th style="text-align: right;">AKSI</th>
+                </tr>
+              </thead>
+              <tbody id="monthly-income-body" data-field="monthly-income-body">
+                <!-- Injected via JavaScript -->
+              </tbody>
+              <tfoot id="monthly-income-foot">
+                <tr class="income-tfoot-row">
+                  <th>TOTAL</th>
+                  <th></th>
+                  <th id="foot-comm-service">-</th>
+                  <th id="foot-comm-daily">-</th>
+                  <th id="foot-total-comm">Rp0</th>
+                  <th id="foot-total-salary">Rp15.250.000</th>
+                  <th id="foot-total-attendance">2</th>
+                  <th id="foot-total-meal">Rp25.000</th>
+                  <th id="foot-grand-total">Rp15.275.000</th>
+                  <th></th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <!-- Table Subtext / Legend (Sesuai Referensi Gambar 2) -->
+          <div class="income-table-footer-legend">
+            <p class="legend-text">Gaji pokok dibayar utuh per bulan (tidak di-pro-rata). Komisi dihitung dari transaksi berstatus selesai pada bulan terpilih. Uang makan Rp25.000 per hari hadir dari absensi, hanya untuk karyawan skema per layanan.</p>
+          </div>
+
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Modal Dialog: Slip Pendapatan Detail (Printable) -->
+  <div id="modal-slip-overlay" class="slip-modal-overlay" style="display: none;">
+    <div class="slip-modal-dialog">
+      <div class="slip-modal-header no-print">
+        <h3 class="slip-modal-title">Slip Pendapatan &amp; Komisi</h3>
+        <button type="button" id="btn-close-slip" class="btn-close-modal" aria-label="Tutup">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="slip-paper-content" id="slip-print-content">
+        <div class="slip-brand-header">
+          <div class="slip-brand-title">Afwo. HAIR DESIGN CRM</div>
+          <span class="slip-doc-type">SLIP GAJI &amp; PENDAPATAN BULANAN</span>
+        </div>
+
+        <div class="slip-meta-grid">
+          <div class="slip-meta-col">
+            <span class="slip-meta-label">Nama Karyawan:</span>
+            <strong class="slip-meta-val" id="slip-worker-name">Dewi Anggraini</strong>
+          </div>
+          <div class="slip-meta-col">
+            <span class="slip-meta-label">Bulan:</span>
+            <strong class="slip-meta-val" id="slip-month-val">September 2026</strong>
+          </div>
+          <div class="slip-meta-col">
+            <span class="slip-meta-label">Skema Komisi:</span>
+            <span class="slip-meta-val" id="slip-scheme-val">Per Layanan</span>
+          </div>
+          <div class="slip-meta-col">
+            <span class="slip-meta-label">Hari Hadir:</span>
+            <span class="slip-meta-val" id="slip-days-val">1 Hari (Uang Makan Rp 25.000)</span>
+          </div>
+        </div>
+
+        <hr class="slip-divider">
+
+        <table class="slip-breakdown-table">
+          <thead>
+            <tr>
+              <th>KOMPONEN GAJI &amp; PENDAPATAN</th>
+              <th style="text-align: right;">JUMLAH (IDR)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Gaji Pokok Bulanan</td>
+              <td style="text-align: right;" id="slip-salary-val">Rp 2.750.000</td>
+            </tr>
+            <tr>
+              <td>Total Komisi Layanan &amp; Omset</td>
+              <td style="text-align: right;" id="slip-comm-val">Rp 0</td>
+            </tr>
+            <tr>
+              <td>Uang Makan Kehadiran</td>
+              <td style="text-align: right;" id="slip-meal-val">Rp 25.000</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="slip-total-row">
+              <th>TOTAL DITERIMA KARYAWAN</th>
+              <th style="text-align: right;" id="slip-net-total">Rp 2.775.000</th>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div class="slip-signature-row">
+          <div class="slip-sig-box">
+            <span>Diterima Oleh,</span>
+            <div class="sig-space"></div>
+            <strong id="slip-sig-worker-name">Dewi Anggraini</strong>
+          </div>
+          <div class="slip-sig-box">
+            <span>Disetujui Oleh,</span>
+            <div class="sig-space"></div>
+            <strong>Owner Afwo (Admin)</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="slip-modal-actions no-print">
+        <button type="button" class="btn-print-slip" id="btn-print-slip-action">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          <span>Cetak Slip Gaji</span>
+        </button>
+        <button type="button" class="btn-cancel-modal" id="btn-cancel-slip">Tutup</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="scripts/nav.js"></script>
+  <script src="scripts/pendapatan-karyawan.js"></script>
+</body>
+</html>
+
+

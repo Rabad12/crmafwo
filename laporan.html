@@ -1,0 +1,892 @@
+﻿<!--
+  TODO INTEGRASI BACKEND:
+  - id="today-income", id="transaction-count", id="payment-breakdown", id="recent-transactions-list"
+    -> di-fetch dari endpoint /api/dashboard/summary
+  - Form Edit Reservation / Tambah Transaksi (semua data-field="..." termasuk hair-length,
+    product-brand, product-amount-ml, hair-thickness, worker-commission)
+    -> submit ke endpoint POST /api/transactions (support multi service item & multi worker per item)
+  - id="client-list" (clients.html) -> GET /api/clients, filter search client-side sementara,
+    idealnya diganti query ke backend
+  - Form Edit Pelanggan (semua data-field="...") -> POST/PUT /api/clients
+  - profil-pelanggan.html (id="client-name", id="client-phone", id="client-email",
+    id="visit-history-list") -> GET /api/clients/:id
+  - id="worker-list" (worker.html) -> GET /api/workers
+  - Form Edit Worker (semua data-field="...") -> POST/PUT /api/workers
+  - id="service-list" (services.html) -> GET /api/services, pill filter category client-side sementara
+  - Form Edit Layanan (semua data-field="...") -> POST/PUT /api/services
+  - id="product-list" (produk.html) -> GET /api/products, pill filter category client-side sementara
+  - Form Edit Produk (semua data-field="...") -> POST/PUT /api/products
+  - id="transaction-history-list" (riwayat.html) -> GET /api/transactions (support query filter
+    tanggal dari id="filter-date-from" / id="filter-date-to" dan search id="transaction-search")
+  - laporan.html: filter (data-field="periode", id="report-date-from", id="report-date-to",
+    data-field="jenis-pengerjaan", id="report-worker-filter") -> GET /api/reports?periode=...&from=...&to=...&jenis=...&worker=...
+  - id="ai-insight-text" (laporan.html) -> idealnya hasil generate dari AI/LLM di backend berdasarkan
+    data transaksi hasil query di atas, bukan dummy statis
+  - id="report-total-revenue", id="report-transaction-count", id="report-average-revenue",
+    id="category-breakdown" (laporan.html) -> dihitung dari hasil query /api/reports yang sama
+  - Sidebar menu items -> arahkan ke route masing-masing modul saat halaman sudah dibuat
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports & Recap - AFWO Hair Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/global.css">
+  <link rel="stylesheet" href="styles/nav.css">
+  <link rel="stylesheet" href="styles/riwayat.css">
+  <link rel="stylesheet" href="styles/laporan.css">
+</head>
+<body>
+
+    <!-- Navigation Backdrop Overlay (for mobile drawer) -->
+  <div id="nav-overlay" class="nav-overlay" aria-hidden="true"></div>
+
+  <div class="app-layout">
+    
+    <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
+        <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
+        <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
+    <aside id="admin-sidebar" class="admin-sidebar" aria-label="Menu Navigasi Admin">
+      <!-- Sidebar Brand Header -->
+      <div class="sidebar-brand-header">
+        <div class="brand-text-group">
+          <a href="index.html" class="sidebar-brand-title">Afwo.</a>
+          <span class="sidebar-brand-badge">Hair Design CRM</span>
+        </div>
+        <button type="button" id="nav-close-btn" class="nav-close-btn mobile-only" aria-label="Tutup Menu">
+          <svg class="svg-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Vertical Navigation Menu with Section Groups (Image 3 Reference) -->
+      <nav class="sidebar-nav-container">
+        
+        <!-- Section: MENU -->
+        <div class="sidebar-section-label">MENU</div>
+        <ul class="sidebar-menu-list">
+          <li class="sidebar-nav-item">
+            <a href="index.html" class="sidebar-nav-link" id="nav-dashboard" data-field="nav-menu-dashboard">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+              </svg>
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="clients.html" class="sidebar-nav-link" id="nav-customers" data-field="nav-menu-customers">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <span>Pelanggan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="worker.html" class="sidebar-nav-link" id="nav-workers" data-field="nav-menu-workers">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span>Karyawan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="services.html" class="sidebar-nav-link" id="nav-services" data-field="nav-menu-services">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="6" cy="6" r="3"></circle>
+                <circle cx="6" cy="18" r="3"></circle>
+                <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+                <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+                <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+              </svg>
+              <span>Layanan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="produk.html" class="sidebar-nav-link" id="nav-products" data-field="nav-menu-products">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m7.5 4.27 9 5.15"></path>
+                <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                <path d="m3.3 7 8.7 5 8.7-5"></path>
+                <path d="M12 22V12"></path>
+              </svg>
+              <span>Produk</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="riwayat.html" class="sidebar-nav-link" id="nav-history" data-field="nav-menu-history">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Transaksi</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="appointment.html" class="sidebar-nav-link" id="nav-appointment" data-field="nav-menu-appointment">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>Appointment</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Section: LAPORAN -->
+        <div class="sidebar-section-label" style="margin-top: 14px;">LAPORAN</div>
+        <ul class="sidebar-menu-list">
+          <li class="sidebar-nav-item">
+            <a href="laporan.html" class="sidebar-nav-link" id="nav-reports-sales" data-field="nav-menu-reports-sales">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+              <span>Laporan Penjualan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="pelanggan-aktif.html" class="sidebar-nav-link" id="nav-reports-active-clients" data-field="nav-menu-reports-active-clients">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <polyline points="16 11 18 13 22 9"></polyline>
+              </svg>
+              <span>Pelanggan Aktif</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="rekap-komisi.html" class="sidebar-nav-link" id="nav-reports-commission" data-field="nav-menu-reports-commission">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              <span>Rekap Komisi &amp; Slip</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="pendapatan-karyawan.html" class="sidebar-nav-link" id="nav-reports-income" data-field="nav-menu-reports-income">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+              <span>Pendapatan Karyawan</span>
+            </a>
+          </li>
+        </ul>
+
+      </nav>
+
+      <!-- Sidebar User Footer -->
+      <div class="sidebar-user-footer">
+        <div class="sidebar-user-card">
+          <div class="user-avatar-circle">O</div>
+          <div class="sidebar-user-meta">
+            <span class="user-name">Owner Afwo</span>
+            <span class="user-role">Administrator</span>
+          </div>
+        </div>
+        <a href="#" class="sidebar-logout-btn" id="nav-logout-link" title="Keluar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Keluar</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main-content">
+      
+      <!-- Mobile Top Header Bar (Shown only on Mobile/Tablet <= 1024px) -->
+      <header class="mobile-top-header">
+        <a href="index.html" class="brand-logo">Afwo.</a>
+        <button type="button" class="icon-btn js-menu-toggle" aria-label="Buka Menu Navigasi" id="btn-open-menu">
+          <svg class="svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Main Content -->
+      <main class="app-main">
+      
+      <!-- Intro Section -->
+      <div class="report-intro-section">
+        <h1 class="report-title">Reports & Recap</h1>
+        <p class="report-subtitle">Performance insights and analytics.</p>
+      </div>
+
+      <!-- Period Pill Switcher (Daily / Monthly) -->
+      <div class="period-switch-bar">
+        <button type="button" class="period-pill-btn active" data-period="daily">Daily</button>
+        <button type="button" class="period-pill-btn" data-period="monthly">Monthly</button>
+      </div>
+
+      <!-- Card Filter Laporan -->
+      <div class="report-filter-card" data-field="report-filters">
+        <div class="report-filter-grid">
+          
+          <!-- Periode Dropdown -->
+          <div class="form-group-item">
+            <label class="form-label" for="select-period">Periode</label>
+            <div class="form-input-box">
+              <select id="select-period" class="form-select-control" data-field="periode">
+                <option value="daily" selected>Harian</option>
+                <option value="weekly">Mingguan</option>
+                <option value="monthly">Bulanan</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Jenis Pengerjaan Dropdown -->
+          <div class="form-group-item">
+            <label class="form-label" for="select-jenis-pengerjaan">Jenis Pengerjaan</label>
+            <div class="form-input-box">
+              <select id="select-jenis-pengerjaan" class="form-select-control" data-field="jenis-pengerjaan">
+                <option value="all" selected>Semua</option>
+                <option value="single">Sendiri (1 Karyawan)</option>
+                <option value="multi">Berdua (2+ Karyawan)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Date Range: Dari Tanggal -->
+          <div class="form-group-item">
+            <label class="form-label" for="report-date-from">Dari Tanggal</label>
+            <div class="form-input-box">
+              <input type="date" id="report-date-from" class="form-input-control" data-field="report-date-from">
+            </div>
+          </div>
+
+          <!-- Date Range: Sampai Tanggal -->
+          <div class="form-group-item">
+            <label class="form-label" for="report-date-to">Sampai Tanggal</label>
+            <div class="form-input-box">
+              <input type="date" id="report-date-to" class="form-input-control" data-field="report-date-to">
+            </div>
+          </div>
+
+          <!-- Searchable Karyawan Combobox (Span Full Grid) -->
+          <div class="form-group-item" style="grid-column: 1 / -1;">
+            <label class="form-label" for="worker-search-input">Karyawan</label>
+            <div class="combobox-wrapper" id="report-worker-filter" data-field="report-worker-filter">
+              <div class="combobox-input-box" id="combobox-input-box">
+                <input type="text" id="worker-search-input" class="combobox-search-field" placeholder="Semua Karyawan" autocomplete="off">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted); pointer-events: none;">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+              <div class="combobox-dropdown-panel" id="combobox-dropdown">
+                <div class="combobox-option-row selected" data-value="all">Semua Karyawan</div>
+                <div class="combobox-option-row" data-value="Agus Pratama">Agus Pratama (Senior Stylist)</div>
+                <div class="combobox-option-row" data-value="Ada Wong">Ada Wong</div>
+                <div class="combobox-option-row" data-value="Budi">Budi (Color Specialist)</div>
+                <div class="combobox-option-row" data-value="Rina">Rina</div>
+                <div class="combobox-option-row" data-value="Dimas">Dimas</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Card AI Insight — Analisa Keuntungan -->
+      <div class="ai-insight-card" id="ai-insight-card" data-field="ai-insight-card">
+        <div class="ai-insight-header">
+          <svg class="ai-sparkle-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L14.39 8.26L21 9.27L16.27 13.88L17.82 20.4L12 16.77L6.18 20.4L7.73 13.88L3 9.27L9.61 8.26L12 2Z"></path>
+          </svg>
+          <span class="ai-insight-title">AI Insight - Analisa Keuntungan</span>
+        </div>
+        <p class="ai-insight-body" id="ai-insight-text" data-field="ai-insight-text">
+          Omset periode ini didominasi layanan Warna & Highlights dengan margin tertinggi. Disarankan menambah slot booking untuk layanan Balayage di akhir pekan karena permintaan konsisten naik dibanding hari kerja.
+        </p>
+        <div class="ai-insight-footer">
+          <a href="#" class="btn-ai-summary-link" id="btn-ai-summary" data-action="view-ai-summary" data-field="btn-ai-summary">
+            <span>Buka Ringkasan & Rekomendasi Lengkap AI</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Total Revenue & SVG Bar Chart Card -->
+      <div class="revenue-chart-card" data-field="revenue-chart-card">
+        <div class="revenue-chart-header">
+          <div class="chart-header-left">
+            <span class="chart-label-sm">Total Revenue</span>
+            <span class="chart-revenue-val" id="chart-revenue-val">Rp. 42.850.000</span>
+          </div>
+          <span class="growth-badge-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="7" y1="17" x2="17" y2="7"></line>
+              <polyline points="7 7 17 7 17 17"></polyline>
+            </svg>
+            +12.5%
+          </span>
+        </div>
+
+        <!-- SVG Bar Chart Canvas (Connected to Backend Database API) -->
+        <div class="svg-bar-chart-container" id="bar-chart-wrapper">
+          <svg viewBox="0 0 350 140" id="svg-bar-chart" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="barGradientPrimary" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1E293B"></stop>
+                <stop offset="100%" stop-color="#0F172A"></stop>
+              </linearGradient>
+              <linearGradient id="barGradientPeak" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#F59E0B"></stop>
+                <stop offset="100%" stop-color="#D97706"></stop>
+              </linearGradient>
+            </defs>
+            <!-- Background grid lines -->
+            <line x1="0" y1="30" x2="350" y2="30" stroke="#F1F5F9" stroke-dasharray="4 4" stroke-width="1" />
+            <line x1="0" y1="75" x2="350" y2="75" stroke="#F1F5F9" stroke-dasharray="4 4" stroke-width="1" />
+            <line x1="0" y1="120" x2="350" y2="120" stroke="#E2E8F0" stroke-width="1" />
+            
+            <!-- Dynamic Bar Group populated by JS / Database API -->
+            <g id="chart-bars-group"></g>
+          </svg>
+        </div>
+
+        <!-- Sumbu X Axis Labels -->
+        <div class="chart-axis-labels" id="chart-axis-labels">
+          <span>Mon</span>
+          <span>Tue</span>
+          <span>Wed</span>
+          <span>Thu</span>
+          <span>Fri</span>
+          <span>Sat</span>
+          <span>Sun</span>
+        </div>
+      </div>
+
+      <!-- Customer Metrics Cards (Active & New Customers) -->
+      <div class="metrics-grid-duo">
+        
+        <!-- Active Customers Card -->
+        <div class="metric-banner-card">
+          <span class="metric-banner-label">Active Customers</span>
+          <span class="metric-banner-num">842</span>
+          <div class="retention-progress-bar">
+            <div class="progress-track">
+              <div class="progress-fill" style="width: 75%;"></div>
+            </div>
+            <span class="progress-label-text">75% Retention</span>
+          </div>
+          <svg class="metric-watermark-icon" width="68" height="68" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"></path>
+          </svg>
+        </div>
+
+        <!-- New Customers Card -->
+        <div class="metric-banner-card">
+          <span class="metric-banner-label">New Customers</span>
+          <span class="metric-banner-num">128</span>
+          <div class="metric-change-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+            <span>+24 this week</span>
+          </div>
+          <svg class="metric-watermark-icon" width="68" height="68" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+          </svg>
+        </div>
+
+      </div>
+
+      <!-- Row 3 Stat Cards -->
+      <div class="report-stat-triplet" id="report-stats" data-field="report-stats">
+        
+        <div class="report-stat-mini-card">
+          <span class="mini-stat-label">TOTAL OMSET</span>
+          <span class="mini-stat-val" id="report-total-revenue" data-field="total-revenue">Rp 9.150.000</span>
+        </div>
+
+        <div class="report-stat-mini-card">
+          <span class="mini-stat-label">JUMLAH TRANSAKSI</span>
+          <span class="mini-stat-val" id="report-transaction-count" data-field="transaction-count">24</span>
+        </div>
+
+        <div class="report-stat-mini-card">
+          <span class="mini-stat-label">RATA-RATA OMSET / TRANSAKSI</span>
+          <span class="mini-stat-val" id="report-average-revenue" data-field="average-revenue">Rp 381.250</span>
+        </div>
+
+      </div>
+
+      <!-- Service Category Breakdown Card -->
+      <div class="category-breakdown-card" id="category-breakdown" data-field="category-breakdown">
+        <h2 class="category-breakdown-title">Service Category Breakdown</h2>
+
+        <!-- 2x2 Grid Visual Tiles -->
+        <div class="category-visual-grid">
+          
+          <div class="cat-tile-box">
+            <svg class="cat-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="6" r="3"></circle>
+              <circle cx="6" cy="18" r="3"></circle>
+              <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+              <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+              <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+            </svg>
+            <span class="cat-tile-percentage">45%</span>
+            <span class="cat-tile-name">Hair Styling</span>
+          </div>
+
+          <div class="cat-tile-box">
+            <svg class="cat-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a9 9 0 0 1 9 9c0 4.97-4.03 9-9 9A9 9 0 0 1 3 11a9 9 0 0 1 9-9z"></path>
+              <path d="M12 7v5l3 3"></path>
+            </svg>
+            <span class="cat-tile-percentage">30%</span>
+            <span class="cat-tile-name">Treatments</span>
+          </div>
+
+          <div class="cat-tile-box">
+            <svg class="cat-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            <span class="cat-tile-percentage">15%</span>
+            <span class="cat-tile-name">Color</span>
+          </div>
+
+          <div class="cat-tile-box">
+            <svg class="cat-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+              <line x1="7" y1="7" x2="7.01" y2="7"></line>
+            </svg>
+            <span class="cat-tile-percentage">10%</span>
+            <span class="cat-tile-name">Retail</span>
+          </div>
+
+        </div>
+
+        <!-- Detail Breakdown List -->
+        <div class="cat-detail-list">
+          <div class="cat-detail-row">
+            <div class="cat-detail-left">
+              <span class="cat-detail-name">Warna & Highlights</span>
+              <span class="cat-detail-count" data-field="category-count">18 transaksi</span>
+            </div>
+            <span class="cat-detail-total" data-field="category-total">Rp 4.150.000</span>
+          </div>
+
+          <div class="cat-detail-row">
+            <div class="cat-detail-left">
+              <span class="cat-detail-name">Potong</span>
+              <span class="cat-detail-count" data-field="category-count">22 transaksi</span>
+            </div>
+            <span class="cat-detail-total" data-field="category-total">Rp 2.400.000</span>
+          </div>
+
+          <div class="cat-detail-row">
+            <div class="cat-detail-left">
+              <span class="cat-detail-name">Spa</span>
+              <span class="cat-detail-count" data-field="category-count">9 transaksi</span>
+            </div>
+            <span class="cat-detail-total" data-field="category-total">Rp 1.800.000</span>
+          </div>
+
+          <div class="cat-detail-row">
+            <div class="cat-detail-left">
+              <span class="cat-detail-name">Styling</span>
+              <span class="cat-detail-count" data-field="category-count">12 transaksi</span>
+            </div>
+            <span class="cat-detail-total" data-field="category-total">Rp 800.000</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Dark Summary Banner with Actions -->
+      <div class="dark-summary-banner" data-field="category-summary-banner">
+        <span class="dark-summary-label">CATEGORY SUMMARY (ALL)</span>
+        <div class="dark-summary-total-val" id="dark-summary-total-val">Total: Rp 9.150.000</div>
+        <div class="dark-summary-btn-group">
+          <button type="button" class="btn-banner-export" id="btn-export-csv" data-field="btn-export-csv">EXPORT CSV</button>
+          <button type="button" class="btn-banner-generate" id="btn-generate-report" data-field="btn-generate-report">GENERATE REPORT</button>
+        </div>
+      </div>
+
+      <!-- Read-Only Transaction History Section (Sesuai Desain Halaman Transaksi) -->
+      <div class="report-history-section" data-field="report-history-section">
+        <h2 class="report-history-heading">Riwayat Transaksi</h2>
+
+        <!-- Group 1: Hari Ini -->
+        <div class="daily-group-card">
+          <div class="daily-group-header">
+            <div class="daily-date-info">
+              <svg class="daily-calendar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span class="daily-date-title">Hari Ini — Rabu, 26 Agustus 2026</span>
+            </div>
+            <div class="daily-summary-pills">
+              <span class="daily-count-badge">3 Transaksi</span>
+              <span class="daily-total-revenue">Rp830.000</span>
+            </div>
+          </div>
+          
+          <div class="table-responsive-wrapper">
+            <table class="daily-trans-table">
+              <thead>
+                <tr>
+                  <th>ID / WAKTU</th>
+                  <th>PELANGGAN</th>
+                  <th>LAYANAN &amp; STYLIST</th>
+                  <th>TOTAL BIAYA</th>
+                  <th>METODE BAYAR</th>
+                  <th>STATUS</th>
+                  <th style="text-align: right;">AKSI</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="trans-id-link">TRX-121091</span>
+                    <span class="trans-time-val">10:00 WIB</span>
+                  </td>
+                  <td>
+                    <div class="trx-customer-cell">
+                      <div class="trx-avatar-circle">EV</div>
+                      <div>
+                        <span class="trx-customer-name">Eleanor Vance</span>
+                        <span class="trx-customer-phone">+62 8112233445</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="service-name-text">Balayage Color Treatment</span>
+                    <span class="stylist-worker-name">Stylist: <strong>Agus Pratama</strong></span>
+                  </td>
+                  <td>
+                    <span class="trx-total-amount">Rp650.000</span>
+                  </td>
+                  <td>
+                    <span class="payment-method-badge qris">QRIS</span>
+                  </td>
+                  <td>
+                    <span class="trx-status-badge selesai">Selesai (Paid)</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="riwayat.html" class="btn-action-receipt">Detail Struk</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="trans-id-link">TRX-121090</span>
+                    <span class="trans-time-val">13:30 WIB</span>
+                  </td>
+                  <td>
+                    <div class="trx-customer-cell">
+                      <div class="trx-avatar-circle" style="background-color: #D1FAE5; color: #065F46;">SH</div>
+                      <div>
+                        <span class="trx-customer-name">Sari Handayani</span>
+                        <span class="trx-customer-phone">+62 81298765432</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="service-name-text">Creambath &amp; Blow Dry</span>
+                    <span class="stylist-worker-name">Stylist: <strong>Rina</strong></span>
+                  </td>
+                  <td>
+                    <span class="trx-total-amount">Rp180.000</span>
+                  </td>
+                  <td>
+                    <span class="payment-method-badge tunai">Tunai</span>
+                  </td>
+                  <td>
+                    <span class="trx-status-badge selesai">Selesai (Paid)</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="riwayat.html" class="btn-action-receipt">Detail Struk</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="trans-id-link">TRX-121058</span>
+                    <span class="trans-time-val">15:00 WIB</span>
+                  </td>
+                  <td>
+                    <div class="trx-customer-cell">
+                      <div class="trx-avatar-circle" style="background-color: #EDE9FE; color: #6D28D9;">BS</div>
+                      <div>
+                        <span class="trx-customer-name">Budi Santoso</span>
+                        <span class="trx-customer-phone">+62 81345678901</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="service-name-text">Signature Grooming &amp; Cut</span>
+                    <span class="stylist-worker-name">Stylist: <strong>Dimas</strong></span>
+                  </td>
+                  <td>
+                    <span class="trx-total-amount">Rp75.000</span>
+                  </td>
+                  <td>
+                    <span class="payment-method-badge qris">QRIS</span>
+                  </td>
+                  <td>
+                    <span class="trx-status-badge menunggu">Menunggu (Pending)</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="riwayat.html" class="btn-action-receipt">Detail Struk</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Group 2: Kemarin -->
+        <div class="daily-group-card">
+          <div class="daily-group-header">
+            <div class="daily-date-info">
+              <svg class="daily-calendar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span class="daily-date-title">Kemarin — Selasa, 25 Agustus 2026</span>
+            </div>
+            <div class="daily-summary-pills">
+              <span class="daily-count-badge">2 Transaksi</span>
+              <span class="daily-total-revenue">Rp970.000</span>
+            </div>
+          </div>
+          
+          <div class="table-responsive-wrapper">
+            <table class="daily-trans-table">
+              <thead>
+                <tr>
+                  <th>ID / WAKTU</th>
+                  <th>PELANGGAN</th>
+                  <th>LAYANAN &amp; STYLIST</th>
+                  <th>TOTAL BIAYA</th>
+                  <th>METODE BAYAR</th>
+                  <th>STATUS</th>
+                  <th style="text-align: right;">AKSI</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="trans-id-link">TRX-120999</span>
+                    <span class="trans-time-val">11:00 WIB</span>
+                  </td>
+                  <td>
+                    <div class="trx-customer-cell">
+                      <div class="trx-avatar-circle" style="background-color: #FCE7F3; color: #BE185D;">MP</div>
+                      <div>
+                        <span class="trx-customer-name">Melati Putri</span>
+                        <span class="trx-customer-phone">+62 81711223344</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="service-name-text">Color Correction &amp; Spa</span>
+                    <span class="stylist-worker-name">Stylist: <strong>Ada Wong</strong></span>
+                  </td>
+                  <td>
+                    <span class="trx-total-amount">Rp850.000</span>
+                  </td>
+                  <td>
+                    <span class="payment-method-badge transfer">Transfer</span>
+                  </td>
+                  <td>
+                    <span class="trx-status-badge selesai">Selesai (Paid)</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="riwayat.html" class="btn-action-receipt">Detail Struk</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="trans-id-link">TRX-121049</span>
+                    <span class="trans-time-val">14:30 WIB</span>
+                  </td>
+                  <td>
+                    <div class="trx-customer-cell">
+                      <div class="trx-avatar-circle" style="background-color: #FEF3C7; color: #B45309;">MS</div>
+                      <div>
+                        <span class="trx-customer-name">Marcus Sterling</span>
+                        <span class="trx-customer-phone">+62 81899001122</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="service-name-text">Executive Haircut &amp; Styling</span>
+                    <span class="stylist-worker-name">Stylist: <strong>Dimas</strong></span>
+                  </td>
+                  <td>
+                    <span class="trx-total-amount">Rp120.000</span>
+                  </td>
+                  <td>
+                    <span class="payment-method-badge qris">QRIS</span>
+                  </td>
+                  <td>
+                    <span class="trx-status-badge selesai">Selesai (Paid)</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="riwayat.html" class="btn-action-receipt">Detail Struk</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Group 3: Senin -->
+        <div class="daily-group-card">
+          <div class="daily-group-header">
+            <div class="daily-date-info">
+              <svg class="daily-calendar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span class="daily-date-title">Senin, 24 Agustus 2026</span>
+            </div>
+            <div class="daily-summary-pills">
+              <span class="daily-count-badge">2 Transaksi</span>
+              <span class="daily-total-revenue">Rp750.000</span>
+            </div>
+          </div>
+          
+          <div class="table-responsive-wrapper">
+            <table class="daily-trans-table">
+              <thead>
+                <tr>
+                  <th>ID / WAKTU</th>
+                  <th>PELANGGAN</th>
+                  <th>LAYANAN &amp; STYLIST</th>
+                  <th>TOTAL BIAYA</th>
+                  <th>METODE BAYAR</th>
+                  <th>STATUS</th>
+                  <th style="text-align: right;">AKSI</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="trans-id-link">TRX-121094</span>
+                    <span class="trans-time-val">16:00 WIB</span>
+                  </td>
+                  <td>
+                    <div class="trx-customer-cell">
+                      <div class="trx-avatar-circle" style="background-color: #FEF3C7; color: #B45309;">DA</div>
+                      <div>
+                        <span class="trx-customer-name">Dewi Anggraini</span>
+                        <span class="trx-customer-phone">+62 81233445566</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="service-name-text">Keratin Smooth Treatment</span>
+                    <span class="stylist-worker-name">Stylist: <strong>Budi</strong></span>
+                  </td>
+                  <td>
+                    <span class="trx-total-amount">Rp750.000</span>
+                  </td>
+                  <td>
+                    <span class="payment-method-badge qris">QRIS</span>
+                  </td>
+                  <td>
+                    <span class="trx-status-badge selesai">Selesai (Paid)</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="riwayat.html" class="btn-action-receipt">Detail Struk</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="trans-id-link">TRX-121001</span>
+                    <span class="trans-time-val">17:30 WIB</span>
+                  </td>
+                  <td>
+                    <div class="trx-customer-cell">
+                      <div class="trx-avatar-circle" style="background-color: #D1FAE5; color: #065F46;">SH</div>
+                      <div>
+                        <span class="trx-customer-name">Sari Handayani</span>
+                        <span class="trx-customer-phone">+62 81298765432</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="service-name-text">Hair Tonic Treatment</span>
+                    <span class="stylist-worker-name">Stylist: <strong>Rina</strong></span>
+                  </td>
+                  <td>
+                    <span class="trx-total-amount">Rp95.000</span>
+                  </td>
+                  <td>
+                    <span class="payment-method-badge tunai">Tunai</span>
+                  </td>
+                  <td>
+                    <span class="trx-status-badge dibatalkan">Dibatalkan</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="riwayat.html" class="btn-action-receipt">Detail Struk</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <script src="scripts/nav.js"></script>
+  <script src="scripts/laporan.js"></script>
+</body>
+</html>
+
+
+
+
+

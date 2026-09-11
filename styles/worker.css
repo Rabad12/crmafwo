@@ -1,0 +1,328 @@
+﻿/* ==========================================================================
+   AFWO HAIR DESIGN - WORKER DIRECTORY STYLES (MATCHING CLIENTS PAGE)
+   ========================================================================== */
+
+.worker-page-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.worker-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.worker-page-title {
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.worker-count-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #B45309;
+  background-color: #FEF3C7;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.worker-page-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.btn-add-worker-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.2);
+}
+
+/* Toolbar Card (Tabs + Search + Sort) */
+.worker-toolbar-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+@media (min-width: 900px) {
+  .worker-toolbar-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.worker-tabs-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.worker-filter-tab {
+  background: transparent;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.worker-filter-tab:hover {
+  background-color: #F3F4F6;
+  color: var(--text-primary);
+}
+
+.worker-filter-tab.active {
+  background-color: var(--dark-solid);
+  color: #FFFFFF;
+}
+
+.worker-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.worker-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 7px 12px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.worker-sort-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sort-prefix-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.sort-select-control {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background-color: #FFFFFF;
+  outline: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Directory Card & Table */
+.worker-directory-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 30px;
+}
+
+.table-responsive-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.worker-detail-table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+  text-align: left;
+}
+
+.worker-detail-table th {
+  padding: 14px 16px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--border-color);
+  background-color: #F9FAFB;
+  white-space: nowrap;
+}
+
+.worker-detail-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #F1F5F9;
+  color: var(--text-primary);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.worker-detail-table tr:hover td {
+  background-color: #F8FAFC;
+}
+
+.worker-avatar-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.worker-avatar-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.worker-name-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  display: block;
+  white-space: nowrap;
+}
+
+.worker-name-title:hover {
+  color: #B45309;
+  text-decoration: underline;
+}
+
+.worker-id-code {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+.worker-phone-num {
+  font-family: monospace;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.worker-role-badge {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  background-color: #F3F4F6;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.worker-status-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.status-active {
+  background-color: #D1FAE5;
+  color: #065F46;
+}
+
+.status-busy {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+.commission-highlight {
+  font-weight: 800;
+  color: #B45309;
+  white-space: nowrap;
+}
+
+.rating-badge-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.worker-actions-cell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.btn-worker-action {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-worker-edit {
+  background-color: #F3F4F6;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-worker-edit:hover {
+  background-color: #E5E7EB;
+}
+
+.btn-worker-schedule {
+  background-color: #FEF3C7;
+  border: 1px solid #FDE68A;
+  color: #92400E;
+}
+
+.btn-worker-schedule:hover {
+  background-color: #FDE68A;
+}

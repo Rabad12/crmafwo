@@ -1,0 +1,550 @@
+﻿<!--
+  TODO INTEGRASI BACKEND (DASHBOARD):
+  - GET /api/dashboard/summary
+    Response JSON: {
+      userGreeting: "Ayu",
+      dateFormatted: "Rabu, 26 Agustus 2026",
+      todayIncome: 3450000,
+      incomeGrowth: "+18%",
+      newClientsCount: 6,
+      todayTransactionsCount: 14,
+      lowStockCount: 3,
+      incomeTrend: [
+        { day: "Kam", income: 1200000 },
+        { day: "Jum", income: 1900000 },
+        { day: "Sab", income: 1600000 },
+        { day: "Min", income: 2300000 },
+        { day: "Sen", income: 2850000 },
+        { day: "Sel", income: 2600000 },
+        { day: "Rab", income: 3450000 }
+      ],
+      todayTransactions: [
+        { id: "TRX-0231", client: "Sari Handayani", service: "Creambath, Blow", time: "09:20", total: 180000 },
+        { id: "TRX-0232", client: "Budi Santoso", service: "Potong Rambut", time: "10:05", total: 75000 },
+        { id: "TRX-0233", client: "Melati Putri", service: "Coloring", time: "11:40", total: 650000 },
+        { id: "TRX-0234", client: "Dewi Anggraini", service: "Smoothing", time: "13:15", total: 850000 }
+      ],
+      lowStockProducts: [
+        { code: "SH", name: "Shampoo Keratin", brand: "L'Oreal", category: "Perawatan", stock: 2 },
+        { code: "HG", name: "Hair Gel", brand: "Gatsby", category: "Styling", stock: 3 },
+        { code: "MW", name: "Masker Wajah", brand: "Perawatan", category: "Perawatan", stock: 1 }
+      ],
+      popularServices: [
+        { name: "Potong Rambut", count: "32x" },
+        { name: "Creambath", count: "21x" },
+        { name: "Coloring", count: "14x" },
+        { name: "Smoothing", count: "9x" }
+      ]
+    }
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - AFWO Hair Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/global.css">
+  <link rel="stylesheet" href="styles/nav.css">
+  <link rel="stylesheet" href="styles/dashboard.css">
+</head>
+<body>
+
+  <!-- Navigation Backdrop Overlay (for mobile drawer) -->
+  <div id="nav-overlay" class="nav-overlay" aria-hidden="true"></div>
+
+  <div class="app-layout">
+    
+    <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
+        <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
+        <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
+    <aside id="admin-sidebar" class="admin-sidebar" aria-label="Menu Navigasi Admin">
+      <!-- Sidebar Brand Header -->
+      <div class="sidebar-brand-header">
+        <div class="brand-text-group">
+          <a href="index.html" class="sidebar-brand-title">Afwo.</a>
+          <span class="sidebar-brand-badge">Hair Design CRM</span>
+        </div>
+        <button type="button" id="nav-close-btn" class="nav-close-btn mobile-only" aria-label="Tutup Menu">
+          <svg class="svg-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Vertical Navigation Menu with Section Groups (Image 3 Reference) -->
+      <nav class="sidebar-nav-container">
+        
+        <!-- Section: MENU -->
+        <div class="sidebar-section-label">MENU</div>
+        <ul class="sidebar-menu-list">
+          <li class="sidebar-nav-item">
+            <a href="index.html" class="sidebar-nav-link" id="nav-dashboard" data-field="nav-menu-dashboard">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+              </svg>
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="clients.html" class="sidebar-nav-link" id="nav-customers" data-field="nav-menu-customers">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <span>Pelanggan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="worker.html" class="sidebar-nav-link" id="nav-workers" data-field="nav-menu-workers">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span>Karyawan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="services.html" class="sidebar-nav-link" id="nav-services" data-field="nav-menu-services">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="6" cy="6" r="3"></circle>
+                <circle cx="6" cy="18" r="3"></circle>
+                <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+                <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+                <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+              </svg>
+              <span>Layanan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="produk.html" class="sidebar-nav-link" id="nav-products" data-field="nav-menu-products">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m7.5 4.27 9 5.15"></path>
+                <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                <path d="m3.3 7 8.7 5 8.7-5"></path>
+                <path d="M12 22V12"></path>
+              </svg>
+              <span>Produk</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="riwayat.html" class="sidebar-nav-link" id="nav-history" data-field="nav-menu-history">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Transaksi</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="appointment.html" class="sidebar-nav-link" id="nav-appointment" data-field="nav-menu-appointment">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>Appointment</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Section: LAPORAN -->
+        <div class="sidebar-section-label" style="margin-top: 14px;">LAPORAN</div>
+        <ul class="sidebar-menu-list">
+          <li class="sidebar-nav-item">
+            <a href="laporan.html" class="sidebar-nav-link" id="nav-reports-sales" data-field="nav-menu-reports-sales">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+              <span>Laporan Penjualan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="pelanggan-aktif.html" class="sidebar-nav-link" id="nav-reports-active-clients" data-field="nav-menu-reports-active-clients">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <polyline points="16 11 18 13 22 9"></polyline>
+              </svg>
+              <span>Pelanggan Aktif</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="rekap-komisi.html" class="sidebar-nav-link" id="nav-reports-commission" data-field="nav-menu-reports-commission">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              <span>Rekap Komisi &amp; Slip</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="pendapatan-karyawan.html" class="sidebar-nav-link" id="nav-reports-income" data-field="nav-menu-reports-income">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+              <span>Pendapatan Karyawan</span>
+            </a>
+          </li>
+        </ul>
+
+      </nav>
+
+      <!-- Sidebar User Footer -->
+      <div class="sidebar-user-footer">
+        <div class="sidebar-user-card">
+          <div class="user-avatar-circle">O</div>
+          <div class="sidebar-user-meta">
+            <span class="user-name">Owner Afwo</span>
+            <span class="user-role">Administrator</span>
+          </div>
+        </div>
+        <a href="#" class="sidebar-logout-btn" id="nav-logout-link" title="Keluar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Keluar</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main-content">
+      
+      <!-- Mobile Top Header Bar (Shown only on Mobile/Tablet <= 1024px) -->
+      <header class="mobile-top-header">
+        <a href="index.html" class="brand-logo">Afwo.</a>
+        <button type="button" class="icon-btn js-menu-toggle" aria-label="Buka Menu Navigasi" id="btn-open-menu">
+          <svg class="svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Main Content -->
+      <main class="app-main">
+        
+        <!-- Welcome Header Section -->
+        <div class="dashboard-welcome-header">
+          <h1 class="welcome-title" id="welcome-title" data-field="welcome-title">Selamat datang kembali</h1>
+          <p class="welcome-subtitle" id="welcome-subtitle" data-field="welcome-subtitle">Ringkasan aktivitas hari ini, Rabu, 26 Agustus 2026.</p>
+        </div>
+
+        <!-- 1. Top Row 4 KPI Stat Cards -->
+        <div class="stats-cards-grid">
+          
+          <!-- Card 1: Pemasukan Hari Ini (Featured Dark Card) -->
+          <div class="stat-kpi-card featured-dark-card" data-field="card-today-income">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Pemasukan Hari Ini</span>
+              <div class="stat-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                  <polyline points="17 6 23 6 23 12"></polyline>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="today-income" data-field="today-income">Rp3.450.000</div>
+            <span class="badge-growth-pill" id="today-growth" data-field="today-growth">+18% dari kemarin</span>
+          </div>
+
+          <!-- Card 2: Pelanggan Baru -->
+          <a href="clients.html" class="stat-kpi-card" data-field="card-new-clients" title="Lihat Data Pelanggan">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Pelanggan Baru</span>
+              <div class="stat-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="new-clients-count" data-field="new-clients-count">6</div>
+            <span class="stat-card-subtext" id="new-clients-subtext">pelanggan baru hari ini</span>
+          </a>
+
+          <!-- Card 3: Transaksi Hari Ini -->
+          <a href="riwayat.html" class="stat-kpi-card" data-field="card-today-transactions" title="Lihat Transaksi">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Transaksi Hari Ini</span>
+              <div class="stat-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                  <line x1="6" y1="8" x2="18" y2="8"></line>
+                  <line x1="6" y1="12" x2="14" y2="12"></line>
+                  <line x1="6" y1="16" x2="10" y2="16"></line>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="today-transactions-count" data-field="today-transactions-count">14</div>
+            <span class="stat-card-subtext" id="today-transactions-subtext">transaksi selesai</span>
+          </a>
+
+          <!-- Card 4: Stok Menipis -->
+          <a href="produk.html" class="stat-kpi-card" data-field="card-low-stock" title="Lihat Stok Produk">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Stok Menipis</span>
+              <div class="stat-card-icon warning-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-card-value danger-value" id="low-stock-count" data-field="low-stock-count">3</div>
+            <span class="stat-card-subtext" id="low-stock-subtext">produk perlu direstock</span>
+          </a>
+
+        </div>
+
+        <!-- 2. Main Dashboard Split Grid (Left ~65% / Right ~35%) -->
+        <div class="dashboard-main-grid">
+          
+          <!-- Left Column -->
+          <div class="dashboard-col-left">
+            
+            <!-- Tren Pemasukan (Area Line Chart) -->
+            <div class="dash-card" data-field="card-income-trend">
+              <div class="dash-card-header">
+                <h2 class="dash-card-title">Tren Pemasukan</h2>
+                <span class="dash-card-meta">7 hari terakhir</span>
+              </div>
+              
+              <div class="chart-container-box" id="income-chart-container">
+                <svg viewBox="0 0 600 160" class="chart-svg-responsive" id="income-trend-svg" aria-label="Grafik Tren Pemasukan">
+                  <defs>
+                    <!-- Soft Gold Fill Gradient -->
+                    <linearGradient id="areaGradientGold" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#E5A93C" stop-opacity="0.25"/>
+                      <stop offset="85%" stop-color="#FBF8F2" stop-opacity="0.08"/>
+                      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.0"/>
+                    </linearGradient>
+                  </defs>
+
+                  <!-- Horizontal Subtle Gridlines -->
+                  <g class="chart-gridlines" stroke="#F1F5F9" stroke-width="1" stroke-dasharray="3 3">
+                    <line x1="0" y1="30" x2="600" y2="30"></line>
+                    <line x1="0" y1="80" x2="600" y2="80"></line>
+                    <line x1="0" y1="130" x2="600" y2="130"></line>
+                  </g>
+
+                  <!-- Dynamic SVG Area Path -->
+                  <path id="chart-area-path" fill="url(#areaGradientGold)" d="M 30,120 Q 120,95 210,105 T 390,70 T 570,30 L 570,145 L 30,145 Z"></path>
+
+                  <!-- Dynamic SVG Line Stroke -->
+                  <path id="chart-line-path" fill="none" stroke="#C5932D" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" d="M 30,120 Q 120,95 210,105 T 390,70 T 570,30"></path>
+
+                  <!-- Data Points Container -->
+                  <g id="chart-points-group">
+                    <!-- Dynamic interactive circles injected via JavaScript -->
+                  </g>
+                </svg>
+
+                <!-- X-Axis Labels -->
+                <div class="chart-x-axis-labels" id="chart-axis-days">
+                  <span>Kam</span>
+                  <span>Jum</span>
+                  <span>Sab</span>
+                  <span>Min</span>
+                  <span>Sen</span>
+                  <span>Sel</span>
+                  <span>Rab</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Transaksi Hari Ini (Table) -->
+            <div class="dash-card" data-field="card-today-transactions-table">
+              <div class="dash-card-header">
+                <h2 class="dash-card-title">Transaksi Hari Ini</h2>
+                <a href="riwayat.html" class="dash-card-link" id="link-see-all-transactions">Lihat semua</a>
+              </div>
+
+              <div class="table-responsive-wrapper">
+                <table class="today-trans-table">
+                  <thead>
+                    <tr>
+                      <th>NO STRUK</th>
+                      <th>PELANGGAN</th>
+                      <th>LAYANAN</th>
+                      <th>WAKTU</th>
+                      <th>TOTAL</th>
+                    </tr>
+                  </thead>
+                  <tbody id="today-transactions-body" data-field="today-transactions-body">
+                    <!-- Row 1 -->
+                    <tr>
+                      <td><span class="trans-no-badge">TRX-0231</span></td>
+                      <td><span class="trans-client-name">Sari Handayani</span></td>
+                      <td><span class="trans-service-text">Creambath, Blow</span></td>
+                      <td><span class="trans-time-text">09:20</span></td>
+                      <td><span class="trans-total-bold">Rp180.000</span></td>
+                    </tr>
+                    <!-- Row 2 -->
+                    <tr>
+                      <td><span class="trans-no-badge">TRX-0232</span></td>
+                      <td><span class="trans-client-name">Budi Santoso</span></td>
+                      <td><span class="trans-service-text">Potong Rambut</span></td>
+                      <td><span class="trans-time-text">10:05</span></td>
+                      <td><span class="trans-total-bold">Rp75.000</span></td>
+                    </tr>
+                    <!-- Row 3 -->
+                    <tr>
+                      <td><span class="trans-no-badge">TRX-0233</span></td>
+                      <td><span class="trans-client-name">Melati Putri</span></td>
+                      <td><span class="trans-service-text">Coloring</span></td>
+                      <td><span class="trans-time-text">11:40</span></td>
+                      <td><span class="trans-total-bold">Rp650.000</span></td>
+                    </tr>
+                    <!-- Row 4 -->
+                    <tr>
+                      <td><span class="trans-no-badge">TRX-0234</span></td>
+                      <td><span class="trans-client-name">Dewi Anggraini</span></td>
+                      <td><span class="trans-service-text">Smoothing</span></td>
+                      <td><span class="trans-time-text">13:15</span></td>
+                      <td><span class="trans-total-bold">Rp850.000</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Column -->
+          <div class="dashboard-col-right">
+            
+            <!-- Stok Produk Menipis -->
+            <div class="dash-card" data-field="card-low-stock-list">
+              <div class="dash-card-header" style="margin-bottom: 12px;">
+                <div class="dash-card-title-group">
+                  <h2 class="dash-card-title">Stok Produk Menipis</h2>
+                  <span class="dash-card-subtitle">Di bawah batas minimum</span>
+                </div>
+              </div>
+
+              <div class="low-stock-list" id="low-stock-list-container" data-field="low-stock-list-container">
+                
+                <!-- Product Item 1: Shampoo Keratin -->
+                <div class="low-stock-item">
+                  <div class="low-stock-left">
+                    <div class="stock-initial-badge">SH</div>
+                    <div class="stock-item-info">
+                      <span class="stock-item-name">Shampoo Keratin</span>
+                      <span class="stock-item-category">L'Oreal • Perawatan</span>
+                    </div>
+                  </div>
+                  <span class="badge-stock-danger">2 pcs</span>
+                </div>
+
+                <!-- Product Item 2: Hair Gel -->
+                <div class="low-stock-item">
+                  <div class="low-stock-left">
+                    <div class="stock-initial-badge">HG</div>
+                    <div class="stock-item-info">
+                      <span class="stock-item-name">Hair Gel</span>
+                      <span class="stock-item-category">Gatsby • Styling</span>
+                    </div>
+                  </div>
+                  <span class="badge-stock-danger">3 pcs</span>
+                </div>
+
+                <!-- Product Item 3: Masker Wajah -->
+                <div class="low-stock-item">
+                  <div class="low-stock-left">
+                    <div class="stock-initial-badge">MW</div>
+                    <div class="stock-item-info">
+                      <span class="stock-item-name">Masker Wajah</span>
+                      <span class="stock-item-category">Perawatan</span>
+                    </div>
+                  </div>
+                  <span class="badge-stock-danger">1 pcs</span>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Layanan Terpopuler -->
+            <div class="dash-card" data-field="card-popular-services">
+              <div class="dash-card-header" style="margin-bottom: 12px;">
+                <div class="dash-card-title-group">
+                  <h2 class="dash-card-title">Layanan Terpopuler</h2>
+                  <span class="dash-card-subtitle">Minggu ini</span>
+                </div>
+              </div>
+
+              <div class="popular-services-list" id="popular-services-container" data-field="popular-services-container">
+                
+                <!-- Service 1 -->
+                <div class="popular-service-row">
+                  <span class="service-row-name">Potong Rambut</span>
+                  <span class="service-row-count">32x</span>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="popular-service-row">
+                  <span class="service-row-name">Creambath</span>
+                  <span class="service-row-count">21x</span>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="popular-service-row">
+                  <span class="service-row-name">Coloring</span>
+                  <span class="service-row-count">14x</span>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="popular-service-row">
+                  <span class="service-row-name">Smoothing</span>
+                  <span class="service-row-count">9x</span>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <script src="scripts/nav.js"></script>
+  <script src="scripts/dashboard.js"></script>
+</body>
+</html>
+
+
+
+
+
+

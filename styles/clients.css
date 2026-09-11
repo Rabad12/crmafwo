@@ -1,0 +1,339 @@
+﻿/* ==========================================================================
+   AFWO HAIR DESIGN - CUSTOMER DIRECTORY STYLES (MATCHING REFERENCE 2)
+   ========================================================================== */
+
+.clients-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.clients-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.clients-title {
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.clients-count-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #B45309;
+  background-color: #FEF3C7;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.clients-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.btn-add-client-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.2);
+}
+
+/* Toolbar Card (Tabs + Search + Sort) */
+.clients-toolbar-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+@media (min-width: 900px) {
+  .clients-toolbar-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.clients-tabs-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.client-filter-tab {
+  background: transparent;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.client-filter-tab:hover {
+  background-color: #F3F4F6;
+  color: var(--text-primary);
+}
+
+.client-filter-tab.active {
+  background-color: var(--dark-solid);
+  color: #FFFFFF;
+}
+
+.clients-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.client-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 7px 12px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.client-sort-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sort-prefix-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.sort-select-control {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background-color: #FFFFFF;
+  outline: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Directory Card & Table */
+.clients-directory-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 30px;
+}
+
+.table-responsive-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.clients-detail-table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+  text-align: left;
+}
+
+.clients-detail-table th {
+  padding: 14px 16px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--border-color);
+  background-color: #F9FAFB;
+  white-space: nowrap;
+}
+
+.clients-detail-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #F1F5F9;
+  color: var(--text-primary);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.clients-detail-table tr:hover td {
+  background-color: #F8FAFC;
+}
+
+.client-avatar-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.client-avatar-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #FEF3C7;
+  color: #B45309;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.client-name-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  display: block;
+  white-space: nowrap;
+}
+
+.client-name-title:hover {
+  color: #B45309;
+  text-decoration: underline;
+}
+
+.client-ig-handle {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  display: block;
+  white-space: nowrap;
+}
+
+.client-phone-num {
+  font-family: monospace;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.client-segment-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.badge-vip {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+.badge-loyal {
+  background-color: #D1FAE5;
+  color: #065F46;
+}
+
+.badge-reguler {
+  background-color: #DBEAFE;
+  color: #1E40AF;
+}
+
+.hair-type-badge {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  background-color: #F3F4F6;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.visit-count-highlight {
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.spend-highlight {
+  font-weight: 800;
+  color: #B45309;
+  white-space: nowrap;
+}
+
+.last-visit-date {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.client-actions-cell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.btn-client-action {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-profile-link {
+  background-color: #F3F4F6;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-profile-link:hover {
+  background-color: #E5E7EB;
+}
+
+.btn-appointment-link {
+  background-color: #FEF3C7;
+  border: 1px solid #FDE68A;
+  color: #92400E;
+}
+
+.btn-appointment-link:hover {
+  background-color: #FDE68A;
+}

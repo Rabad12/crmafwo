@@ -1,0 +1,621 @@
+﻿<!--
+  TODO INTEGRASI BACKEND:
+  - id="today-income", id="transaction-count", id="payment-breakdown", id="recent-transactions-list"
+    -> di-fetch dari endpoint /api/dashboard/summary
+  - Form Edit Reservation / Tambah Transaksi (semua data-field="..." termasuk hair-length,
+    product-brand, product-amount-ml, hair-thickness, worker-commission)
+    -> submit ke endpoint POST /api/transactions (support multi service item & multi worker per item)
+  - id="client-list" (clients.html) -> GET /api/clients, filter search client-side sementara,
+    idealnya diganti query ke backend
+  - Form Edit Pelanggan (semua data-field="...") -> POST/PUT /api/clients
+  - profil-pelanggan.html (id="client-name", id="client-phone", id="client-email",
+    id="visit-history-list") -> GET /api/clients/:id
+  - id="worker-list" (worker.html) -> GET /api/workers
+  - Form Edit Worker (semua data-field="...") -> POST/PUT /api/workers
+  - id="service-list" (services.html) -> GET /api/services, pill filter category client-side sementara
+  - Form Edit Layanan (semua data-field="...") -> POST/PUT /api/services
+  - id="product-list" (produk.html) -> GET /api/products, pill filter category client-side sementara
+  - Form Edit Produk (semua data-field="...") -> POST/PUT /api/products
+  - id="transaction-history-list" (riwayat.html) -> GET /api/transactions (support query filter
+    tanggal dari id="filter-date-from" / id="filter-date-to" dan search id="transaction-search")
+  - laporan.html: filter (data-field="periode", id="report-date-from", id="report-date-to",
+    data-field="jenis-pengerjaan", id="report-worker-filter") -> GET /api/reports?periode=...&from=...&to=...&jenis=...&worker=...
+  - id="ai-insight-text" (laporan.html) -> idealnya hasil generate dari AI/LLM di backend berdasarkan
+    data transaksi hasil query di atas, bukan dummy statis
+  - id="report-total-revenue", id="report-transaction-count", id="report-average-revenue",
+    id="category-breakdown" (laporan.html) -> dihitung dari hasil query /api/reports yang sama
+  - Sidebar menu items -> arahkan ke route masing-masing modul saat halaman sudah dibuat
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tambah Transaksi - AFWO Hair Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/global.css">
+  <link rel="stylesheet" href="styles/nav.css">
+  <link rel="stylesheet" href="styles/add-transaction.css">
+</head>
+<body>
+
+    <!-- Navigation Backdrop Overlay (for mobile drawer) -->
+  <div id="nav-overlay" class="nav-overlay" aria-hidden="true"></div>
+
+  <div class="app-layout">
+    
+    <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
+        <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
+        <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
+    <aside id="admin-sidebar" class="admin-sidebar" aria-label="Menu Navigasi Admin">
+      <!-- Sidebar Brand Header -->
+      <div class="sidebar-brand-header">
+        <div class="brand-text-group">
+          <a href="index.html" class="sidebar-brand-title">Afwo.</a>
+          <span class="sidebar-brand-badge">Hair Design CRM</span>
+        </div>
+        <button type="button" id="nav-close-btn" class="nav-close-btn mobile-only" aria-label="Tutup Menu">
+          <svg class="svg-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Vertical Navigation Menu with Section Groups (Image 3 Reference) -->
+      <nav class="sidebar-nav-container">
+        
+        <!-- Section: MENU -->
+        <div class="sidebar-section-label">MENU</div>
+        <ul class="sidebar-menu-list">
+          <li class="sidebar-nav-item">
+            <a href="index.html" class="sidebar-nav-link" id="nav-dashboard" data-field="nav-menu-dashboard">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+              </svg>
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="clients.html" class="sidebar-nav-link" id="nav-customers" data-field="nav-menu-customers">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <span>Pelanggan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="worker.html" class="sidebar-nav-link" id="nav-workers" data-field="nav-menu-workers">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span>Karyawan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="services.html" class="sidebar-nav-link" id="nav-services" data-field="nav-menu-services">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="6" cy="6" r="3"></circle>
+                <circle cx="6" cy="18" r="3"></circle>
+                <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+                <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+                <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+              </svg>
+              <span>Layanan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="produk.html" class="sidebar-nav-link" id="nav-products" data-field="nav-menu-products">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m7.5 4.27 9 5.15"></path>
+                <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                <path d="m3.3 7 8.7 5 8.7-5"></path>
+                <path d="M12 22V12"></path>
+              </svg>
+              <span>Produk</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="riwayat.html" class="sidebar-nav-link" id="nav-history" data-field="nav-menu-history">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Transaksi</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="appointment.html" class="sidebar-nav-link" id="nav-appointment" data-field="nav-menu-appointment">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>Appointment</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Section: LAPORAN -->
+        <div class="sidebar-section-label" style="margin-top: 14px;">LAPORAN</div>
+        <ul class="sidebar-menu-list">
+          <li class="sidebar-nav-item">
+            <a href="laporan.html" class="sidebar-nav-link" id="nav-reports-sales" data-field="nav-menu-reports-sales">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+              <span>Laporan Penjualan</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="pelanggan-aktif.html" class="sidebar-nav-link" id="nav-reports-active-clients" data-field="nav-menu-reports-active-clients">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <polyline points="16 11 18 13 22 9"></polyline>
+              </svg>
+              <span>Pelanggan Aktif</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="rekap-komisi.html" class="sidebar-nav-link" id="nav-reports-commission" data-field="nav-menu-reports-commission">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              <span>Rekap Komisi &amp; Slip</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="pendapatan-karyawan.html" class="sidebar-nav-link" id="nav-reports-income" data-field="nav-menu-reports-income">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+              <span>Pendapatan Karyawan</span>
+            </a>
+          </li>
+        </ul>
+
+      </nav>
+
+      <!-- Sidebar User Footer -->
+      <div class="sidebar-user-footer">
+        <div class="sidebar-user-card">
+          <div class="user-avatar-circle">O</div>
+          <div class="sidebar-user-meta">
+            <span class="user-name">Owner Afwo</span>
+            <span class="user-role">Administrator</span>
+          </div>
+        </div>
+        <a href="#" class="sidebar-logout-btn" id="nav-logout-link" title="Keluar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Keluar</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main-content">
+      
+      <!-- Mobile Top Header Bar (Shown only on Mobile/Tablet <= 1024px) -->
+      <header class="mobile-top-header">
+        <a href="index.html" class="brand-logo">Afwo.</a>
+        <button type="button" class="icon-btn js-menu-toggle" aria-label="Buka Menu Navigasi" id="btn-open-menu">
+          <svg class="svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Main Content -->
+      <main class="app-main">
+      <form id="form-add-transaction" class="form-stack" onsubmit="return false;">
+        
+        <!-- Card 1: Interconnected Searchable Combobox for Client & Phone Number -->
+        <article class="card customer-combobox-card" data-field="customer-card">
+          
+          <!-- Client / Customer Name Field with Suggestions -->
+          <div class="combobox-group-item">
+            <label class="form-label" for="customer-name-input">CLIENT / CUSTOMER</label>
+            <div class="combobox-wrapper" id="name-combobox-wrapper">
+              <div class="combobox-input-box">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <input type="text" id="customer-name-input" class="combobox-input" data-field="customer-name" value="Jane Smith" placeholder="Ketik atau cari nama pelanggan..." autocomplete="off" required>
+                <button type="button" id="btn-toggle-combobox" class="combobox-toggle-btn" aria-label="Buka pilihan pelanggan">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Name Dropdown Options Menu -->
+              <div id="combobox-dropdown" class="combobox-dropdown"></div>
+            </div>
+          </div>
+
+          <!-- Phone Number Field with Suggestions (Unique Database Key) -->
+          <div class="combobox-group-item">
+            <label class="form-label" for="customer-phone-input">PHONE NUMBER <span class="unique-key-hint">(ID Unik Database)</span></label>
+            <div class="combobox-wrapper" id="phone-combobox-wrapper">
+              <div class="combobox-input-box">
+                <svg class="input-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+                <input type="tel" id="customer-phone-input" class="combobox-input" data-field="customer-phone" value="+62 812 3456 7890" placeholder="Ketik atau cari nomor telepon..." autocomplete="off" required>
+                <button type="button" id="btn-toggle-phone-combobox" class="combobox-toggle-btn" aria-label="Buka pilihan nomor telepon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Phone Dropdown Options Menu -->
+              <div id="phone-combobox-dropdown" class="combobox-dropdown"></div>
+            </div>
+          </div>
+
+        </article>
+
+        <!-- Native Date & Time Pickers Row -->
+        <div class="date-time-grid">
+          <div>
+            <label class="form-label" for="input-date">DATE</label>
+            <div class="input-container-icon">
+              <svg class="input-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <input type="date" id="input-date" class="native-picker-input" data-field="date" value="2023-10-25">
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label" for="input-time">TIME</label>
+            <div class="input-container-icon">
+              <svg class="input-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <input type="time" id="input-time" class="native-picker-input" data-field="time" value="11:30">
+            </div>
+          </div>
+        </div>
+
+        <!-- Service Items Container (Multi-Service Support) -->
+        <div id="service-items-container" class="service-items-container">
+          
+          <!-- Template: Service Item #1 -->
+          <article id="service-item-1" class="card service-item-card" data-field="service-item-card">
+            
+            <div class="service-item-header">
+              <span class="label-caps service-item-number">SERVICE ITEM #1</span>
+              <button type="button" class="btn-delete-service" data-action="delete-service" title="Hapus Service Item Ini" style="display: none;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  <line x1="10" y1="11" x2="10" y2="17"></line>
+                  <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Service Selection -->
+            <div>
+              <label class="form-label">SERVICE</label>
+              <div class="input-container-icon">
+                <svg class="input-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="6" cy="6" r="3"></circle>
+                  <circle cx="6" cy="18" r="3"></circle>
+                  <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+                  <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+                  <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+                </svg>
+                <select class="select-dropdown-field service-select" data-field="service-name" data-price-field="service-price">
+                  <option value="balayage" data-price="1200000" selected>Balayage Color Treatment (Rp 1.200.000)</option>
+                  <option value="grooming" data-price="85000">Signature Grooming (Rp 85.000)</option>
+                  <option value="color-correction" data-price="620000">Color Correction & Spa (Rp 620.000)</option>
+                  <option value="keratin" data-price="450000">Keratin Smooth Treatment (Rp 450.000)</option>
+                  <option value="wash-blow" data-price="65000">Classic Hair Wash & Blow (Rp 65.000)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Assigned Stylists (Multi-Karyawan Support) -->
+            <div class="assigned-stylists-group">
+              <label class="form-label">ASSIGNED STYLIST / KARYAWAN</label>
+              <div class="input-container-icon">
+                <svg class="input-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <select class="select-dropdown-field" data-field="stylist-name">
+                  <option value="agus-pratama" selected>Agus Pratama (Senior Stylist)</option>
+                  <option value="ada-wong">Ada Wong (Lead Hair Stylist)</option>
+                  <option value="budi">Budi (Color Specialist)</option>
+                  <option value="rina">Rina (Hair Spa & Treatment)</option>
+                  <option value="dimas">Dimas (Barber & Grooming)</option>
+                </select>
+              </div>
+              <div class="extra-stylists-container"></div>
+              <button type="button" class="btn-dashed-mini" data-action="add-worker">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                <span>+ ADD KARYAWAN</span>
+              </button>
+            </div>
+
+            <!-- Hair Length Surcharge (S / M / L / XL) -->
+            <div>
+              <label class="form-label">HAIR LENGTH (PANJANG RAMBUT)</label>
+              <div class="segmented-pill-group">
+                <label class="segmented-pill-label active">
+                  <input type="radio" name="hair-length-1" value="S" data-field="hair-length" data-surcharge="0" checked>
+                  <span>S (+Rp 0)</span>
+                </label>
+                <label class="segmented-pill-label">
+                  <input type="radio" name="hair-length-1" value="M" data-field="hair-length" data-surcharge="50000">
+                  <span>M (+50rb)</span>
+                </label>
+                <label class="segmented-pill-label">
+                  <input type="radio" name="hair-length-1" value="L" data-field="hair-length" data-surcharge="100000">
+                  <span>L (+100rb)</span>
+                </label>
+                <label class="segmented-pill-label">
+                  <input type="radio" name="hair-length-1" value="XL" data-field="hair-length" data-surcharge="150000">
+                  <span>XL (+150rb)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Product / Brand & Dosage Stepper (ml) -->
+            <div class="products-group">
+              <label class="form-label">PRODUCT / BRAND (PRODUK YANG DIPAKAI)</label>
+              <div class="product-row-flex">
+                <div class="input-container-icon" style="flex: 1; min-width: 170px;">
+                  <select class="select-dropdown-field" data-field="product-brand">
+                    <option value="olaplex" selected>Olaplex No.3</option>
+                    <option value="kerastase">Kerastase Elixir Ultime</option>
+                    <option value="wella">Wella Color Charm</option>
+                    <option value="loreal">L'Oréal Majirel</option>
+                  </select>
+                </div>
+                <div class="dosage-stepper">
+                  <button type="button" class="btn-step btn-step-minus" aria-label="Kurang 10ml">−</button>
+                  <input type="number" step="10" min="10" value="30" class="stepper-input" data-field="product-amount-ml" readonly>
+                  <button type="button" class="btn-step btn-step-plus" aria-label="Tambah 10ml">+</button>
+                  <span class="unit-label">ml</span>
+                </div>
+              </div>
+              <div class="extra-products-container"></div>
+              <button type="button" class="btn-dashed-mini" data-action="add-product">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                <span>ADD PRODUCT</span>
+              </button>
+            </div>
+
+            <!-- Hair Thickness -->
+            <div>
+              <label class="form-label">HAIR THICKNESS (KETEBALAN RAMBUT)</label>
+              <div class="segmented-pill-group">
+                <label class="segmented-pill-label">
+                  <input type="radio" name="hair-thickness-1" value="thin" data-field="hair-thickness">
+                  <span>Tipis</span>
+                </label>
+                <label class="segmented-pill-label active">
+                  <input type="radio" name="hair-thickness-1" value="medium" data-field="hair-thickness" checked>
+                  <span>Sedang</span>
+                </label>
+                <label class="segmented-pill-label">
+                  <input type="radio" name="hair-thickness-1" value="thick" data-field="hair-thickness">
+                  <span>Tebal</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Worker Commission & Hint -->
+            <div>
+              <label class="form-label">WORKER COMMISSION</label>
+              <div class="input-container-icon">
+                <span style="font-weight: 700; color: var(--text-muted); font-size: 0.88rem;">Rp</span>
+                <input type="number" class="text-input-field" data-field="worker-commission" placeholder="180000" value="180000">
+              </div>
+              <div class="commission-suggestion commission-hint" id="commission-suggestion">
+                Saran komisi untuk layanan ini: Rp 180.000 (15% dari subtotal)
+              </div>
+            </div>
+
+          </article>
+
+        </div>
+
+        <!-- Full-Width ADD SERVICE Button -->
+        <button type="button" id="btn-add-service" class="btn-add-service-full" data-action="add-service">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="16"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+          </svg>
+          <span>ADD SERVICE</span>
+        </button>
+
+        <!-- Card: Special Notes (Editable Textarea) -->
+        <article class="card" data-field="notes-card">
+          <label class="form-label" for="notes-textarea">SPECIAL NOTES (OPTIONAL)</label>
+          <textarea id="notes-textarea" class="notes-textarea" data-field="notes" placeholder="Client requested warm blonde tones for the balayage.">Client requested warm blonde tones for the balayage.</textarea>
+        </article>
+
+        <!-- Card: Service Summary -->
+        <article class="card" data-field="service-summary-card">
+          <div class="card-section-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <h2 class="card-section-title">Service Summary</h2>
+          </div>
+
+          <div class="summary-rows">
+            <div class="summary-row summary-row-subtle">
+              <span>Subtotal</span>
+              <span id="summary-subtotal" class="summary-val" data-field="subtotal">1.200.000</span>
+            </div>
+
+            <div class="summary-row summary-row-subtle">
+              <span>Tax (11%)</span>
+              <span id="summary-tax" class="summary-val" data-field="tax">Rp 132.000</span>
+            </div>
+
+            <hr class="summary-divider">
+
+            <div class="summary-total-row">
+              <span class="summary-total-label">Total</span>
+              <span id="summary-total" class="summary-total-val" data-field="total">1.332.000</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card: Payment Method -->
+        <article class="card" data-field="payment-method-card">
+          <div class="card-section-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <line x1="2" y1="10" x2="22" y2="10"></line>
+            </svg>
+            <h2 class="card-section-title">Payment Method</h2>
+          </div>
+
+          <div class="payment-methods-list" id="payment-methods-group">
+            <!-- Option 1: QRIS -->
+            <label class="payment-option-item active" for="pay-qris">
+              <div class="payment-option-left">
+                <div class="payment-icon-box">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="3" height="3"></rect>
+                    <rect x="18" y="18" width="3" height="3"></rect>
+                    <rect x="14" y="18" width="3" height="3"></rect>
+                    <rect x="18" y="14" width="3" height="3"></rect>
+                  </svg>
+                </div>
+                <div class="payment-texts">
+                  <span class="payment-title">QRIS</span>
+                  <span class="payment-subtitle">Scan to pay instantly</span>
+                </div>
+              </div>
+              <input type="radio" id="pay-qris" name="payment-method" value="qris" checked data-field="payment-method">
+              <div class="radio-indicator">
+                <div class="radio-indicator-dot"></div>
+              </div>
+            </label>
+
+            <!-- Option 2: Credit / Debit Card -->
+            <label class="payment-option-item" for="pay-card">
+              <div class="payment-option-left">
+                <div class="payment-icon-box">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                    <line x1="2" y1="10" x2="22" y2="10"></line>
+                  </svg>
+                </div>
+                <div class="payment-texts">
+                  <span class="payment-title">Credit / Debit Card</span>
+                  <span class="payment-subtitle">Terminal or Manual Entry</span>
+                </div>
+              </div>
+              <input type="radio" id="pay-card" name="payment-method" value="card" data-field="payment-method">
+              <div class="radio-indicator">
+                <div class="radio-indicator-dot"></div>
+              </div>
+            </label>
+
+            <!-- Option 3: Cash -->
+            <label class="payment-option-item" for="pay-cash">
+              <div class="payment-option-left">
+                <div class="payment-icon-box">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                    <circle cx="12" cy="12" r="2"></circle>
+                    <path d="M6 12h.01M18 12h.01"></path>
+                  </svg>
+                </div>
+                <div class="payment-texts">
+                  <span class="payment-title">Cash</span>
+                  <span class="payment-subtitle">Pay at front desk</span>
+                </div>
+              </div>
+              <input type="radio" id="pay-cash" name="payment-method" value="cash" data-field="payment-method">
+              <div class="radio-indicator">
+                <div class="radio-indicator-dot"></div>
+              </div>
+            </label>
+          </div>
+        </article>
+
+        <!-- Bottom Dual Actions: DISCARD & SAVE CHANGES -->
+        <div class="dual-actions-container">
+          <button type="button" id="btn-save-changes" class="btn-dark" data-field="btn-save-changes">
+            <span>SAVE CHANGES</span>
+          </button>
+          <button type="button" id="btn-discard" class="btn-outline" data-field="btn-discard">
+            <span>DISCARD</span>
+          </button>
+        </div>
+
+      </form>
+    </main>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Box -->
+  <div id="toast-success" class="toast-box" role="status" aria-live="polite">
+    <span id="toast-message">Perubahan transaksi berhasil disimpan!</span>
+  </div>
+
+  <script src="scripts/nav.js"></script>
+  <script src="scripts/add-transaction.js"></script>
+</body>
+</html>
+
+
+
+
+
