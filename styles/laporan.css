@@ -260,9 +260,11 @@
   background-color: #FFFFFF;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: 22px 24px;
   box-shadow: var(--shadow-sm);
   margin-bottom: 20px;
+  overflow: hidden;
+  position: relative;
 }
 
 .revenue-chart-header {
@@ -287,7 +289,7 @@
 }
 
 .chart-revenue-val {
-  font-size: 1.45rem;
+  font-size: 1.55rem;
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.02em;
@@ -296,12 +298,12 @@
 .growth-badge-pill {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  background-color: #DCFCE7;
-  color: #15803D;
+  gap: 4px;
+  background-color: #DEF7EC;
+  color: #03543F;
   padding: 4px 10px;
   border-radius: var(--radius-full);
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   font-weight: 800;
 }
 
@@ -310,30 +312,70 @@
   height: 180px;
   margin-top: 10px;
   position: relative;
+  overflow: hidden;
 }
 
 .svg-bar-chart-container svg {
   width: 100%;
   height: 100%;
-  overflow: visible;
+  display: block;
 }
 
 .chart-bar-rect {
   cursor: pointer;
-  transition: fill 0.15s ease, opacity 0.15s ease;
+  transition: transform 0.2s ease, fill 0.2s ease, opacity 0.2s ease;
+  transform-origin: bottom;
+  fill: #1E2024;
 }
 
 .chart-bar-rect:hover {
   opacity: 0.85;
+  filter: brightness(1.2);
+}
+
+.chart-bar-rect.peak-bar {
+  fill: #E5A93C;
 }
 
 .chart-axis-labels {
   display: flex;
-  justify-content: space-between;
-  padding: 8px 10px 0 10px;
-  font-size: 0.74rem;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0 0 0;
+  font-size: 0.78rem;
   font-weight: 700;
-  color: var(--text-muted);
+  color: #6B7280;
+  border-top: 1px solid #F1F5F9;
+  margin-top: 6px;
+}
+
+.chart-axis-labels span {
+  flex: 1;
+  text-align: center;
+}
+
+/* Floating Chart Tooltip */
+.chart-tooltip-floating {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1E2024;
+  color: #FFFFFF;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+.chart-tooltip-floating.show {
+  opacity: 1;
 }
 
 /* Customer Metrics Cards */

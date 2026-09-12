@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   TODO INTEGRASI BACKEND:
   - id="today-income", id="transaction-count", id="payment-breakdown", id="recent-transactions-list"
     -> di-fetch dari endpoint /api/dashboard/summary
@@ -360,28 +360,29 @@
 
         <!-- SVG Bar Chart Canvas (Connected to Backend Database API) -->
         <div class="svg-bar-chart-container" id="bar-chart-wrapper">
-          <svg viewBox="0 0 350 140" id="svg-bar-chart" preserveAspectRatio="none">
+          <div id="chart-floating-tooltip" class="chart-tooltip-floating"></div>
+          <svg viewBox="0 0 700 150" id="svg-bar-chart" preserveAspectRatio="none">
             <defs>
               <linearGradient id="barGradientPrimary" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#1E293B"></stop>
-                <stop offset="100%" stop-color="#0F172A"></stop>
+                <stop offset="0%" stop-color="#2D2319"></stop>
+                <stop offset="100%" stop-color="#1E2024"></stop>
               </linearGradient>
               <linearGradient id="barGradientPeak" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stop-color="#F59E0B"></stop>
                 <stop offset="100%" stop-color="#D97706"></stop>
               </linearGradient>
             </defs>
-            <!-- Background grid lines -->
-            <line x1="0" y1="30" x2="350" y2="30" stroke="#F1F5F9" stroke-dasharray="4 4" stroke-width="1" />
-            <line x1="0" y1="75" x2="350" y2="75" stroke="#F1F5F9" stroke-dasharray="4 4" stroke-width="1" />
-            <line x1="0" y1="120" x2="350" y2="120" stroke="#E2E8F0" stroke-width="1" />
+            <!-- Background grid lines spanning full 700px width -->
+            <line x1="0" y1="35" x2="700" y2="35" stroke="#F1F5F9" stroke-dasharray="4 4" stroke-width="1.2" />
+            <line x1="0" y1="80" x2="700" y2="80" stroke="#F1F5F9" stroke-dasharray="4 4" stroke-width="1.2" />
+            <line x1="0" y1="125" x2="700" y2="125" stroke="#E2E8F0" stroke-width="1.2" />
             
             <!-- Dynamic Bar Group populated by JS / Database API -->
             <g id="chart-bars-group"></g>
           </svg>
         </div>
 
-        <!-- Sumbu X Axis Labels -->
+        <!-- Sumbu X Axis Labels (Populated dynamically via JS) -->
         <div class="chart-axis-labels" id="chart-axis-labels">
           <span>Mon</span>
           <span>Tue</span>
