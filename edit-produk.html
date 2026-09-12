@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   TODO INTEGRASI BACKEND:
   - id="today-income", id="transaction-count", id="payment-breakdown", id="recent-transactions-list"
     -> di-fetch dari endpoint /api/dashboard/summary
@@ -239,92 +239,149 @@
 
       <!-- Main Content -->
       <main class="app-main">
+      <!-- Section Intro Header -->
+      <div class="edit-produk-header">
+        <h1 class="edit-produk-title" id="edit-produk-title">Tambah Produk</h1>
+        <p class="edit-produk-subtitle" id="edit-produk-subtitle">Lengkapi data produk baru di bawah ini.</p>
+      </div>
+
       <form id="form-edit-produk" class="edit-produk-stack" onsubmit="return false;">
         
-        <!-- Card 1: Basic Information -->
-        <article class="card form-section-card" data-field="basic-info-card">
-          <h2 class="section-card-title">Basic Information</h2>
-
-          <div class="form-group-item">
-            <label class="form-label" for="input-product-name">Product Name *</label>
-            <div class="form-input-box">
-              <input type="text" id="input-product-name" class="form-input-control" data-field="product-name" value="Wella Color Charm" placeholder="e.g. Olaplex No.3" required>
-            </div>
-          </div>
-
-          <div class="form-group-item">
-            <label class="form-label" for="select-product-category">Category</label>
-            <div class="form-input-box">
-              <select id="select-product-category" class="form-select-control" data-field="category">
-                <option value="retail">Dijual per Pcs (Retail)</option>
-                <option value="produk-layanan" selected>Produk Layanan (Bahan Habis Pakai)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group-item">
-            <label class="form-label" for="input-brand">Brand</label>
-            <div class="form-input-box">
-              <input type="text" id="input-brand" class="form-input-control" data-field="brand" value="Wella" placeholder="e.g. Wella / Olaplex">
-            </div>
-          </div>
-
-          <div class="form-group-item">
-            <label class="form-label" for="textarea-desc">Description</label>
-            <div class="form-input-box" style="padding: 10px 14px;">
-              <textarea id="textarea-desc" class="form-textarea-control" data-field="description" placeholder="Bahan pewarna profesional yang dipakai saat layanan coloring.">Bahan pewarna profesional yang dipakai saat layanan coloring.</textarea>
-            </div>
-          </div>
-        </article>
-
-        <!-- Card 2: Pricing & Conditional Fields -->
-        <article class="card form-section-card" data-field="pricing-card">
-          <h2 class="section-card-title">Pricing</h2>
-
-          <div class="form-group-item">
-            <label class="form-label" for="input-price">Price (IDR) *</label>
-            <div class="form-input-box">
-              <span style="font-weight: 700; color: var(--text-muted); font-size: 0.95rem;">Rp</span>
-              <input type="text" id="input-price" class="form-input-control" data-field="price" value="15.000" placeholder="15.000" required>
-            </div>
-          </div>
-
-          <!-- Conditional Field 1: Stock (Pcs) for Retail -->
-          <div class="form-group-item" id="field-stock-pcs" style="display: none;">
-            <label class="form-label" for="input-stock-pcs">Stock (Pcs)</label>
-            <div class="form-input-box">
-              <input type="number" id="input-stock-pcs" class="form-input-control" data-field="stock-pcs" value="24" placeholder="10">
-            </div>
-          </div>
-
-          <!-- Conditional Field 2: Satuan Takaran (ml) for Produk Layanan -->
-          <div class="form-group-item" id="field-unit-ml" style="display: flex;">
-            <label class="form-label">Satuan Takaran (ml)</label>
-            <div class="stepper-row-box">
-              <div class="stepper-box-group">
-                <button type="button" class="btn-stepper-square" id="btn-step-minus" aria-label="Kurang 10ml">−</button>
-                <input type="number" step="10" min="10" value="10" class="stepper-number-field" id="input-unit-ml" data-field="unit-ml" readonly>
-                <button type="button" class="btn-stepper-square" id="btn-step-plus" aria-label="Tambah 10ml">+</button>
+        <article class="card form-section-card" data-field="product-form-card">
+          
+          <!-- Baris 1: Nama Produk & Merek -->
+          <div class="form-row-2col">
+            <div class="form-group-item">
+              <label class="form-label" for="input-product-name">Nama Produk *</label>
+              <div class="form-input-box">
+                <input type="text" id="input-product-name" class="form-input-control" data-field="product-name" placeholder="Nama produk..." required>
               </div>
-              <span style="font-weight: 700; color: var(--text-muted); font-size: 0.9rem;">ml per takaran</span>
+            </div>
+
+            <div class="form-group-item">
+              <label class="form-label" for="select-product-brand">Merek *</label>
+              <div class="brand-input-row">
+                <div class="form-input-box brand-select-box">
+                  <select id="select-product-brand" class="form-select-control" data-field="brand">
+                    <option value="">-- Pilih Merek --</option>
+                    <option value="Wella">Wella</option>
+                    <option value="L'Oréal">L'Oréal</option>
+                    <option value="Olaplex">Olaplex</option>
+                    <option value="Kerastase">Kerastase</option>
+                    <option value="Makarizo">Makarizo</option>
+                    <option value="Matrix">Matrix</option>
+                    <option value="Schwarzkopf">Schwarzkopf</option>
+                    <option value="Shiseido">Shiseido</option>
+                  </select>
+                </div>
+                <button type="button" class="btn-add-brand-gold" id="btn-add-brand">+ Baru</button>
+              </div>
+              <span class="field-help-text">Butuh merek baru? Klik "+ Baru" lalu ketik namanya.</span>
             </div>
           </div>
 
-          <div class="notice-info-box">
-            <svg class="notice-icon-gold" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="16" x2="12" y2="12"></line>
-              <line x1="12" y1="8" x2="12.01" y2="8"></line>
-            </svg>
-            <p class="notice-text">Harga dan satuan ini otomatis muncul di pilihan Produk saat Tambah Transaksi.</p>
-          </div>
-        </article>
+          <!-- Baris 2: Kategori Produk (Radio Grid 2 Kolom) -->
+          <div class="form-group-item">
+            <label class="form-label">Kategori Produk *</label>
+            <span class="field-help-text" style="margin-top: -2px; margin-bottom: 6px;">Dijual per pcs ke pelanggan, atau dipakai staf saat treatment.</span>
+            
+            <div class="product-category-radio-grid">
+              <!-- Kolom Kiri -->
+              <div class="radio-col">
+                <label class="category-radio-card">
+                  <input type="radio" name="product-category" value="retail" data-unit="/pcs" data-help="Harga jual per pcs ke pelanggan.">
+                  <span class="radio-custom-dot"></span>
+                  <span class="radio-card-label">Dijual Per PCS</span>
+                </label>
+                
+                <label class="category-radio-card">
+                  <input type="radio" name="product-category" value="bleaching" data-unit="/10gr" data-help="Harga modal per 10gr bubuk bleaching yang digunakan saat layanan.">
+                  <span class="radio-custom-dot"></span>
+                  <span class="radio-card-label">Bleaching</span>
+                </label>
 
-        <!-- Side-by-Side Actions -->
-        <div class="side-by-side-actions">
-          <a href="produk.html" class="btn-action-cancel" id="btn-cancel-produk" data-field="btn-cancel">Cancel</a>
-          <button type="button" class="btn-action-save" id="btn-save-produk" data-field="btn-save-produk">Save Changes</button>
-        </div>
+                <label class="category-radio-card">
+                  <input type="radio" name="product-category" value="keratin" data-unit="/10ml" data-help="Harga modal per 10ml serum keratin yang digunakan saat layanan.">
+                  <span class="radio-custom-dot"></span>
+                  <span class="radio-card-label">Keratin</span>
+                </label>
+
+                <label class="category-radio-card">
+                  <input type="radio" name="product-category" value="hairtreatment" data-unit="/10ml" data-help="Harga modal per 10ml masker/treatment yang digunakan saat layanan.">
+                  <span class="radio-custom-dot"></span>
+                  <span class="radio-card-label">Hairtreatment</span>
+                </label>
+
+                <label class="category-radio-card active">
+                  <input type="radio" name="product-category" value="umum" checked data-unit="/10ml" data-help="Harga modal per 10ml bahan yang digunakan saat layanan.">
+                  <span class="radio-custom-dot"></span>
+                  <span class="radio-card-label">Dipakai Layanan (umum)</span>
+                </label>
+              </div>
+
+              <!-- Kolom Kanan -->
+              <div class="radio-col">
+                <label class="category-radio-card">
+                  <input type="radio" name="product-category" value="color" data-unit="/10ml" data-help="Harga modal per 10ml krim pewarna (color) yang digunakan saat layanan.">
+                  <span class="radio-custom-dot"></span>
+                  <span class="radio-card-label">Color</span>
+                </label>
+
+                <label class="category-radio-card">
+                  <input type="radio" name="product-category" value="oxidant" data-unit="/10ml" data-help="Harga modal per 10ml developer/oxidant yang digunakan saat layanan.">
+                  <span class="radio-custom-dot"></span>
+                  <span class="radio-card-label">Oxidant</span>
+                </label>
+
+                <label class="category-radio-card">
+                  <input type="radio" name="product-category" value="smoothing" data-unit="/10ml" data-help="Harga modal per 10ml obat smoothing yang digunakan saat layanan.">
+                  <span class="radio-custom-dot"></span>
+                  <span class="radio-card-label">Smoothing</span>
+                </label>
+
+                <label class="category-radio-card">
+                  <input type="radio" name="product-category" value="creambath" data-unit="/10ml" data-help="Harga modal per 10ml krim creambath yang digunakan saat layanan.">
+                  <span class="radio-custom-dot"></span>
+                  <span class="radio-card-label">Creambath</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Baris 3: Satuan & Harga per Satuan (Rp) -->
+          <div class="form-row-2col">
+            <div class="form-group-item">
+              <label class="form-label" for="input-unit">Satuan *</label>
+              <div class="form-input-box disabled-like">
+                <input type="text" id="input-unit" class="form-input-control" data-field="unit" value="/10ml" placeholder="/10ml" required>
+              </div>
+              <span class="field-help-text" id="unit-help-text">Satuan otomatis: /10ml</span>
+            </div>
+
+            <div class="form-group-item">
+              <label class="form-label" for="input-price">Harga per Satuan (Rp) *</label>
+              <div class="form-input-box">
+                <input type="text" id="input-price" class="form-input-control" data-field="price" placeholder="15.000" required>
+              </div>
+              <span class="field-help-text" id="price-help-text">Harga modal per 10ml bahan yang digunakan saat layanan.</span>
+            </div>
+          </div>
+
+          <!-- Baris 4: Checkbox Aktif -->
+          <div class="form-group-item checkbox-row">
+            <label class="checkbox-custom-label">
+              <input type="checkbox" id="checkbox-active" data-field="is-active" checked>
+              <span class="checkbox-text">Aktif</span>
+            </label>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div class="form-bottom-actions">
+            <button type="button" class="btn-dark-solid" id="btn-save-produk" data-field="btn-save-produk">Simpan Produk</button>
+            <a href="produk.html" class="btn-light-outline" id="btn-cancel-produk" data-field="btn-cancel">Batal</a>
+          </div>
+
+        </article>
 
       </form>
     </main>

@@ -1,45 +1,41 @@
-﻿/**
+/**
  * AFWO Hair Design - Add / Edit Product Script
- * Handles dual-mode (?mode=add vs ?mode=edit&id=...), conditional fields toggle, steppers, validation, and saving.
+ * Handles dual-mode (?mode=add vs ?mode=edit&id=...), radio category selection, brand addition, Rupiah formatting, and saving.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   const productsData = {
     'olaplex-no3': {
       name: 'Olaplex No.3 Hair Perfector',
-      category: 'retail',
       brand: 'Olaplex',
-      description: 'Perawatan rumahan untuk menjaga hasil bonding rambut.',
+      category: 'retail',
+      unit: '/pcs',
       price: '285.000',
-      stockPcs: '24',
-      unitMl: '10'
+      active: true
     },
     'kerastase-elixir': {
       name: 'Kerastase Elixir Ultime',
-      category: 'retail',
       brand: 'Kerastase',
-      description: 'Serum minyak finishing untuk kilau dan kelembutan rambut.',
+      category: 'retail',
+      unit: '/pcs',
       price: '420.000',
-      stockPcs: '15',
-      unitMl: '10'
+      active: true
     },
     'wella-color-charm': {
-      name: 'Wella Color Charm (Bahan Pewarna)',
-      category: 'produk-layanan',
+      name: 'Wella Color Charm',
       brand: 'Wella',
-      description: 'Bahan pewarna profesional yang dipakai saat layanan coloring.',
+      category: 'color',
+      unit: '/10ml',
       price: '15.000',
-      stockPcs: '50',
-      unitMl: '10'
+      active: true
     },
     'loreal-majirel': {
-      name: 'L\'Oréal Majirel (Bahan Pewarna)',
-      category: 'produk-layanan',
+      name: 'L\'Oréal Majirel',
       brand: 'L\'Oréal',
-      description: 'Cat rambut profesional untuk hasil warna tahan lama.',
+      category: 'color',
+      unit: '/10ml',
       price: '18.000',
-      stockPcs: '40',
-      unitMl: '10'
+      active: true
     }
   };
 
@@ -48,76 +44,101 @@ document.addEventListener('DOMContentLoaded', () => {
   const productId = urlParams.get('id');
 
   const pageTitle = document.getElementById('edit-produk-title');
+  const pageSubtitle = document.getElementById('edit-produk-subtitle');
   const nameInput = document.getElementById('input-product-name');
-  const categorySelect = document.getElementById('select-product-category');
-  const brandInput = document.getElementById('input-brand');
-  const descTextarea = document.getElementById('textarea-desc');
+  const brandSelect = document.getElementById('select-product-brand');
+  const btnAddBrand = document.getElementById('btn-add-brand');
+  const unitInput = document.getElementById('input-unit');
+  const unitHelpText = document.getElementById('unit-help-text');
   const priceInput = document.getElementById('input-price');
-  
-  const fieldStockPcs = document.getElementById('field-stock-pcs');
-  const stockInput = document.getElementById('input-stock-pcs');
-  
-  const fieldUnitMl = document.getElementById('field-unit-ml');
-  const unitMlInput = document.getElementById('input-unit-ml');
-  const btnMinus = document.getElementById('btn-step-minus');
-  const btnPlus = document.getElementById('btn-step-plus');
+  const priceHelpText = document.getElementById('price-help-text');
+  const activeCheckbox = document.getElementById('checkbox-active');
+  const radioInputs = document.querySelectorAll('input[name="product-category"]');
 
   const saveBtn = document.getElementById('btn-save-produk');
   const toastBox = document.getElementById('toast-success');
   const toastMessage = document.getElementById('toast-message');
 
-  // Toggle Conditional Pricing Fields
-  function updateCategoryFields() {
-    if (!categorySelect) return;
-    const cat = categorySelect.value;
-    if (cat === 'retail') {
-      if (fieldStockPcs) fieldStockPcs.style.display = 'flex';
-      if (fieldUnitMl) fieldUnitMl.style.display = 'none';
-    } else {
-      if (fieldStockPcs) fieldStockPcs.style.display = 'none';
-      if (fieldUnitMl) fieldUnitMl.style.display = 'flex';
-    }
-  }
-
-  if (categorySelect) {
-    categorySelect.addEventListener('change', updateCategoryFields);
-  }
-
-  // Stepper Handlers for 10ml
-  if (btnMinus && unitMlInput) {
-    btnMinus.addEventListener('click', (e) => {
-      e.preventDefault();
-      let val = parseInt(unitMlInput.value || '10', 10);
-      if (val > 10) val -= 10;
-      unitMlInput.value = val;
+  // Handle Radio Selection Change
+  function updateRadioState() {
+    radioInputs.forEach(radio => {
+      const parentCard = radio.closest('.category-radio-card');
+      if (radio.checked) {
+        if (parentCard) parentCard.classList.add('active');
+        const unit = radio.getAttribute('data-unit') || '/10ml';
+        const help = radio.getAttribute('data-help') || 'Harga modal per 10ml bahan yang digunakan saat layanan.';
+        
+        if (unitInput) unitInput.value = unit;
+        if (unitHelpText) unitHelpText.textContent = `Satuan otomatis: ${unit}`;
+        if (priceHelpText) priceHelpText.textContent = help;
+      } else {
+        if (parentCard) parentCard.classList.remove('active');
+      }
     });
   }
 
-  if (btnPlus && unitMlInput) {
-    btnPlus.addEventListener('click', (e) => {
-      e.preventDefault();
-      let val = parseInt(unitMlInput.value || '10', 10);
-      val += 10;
-      unitMlInput.value = val;
+  radioInputs.forEach(radio => {
+    radio.addEventListener('change', updateRadioState);
+  });
+
+  // Add Brand Button
+  if (btnAddBrand) {
+    btnAddBrand.addEventListener('click', () => {
+      const newBrand = prompt('Ketik nama merek baru:');
+      if (newBrand && newBrand.trim()) {
+        const cleanBrand = newBrand.trim();
+        // Check if already exists
+        let exists = false;
+        Array.from(brandSelect.options).forEach(opt => {
+          if (opt.value.toLowerCase() === cleanBrand.toLowerCase()) exists = true;
+        });
+
+        if (!exists) {
+          const opt = document.createElement('option');
+          opt.value = cleanBrand;
+          opt.textContent = cleanBrand;
+          brandSelect.appendChild(opt);
+        }
+        brandSelect.value = cleanBrand;
+        showToast(`✓ Merek "${cleanBrand}" berhasil ditambahkan!`);
+      }
+    });
+  }
+
+  // Price formatting
+  if (priceInput) {
+    priceInput.addEventListener('input', (e) => {
+      let val = e.target.value.replace(/[^0-9]/g, '');
+      if (val) {
+        val = parseInt(val, 10).toLocaleString('id-ID');
+      }
+      e.target.value = val;
     });
   }
 
   // Populate data in Edit mode
   if (mode === 'edit') {
-    if (pageTitle) pageTitle.textContent = 'Edit Product';
+    if (pageTitle) pageTitle.textContent = 'Edit Produk';
+    if (pageSubtitle) pageSubtitle.textContent = 'Perbarui data dan tarif modal produk.';
     const data = (productId && productsData[productId]) ? productsData[productId] : productsData['wella-color-charm'];
+    
     if (nameInput) nameInput.value = data.name;
-    if (categorySelect) categorySelect.value = data.category;
-    if (brandInput) brandInput.value = data.brand;
-    if (descTextarea) descTextarea.value = data.description;
+    if (brandSelect) brandSelect.value = data.brand;
     if (priceInput) priceInput.value = data.price;
-    if (stockInput) stockInput.value = data.stockPcs;
-    if (unitMlInput) unitMlInput.value = data.unitMl;
-  } else {
-    if (pageTitle) pageTitle.textContent = 'Add Product';
-  }
+    if (activeCheckbox) activeCheckbox.checked = data.active !== false;
 
-  updateCategoryFields();
+    // Select matching radio
+    radioInputs.forEach(radio => {
+      if (radio.value === data.category) {
+        radio.checked = true;
+      }
+    });
+    updateRadioState();
+  } else {
+    if (pageTitle) pageTitle.textContent = 'Tambah Produk';
+    if (pageSubtitle) pageSubtitle.textContent = 'Lengkapi data produk baru di bawah ini.';
+    updateRadioState();
+  }
 
   function showToast(message, duration = 2500) {
     if (!toastBox) return;
@@ -133,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
 
       const name = nameInput ? nameInput.value.trim() : '';
+      const brand = brandSelect ? brandSelect.value : '';
       const price = priceInput ? priceInput.value.trim() : '';
 
       if (!name) {
@@ -141,8 +163,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      if (!brand) {
+        showToast('⚠️ Merek produk wajib dipilih.');
+        if (brandSelect) brandSelect.focus();
+        return;
+      }
+
       if (!price) {
-        showToast('⚠️ Harga produk wajib diisi.');
+        showToast('⚠️ Harga per satuan wajib diisi.');
         if (priceInput) priceInput.focus();
         return;
       }

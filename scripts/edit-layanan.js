@@ -1,6 +1,6 @@
-﻿/**
+/**
  * AFWO Hair Design - Add / Edit Service Script
- * Handles dual-mode (?mode=add vs ?mode=edit&id=...), form pre-fill, validation, and saving.
+ * Handles dual-mode (?mode=add vs ?mode=edit&id=...), dynamic variant rows, Rupiah formatting, validation, and saving.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,30 +8,41 @@ document.addEventListener('DOMContentLoaded', () => {
     'signature-master-cut': {
       name: 'Signature Master Cut',
       category: 'potong',
-      duration: '60',
-      description: 'Precision cutting tailored to your facial structure, includes a relaxing wash and signature blowout.',
-      price: '450.000'
+      active: true,
+      includeCut: true,
+      variants: [
+        { name: 'Default', priceMin: '450.000', priceMax: '', commMin: '45.000', commMax: '' }
+      ]
     },
     'balayage-toner': {
       name: 'Signature Balayage & Tone',
       category: 'warna',
-      duration: '180',
-      description: 'A premium balayage service tailored to your hair type, including a gloss toner and signature blowout. Achieves a natural, sun-kissed dimension.',
-      price: '1.850.000'
+      active: true,
+      includeCut: false,
+      variants: [
+        { name: 'Short (S)', priceMin: '1.450.000', priceMax: '1.650.000', commMin: '145.000', commMax: '165.000' },
+        { name: 'Medium (M)', priceMin: '1.850.000', priceMax: '2.100.000', commMin: '185.000', commMax: '210.000' },
+        { name: 'Long (L)', priceMin: '2.350.000', priceMax: '2.700.000', commMin: '235.000', commMax: '270.000' }
+      ]
     },
     'luxury-scalp-therapy': {
       name: 'Luxury Scalp Therapy',
       category: 'spa',
-      duration: '90',
-      description: 'Deep cleansing and exfoliation of the scalp, followed by a nourishing mask and extended massage.',
-      price: '600.000'
+      active: true,
+      includeCut: false,
+      variants: [
+        { name: 'Default', priceMin: '600.000', priceMax: '', commMin: '60.000', commMax: '' }
+      ]
     },
     'blowout-styling': {
       name: 'Blowout & Styling',
       category: 'styling',
-      duration: '45',
-      description: 'Professional wash and blowout styling for a polished, salon-fresh finish.',
-      price: '250.000'
+      active: true,
+      includeCut: false,
+      variants: [
+        { name: 'Short', priceMin: '250.000', priceMax: '', commMin: '25.000', commMax: '' },
+        { name: 'Long', priceMin: '350.000', priceMax: '', commMin: '35.000', commMax: '' }
+      ]
     }
   };
 
@@ -40,25 +51,119 @@ document.addEventListener('DOMContentLoaded', () => {
   const serviceId = urlParams.get('id');
 
   const pageTitle = document.getElementById('edit-layanan-title');
+  const pageSubtitle = document.getElementById('edit-layanan-subtitle');
   const nameInput = document.getElementById('input-service-name');
   const categorySelect = document.getElementById('select-category');
-  const durationInput = document.getElementById('input-duration');
-  const descTextarea = document.getElementById('textarea-desc');
-  const priceInput = document.getElementById('input-base-price');
+  const activeCheckbox = document.getElementById('checkbox-service-active');
+  const includeCutCheckbox = document.getElementById('checkbox-include-cut');
+  
+  const variantsContainer = document.getElementById('variants-rows-container');
+  const btnAddVariantRow = document.getElementById('btn-add-variant-row');
+  const btnDefaultProductVariant = document.getElementById('btn-default-product-variant');
+
   const saveBtn = document.getElementById('btn-save-layanan');
   const toastBox = document.getElementById('toast-success');
   const toastMessage = document.getElementById('toast-message');
 
+  function formatNumberRupiah(val) {
+    let clean = val.replace(/[^0-9]/g, '');
+    if (!clean) return '';
+    return parseInt(clean, 10).toLocaleString('id-ID');
+  }
+
+  function attachRowFormatters(row) {
+    const numInputs = row.querySelectorAll('.js-rupiah-input');
+    numInputs.forEach(input => {
+      input.addEventListener('input', (e) => {
+        e.target.value = formatNumberRupiah(e.target.value);
+      });
+    });
+
+    const delBtn = row.querySelector('.btn-delete-variant');
+    if (delBtn) {
+      delBtn.addEventListener('click', () => {
+        const totalRows = variantsContainer.querySelectorAll('.variant-item-row').length;
+        if (totalRows > 1) {
+          row.remove();
+        } else {
+          // Clear inputs if only 1 row left
+          row.querySelectorAll('input').forEach(inp => inp.value = '');
+          showToast('Baris varian dikosongkan.');
+        }
+      });
+    }
+  }
+
+  function createVariantRow(data = {}) {
+    const row = document.createElement('div');
+    row.className = 'variant-item-row';
+    row.innerHTML = `
+      <div class="variant-input-box">
+        <input type="text" class="variant-input-field js-var-name" placeholder="default / S / M / L / X" value="${data.name || ''}">
+      </div>
+      <div class="variant-input-box">
+        <input type="text" class="variant-input-field js-rupiah-input js-var-pmin" placeholder="150.000" value="${data.priceMin || ''}">
+      </div>
+      <div class="variant-input-box">
+        <input type="text" class="variant-input-field js-rupiah-input js-var-pmax" placeholder="200.000" value="${data.priceMax || ''}">
+      </div>
+      <div class="variant-input-box">
+        <input type="text" class="variant-input-field js-rupiah-input js-var-kmin" placeholder="25.000" value="${data.commMin || ''}">
+      </div>
+      <div class="variant-input-box">
+        <input type="text" class="variant-input-field js-rupiah-input js-var-kmax" placeholder="35.000" value="${data.commMax || ''}">
+      </div>
+      <button type="button" class="btn-delete-variant" title="Hapus Baris">Hapus</button>
+    `;
+
+    attachRowFormatters(row);
+    return row;
+  }
+
+  // Add row button
+  if (btnAddVariantRow) {
+    btnAddVariantRow.addEventListener('click', () => {
+      const newRow = createVariantRow();
+      variantsContainer.appendChild(newRow);
+      newRow.querySelector('.js-var-name').focus();
+    });
+  }
+
+  // Default Produk Varian button
+  if (btnDefaultProductVariant) {
+    btnDefaultProductVariant.addEventListener('click', () => {
+      showToast('💡 Default Produk Varian siap digunakan saat input transaksi.');
+    });
+  }
+
+  // Populate data in Edit mode
   if (mode === 'edit') {
-    if (pageTitle) pageTitle.textContent = 'Edit Service';
+    if (pageTitle) pageTitle.textContent = 'Edit Layanan';
+    if (pageSubtitle) pageSubtitle.textContent = 'Perbarui detail layanan, varian harga & skema komisi.';
     const data = (serviceId && servicesData[serviceId]) ? servicesData[serviceId] : servicesData['balayage-toner'];
+    
     if (nameInput) nameInput.value = data.name;
     if (categorySelect) categorySelect.value = data.category;
-    if (durationInput) durationInput.value = data.duration;
-    if (descTextarea) descTextarea.value = data.description;
-    if (priceInput) priceInput.value = data.price;
+    if (activeCheckbox) activeCheckbox.checked = data.active !== false;
+    if (includeCutCheckbox) includeCutCheckbox.checked = !!data.includeCut;
+
+    if (variantsContainer) {
+      variantsContainer.innerHTML = '';
+      if (data.variants && data.variants.length > 0) {
+        data.variants.forEach(v => {
+          variantsContainer.appendChild(createVariantRow(v));
+        });
+      } else {
+        variantsContainer.appendChild(createVariantRow({ name: 'Default', priceMin: data.price || '' }));
+      }
+    }
   } else {
-    if (pageTitle) pageTitle.textContent = 'Add Service';
+    if (pageTitle) pageTitle.textContent = 'Tambah Layanan';
+    if (pageSubtitle) pageSubtitle.textContent = 'Lengkapi layanan beserta varian harga & komisinya.';
+    if (variantsContainer) {
+      variantsContainer.innerHTML = '';
+      variantsContainer.appendChild(createVariantRow());
+    }
   }
 
   function showToast(message, duration = 2500) {
@@ -75,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
 
       const name = nameInput ? nameInput.value.trim() : '';
-      const price = priceInput ? priceInput.value.trim() : '';
+      const cat = categorySelect ? categorySelect.value : '';
 
       if (!name) {
         showToast('⚠️ Nama layanan wajib diisi.');
@@ -83,9 +188,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      if (!price) {
-        showToast('⚠️ Base price wajib diisi.');
-        if (priceInput) priceInput.focus();
+      if (!cat) {
+        showToast('⚠️ Kategori layanan wajib dipilih.');
+        if (categorySelect) categorySelect.focus();
+        return;
+      }
+
+      // Check variant rows
+      const rows = variantsContainer.querySelectorAll('.variant-item-row');
+      let hasValidPrice = false;
+      rows.forEach(r => {
+        const pmin = r.querySelector('.js-var-pmin').value.trim();
+        if (pmin) hasValidPrice = true;
+      });
+
+      if (!hasValidPrice) {
+        showToast('⚠️ Masukkan minimal satu harga pada varian.');
         return;
       }
 

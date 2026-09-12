@@ -647,13 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { label: '9 PM', timeKey: '21' }
     ];
 
-    const isToday = dateStr === '2026-08-26';
-
     let timelineHtml = '';
-
-    if (isToday) {
-      timelineHtml += `<div class="gcal-current-time-line" style="top: 185px;"></div>`;
-    }
 
     hours.forEach(h => {
       const matchedApts = dayAppointments.filter(a => a.time.startsWith(h.timeKey));
