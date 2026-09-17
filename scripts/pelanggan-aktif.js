@@ -287,7 +287,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <td style="font-weight: 700; color: var(--text-muted);">${index + 1}</td>
               <td>
                 <div class="client-meta-cell">
-                  <div class="client-avatar-circle">${client.avatar}</div>
                   <div>
                     <a href="profil-pelanggan.html?id=${client.id}" class="client-name-link">${client.name}</a>
                     <div><span class="client-segment-badge ${badgeClass}">${client.segment}</span></div>

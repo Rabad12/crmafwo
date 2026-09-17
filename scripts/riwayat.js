@@ -241,7 +241,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </td>
             <td>
               <div class="trans-client-meta">
-                <div class="trans-client-avatar">${trx.client.avatar}</div>
                 <div>
                   <div class="trans-client-name">${trx.client.name}</div>
                   <div class="trans-client-phone">${trx.client.phone}</div>

@@ -1,125 +1,141 @@
-﻿/**
- * AFWO Hair Design - Worker Directory Script (Exact Form Match)
- * Columns strictly aligned with Form Tambah/Edit Karyawan:
- * Nama Lengkap, Kontak (No. WA/Telp), Gaji Pokok (per bulan), Skema Komisi, Persen Komisi Harian.
+/**
+ * AFWO Hair Design - Worker Directory Script
+ * Handles Karyawan list view, filters, search, sorting, and detail popup modal.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-
-  // Comprehensive Worker Database matching Form fields
+  // Comprehensive mock data for workers matching the fields in edit-worker.html
   const workersData = [
     {
       id: 'agus-pratama',
       name: 'Agus Pratama',
-      countryCode: '+62',
-      phone: '+62 81112202005',
-      salary: 4000000,
-      commissionScheme: 'daily_percentage',
-      commissionSchemeLabel: 'Persen Omset Harian',
-      commissionRate: '10%',
-      avatar: 'AP',
-      color: '#E5A93C',
-      bg: '#FFFBEB'
-    },
-    {
-      id: 'ada-wong',
-      name: 'Ada Wong',
-      countryCode: '+62',
-      phone: '+62 81234567890',
-      salary: 4500000,
-      commissionScheme: 'daily_percentage',
-      commissionSchemeLabel: 'Persen Omset Harian',
-      commissionRate: '10%',
-      avatar: 'AW',
-      color: '#EC4899',
-      bg: '#FCE7F3'
-    },
-    {
-      id: 'budi',
-      name: 'Budi',
-      countryCode: '+62',
-      phone: '+62 81398765432',
-      salary: 4200000,
+      phone: '+62 81211112222',
+      salary: 3500000,
       commissionScheme: 'per_service',
-      commissionSchemeLabel: 'Per Layanan (Flat Tarif)',
-      commissionRate: 'Sesuai Tarif Layanan',
-      avatar: 'BD',
-      color: '#3B82F6',
-      bg: '#DBEAFE'
+      commissionSchemeLabel: 'Komisi Per Layanan',
+      commissionRate: 'Tiap Layanan Berbeda'
     },
     {
-      id: 'rina',
-      name: 'Rina',
-      countryCode: '+62',
-      phone: '+62 81855543210',
-      salary: 3800000,
+      id: 'rina-susanti',
+      name: 'Rina Susanti',
+      phone: '+62 81333334444',
+      salary: 3200000,
       commissionScheme: 'daily_percentage',
       commissionSchemeLabel: 'Persen Omset Harian',
-      commissionRate: '10%',
-      avatar: 'RN',
-      color: '#10B981',
-      bg: '#D1FAE5'
+      commissionRate: '10%'
     },
     {
-      id: 'dimas',
-      name: 'Dimas',
-      countryCode: '+62',
-      phone: '+62 81900112233',
-      salary: 3800000,
+      id: 'budi-gunawan',
+      name: 'Budi Gunawan',
+      phone: '+62 81555556666',
+      salary: 3000000,
       commissionScheme: 'per_service',
-      commissionSchemeLabel: 'Per Layanan (Flat Tarif)',
-      commissionRate: 'Sesuai Tarif Layanan',
-      avatar: 'DM',
-      color: '#8B5CF6',
-      bg: '#EDE9FE'
+      commissionSchemeLabel: 'Komisi Per Layanan',
+      commissionRate: 'Tiap Layanan Berbeda'
+    },
+    {
+      id: 'siti-aminah',
+      name: 'Siti Aminah',
+      phone: '+62 81777778888',
+      salary: 2800000,
+      commissionScheme: 'daily_percentage',
+      commissionSchemeLabel: 'Persen Omset Harian',
+      commissionRate: '10%'
+    },
+    {
+      id: 'joko-widodo',
+      name: 'Joko Widodo',
+      phone: '+62 81999990000',
+      salary: 3000000,
+      commissionScheme: 'per_service',
+      commissionSchemeLabel: 'Komisi Per Layanan',
+      commissionRate: 'Tiap Layanan Berbeda'
     }
   ];
 
   // DOM Elements
   const searchInput = document.getElementById('worker-search');
   const sortSelect = document.getElementById('worker-sort-select');
+  const mobileSortSelect = document.getElementById('worker-mobile-sort-select');
+  const mobileSchemeSelect = document.getElementById('worker-mobile-scheme-select');
   const filterTabs = document.querySelectorAll('.worker-filter-tab');
   const tableBody = document.getElementById('worker-table-body');
   const emptyState = document.getElementById('worker-empty-state');
-  const totalBadge = document.getElementById('worker-total-badge');
 
-  let activeScheme = 'all';
+  // Modal Elements
+  const detailModal = document.getElementById('worker-detail-modal');
+  const btnCloseModal = document.getElementById('btn-close-worker-modal');
+  const mdlName = document.getElementById('mdl-worker-name');
+  const mdlPhone = document.getElementById('mdl-worker-phone');
+  const mdlSalary = document.getElementById('mdl-worker-salary');
+  const mdlScheme = document.getElementById('mdl-worker-scheme');
+  const mdlRate = document.getElementById('mdl-worker-rate');
+  const mdlBtnEdit = document.getElementById('mdl-btn-worker-edit');
 
-  function formatIDR(val) {
-    return 'Rp ' + Math.round(val).toLocaleString('id-ID') + ',00';
+  let activeSchemeFilter = 'all';
+
+  function formatIDR(amount) {
+    return 'Rp' + Number(amount).toLocaleString('id-ID');
   }
 
-  function renderWorkers() {
-    const query = (searchInput ? searchInput.value.toLowerCase().trim() : '');
-    const sortBy = (sortSelect ? sortSelect.value : 'name-asc');
+  function openWorkerModal(worker) {
+    if (!detailModal) return;
+    if (mdlName) mdlName.textContent = worker.name;
+    if (mdlPhone) mdlPhone.textContent = worker.phone;
+    if (mdlSalary) mdlSalary.textContent = formatIDR(worker.salary);
+    if (mdlScheme) mdlScheme.textContent = worker.commissionSchemeLabel;
+    if (mdlRate) mdlRate.textContent = worker.commissionRate;
 
-    // Filter
-    let filtered = workersData.filter(w => {
-      // Scheme Filter
-      if (activeScheme !== 'all' && w.commissionScheme !== activeScheme) return false;
+    if (mdlBtnEdit) mdlBtnEdit.href = `edit-worker.html?mode=edit&id=${worker.id}`;
 
-      // Search Query
-      if (query) {
-        const matchName = w.name.toLowerCase().includes(query);
-        const matchPhone = w.phone.includes(query);
-        if (!matchName && !matchPhone) return false;
-      }
+    detailModal.classList.add('is-open');
+  }
 
-      return true;
+  function closeWorkerModal() {
+    if (detailModal) detailModal.classList.remove('is-open');
+  }
+
+  if (btnCloseModal) btnCloseModal.addEventListener('click', closeWorkerModal);
+  if (detailModal) {
+    detailModal.addEventListener('click', (e) => {
+      if (e.target === detailModal) closeWorkerModal();
     });
+  }
 
-    // Sort
-    if (sortBy === 'name-asc') {
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortBy === 'name-desc') {
-      filtered.sort((a, b) => b.name.localeCompare(a.name));
-    } else if (sortBy === 'salary-desc') {
-      filtered.sort((a, b) => b.salary - a.salary);
+  // Render Worker Table Rows
+  function renderWorkers() {
+    let filtered = [...workersData];
+    const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
+    // Scheme Filter
+    if (activeSchemeFilter !== 'all') {
+      filtered = filtered.filter(w => w.commissionScheme === activeSchemeFilter);
     }
 
-    if (totalBadge) totalBadge.textContent = `${filtered.length} Karyawan`;
+    // Search Query Filter
+    if (query) {
+      filtered = filtered.filter(w => {
+        return w.name.toLowerCase().includes(query) ||
+               w.phone.toLowerCase().includes(query) ||
+               w.commissionSchemeLabel.toLowerCase().includes(query);
+      });
+    }
 
-    // Render Table or Empty State
+    // Sorting
+    const sortVal = sortSelect ? sortSelect.value : (mobileSortSelect ? mobileSortSelect.value : 'name-asc');
+    if (sortVal === 'name-asc') {
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortVal === 'name-desc') {
+      filtered.sort((a, b) => b.name.localeCompare(a.name));
+    } else if (sortVal === 'salary-desc') {
+      filtered.sort((a, b) => b.salary - a.salary);
+    } else if (sortVal === 'salary-asc') {
+      filtered.sort((a, b) => a.salary - b.salary);
+    } else if (sortVal === 'scheme') {
+      filtered.sort((a, b) => a.commissionSchemeLabel.localeCompare(b.commissionSchemeLabel));
+    }
+
+    // Handle Empty State
     if (filtered.length === 0) {
       if (tableBody) tableBody.innerHTML = '';
       if (emptyState) emptyState.style.display = 'block';
@@ -129,58 +145,89 @@ document.addEventListener('DOMContentLoaded', () => {
     if (emptyState) emptyState.style.display = 'none';
 
     if (tableBody) {
-      tableBody.innerHTML = filtered.map((worker, index) => {
+      tableBody.innerHTML = filtered.map((worker) => {
         let schemeBadgeClass = worker.commissionScheme === 'daily_percentage' ? 'badge-loyal' : 'badge-vip';
 
         return `
-          <tr>
-            <td style="font-weight: 700; color: var(--text-muted);">${index + 1}</td>
+          <tr data-worker-id="${worker.id}" class="js-worker-row">
             <td>
-              <div class="worker-avatar-cell">
-                <div class="worker-avatar-box" style="background-color: ${worker.bg}; color: ${worker.color};">${worker.avatar}</div>
-                <div>
-                  <a href="edit-worker.html?mode=edit&id=${worker.id}" class="worker-name-title">${worker.name}</a>
-                </div>
-              </div>
+              <span class="worker-name-title">${worker.name}</span>
             </td>
-            <td>
+            <td class="col-phone">
               <span class="worker-phone-num">${worker.phone}</span>
             </td>
-            <td>
+            <td class="col-salary">
               <strong style="color: var(--text-primary); font-size: 0.88rem;">${formatIDR(worker.salary)}</strong>
             </td>
-            <td>
+            <td class="col-scheme">
               <span class="client-segment-badge ${schemeBadgeClass}">${worker.commissionSchemeLabel}</span>
             </td>
-            <td>
-              <span style="font-weight: 700; color: var(--text-primary); font-size: 0.85rem;">${worker.commissionRate}</span>
+            <td class="col-rate">
+              <span style="font-weight: 700; color: var(--text-primary); font-size: 0.84rem;">${worker.commissionRate}</span>
             </td>
-            <td style="text-align: right;">
+            <td style="text-align: right;" onclick="event.stopPropagation();">
               <div class="worker-actions-cell">
                 <a href="edit-worker.html?mode=edit&id=${worker.id}" class="btn-worker-action btn-worker-edit">Edit</a>
-                <a href="add-appointment.html?workerId=${worker.id}" class="btn-worker-action btn-worker-schedule">+ Janji Temu</a>
               </div>
             </td>
           </tr>
         `;
       }).join('');
+
+      // Attach row click listeners for detail modal
+      tableBody.querySelectorAll('.js-worker-row').forEach(row => {
+        row.addEventListener('click', () => {
+          const workerId = row.getAttribute('data-worker-id');
+          const found = workersData.find(w => w.id === workerId);
+          if (found) openWorkerModal(found);
+        });
+      });
     }
   }
 
-  // Event Listeners
-  if (searchInput) searchInput.addEventListener('input', renderWorkers);
-  if (sortSelect) sortSelect.addEventListener('change', renderWorkers);
-
+  // Desktop Filter Tabs Event
   filterTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       filterTabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      activeScheme = tab.getAttribute('data-scheme') || 'all';
+      activeSchemeFilter = tab.getAttribute('data-scheme') || tab.getAttribute('data-filter') || 'all';
+      if (mobileSchemeSelect) mobileSchemeSelect.value = activeSchemeFilter;
       renderWorkers();
     });
   });
 
+  // Mobile Scheme Select Event
+  if (mobileSchemeSelect) {
+    mobileSchemeSelect.addEventListener('change', (e) => {
+      activeSchemeFilter = e.target.value;
+      filterTabs.forEach(t => {
+        t.classList.toggle('active', (t.getAttribute('data-scheme') || 'all') === activeSchemeFilter);
+      });
+      renderWorkers();
+    });
+  }
+
+  // Search Input Event
+  if (searchInput) {
+    searchInput.addEventListener('input', renderWorkers);
+  }
+
+  // Desktop Sort Select Events
+  if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+      if (mobileSortSelect) mobileSortSelect.value = e.target.value;
+      renderWorkers();
+    });
+  }
+
+  // Mobile Sort Select Events
+  if (mobileSortSelect) {
+    mobileSortSelect.addEventListener('change', (e) => {
+      if (sortSelect) sortSelect.value = e.target.value;
+      renderWorkers();
+    });
+  }
+
   // Initial Render
   renderWorkers();
-
 });

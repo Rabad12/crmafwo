@@ -1,33 +1,30 @@
 ﻿<!--
-  TODO INTEGRASI BACKEND:
-  - Form Tambah / Edit Pelanggan (semua data-field="..."):
-    - Submit ke endpoint POST /api/clients (mode add) atau PUT /api/clients/:id (mode edit)
-    - Payload JSON: { name, countryCode, phone, instagram, gender, hairType, address, notes }
-  - Mode Edit di-fetch dari GET /api/clients/:id berdasarkan parameter URL ?id=...
+  TODO INTEGRASI BACKEND (ABSENSI KARYAWAN):
+  - GET /api/attendance?date=YYYY-MM-DD -> list status hadir karyawan di tanggal tersebut
+  - POST /api/attendance (date, records: [{ workerId, isPresent }]) -> simpan kehadiran harian
+  - GET /api/attendance/summary?month=YYYY-MM -> rekap total hadir dan total uang makan per karyawan
 -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Pelanggan - AFWO Hair Design</title>
+  <title>Absensi Karyawan - AFWO Hair Design</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/global.css">
   <link rel="stylesheet" href="styles/nav.css">
-  <link rel="stylesheet" href="styles/edit-pelanggan.css">
+  <link rel="stylesheet" href="styles/absensi.css">
 </head>
 <body>
 
-    <!-- Navigation Backdrop Overlay (for mobile drawer) -->
+  <!-- Navigation Backdrop Overlay (for mobile drawer) -->
   <div id="nav-overlay" class="nav-overlay" aria-hidden="true"></div>
 
   <div class="app-layout">
     
     <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
-        <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
-        <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
     <aside id="admin-sidebar" class="admin-sidebar" aria-label="Menu Navigasi Admin">
       <!-- Sidebar Brand Header -->
       <div class="sidebar-brand-header">
@@ -43,7 +40,7 @@
         </button>
       </div>
 
-      <!-- Vertical Navigation Menu with Section Groups (Image 3 Reference) -->
+      <!-- Vertical Navigation Menu -->
       <nav class="sidebar-nav-container">
         
         <!-- Section: MENU -->
@@ -131,7 +128,7 @@
           </li>
 
           <li class="sidebar-nav-item">
-            <a href="absensi.html" class="sidebar-nav-link" id="nav-absensi" data-field="nav-menu-absensi">
+            <a href="absensi.html" class="sidebar-nav-link active" id="nav-absensi" data-field="nav-menu-absensi">
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M9 11l3 3L22 4"></path>
                 <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
@@ -213,7 +210,7 @@
     <!-- Main Content Area -->
     <div class="app-main-content">
       
-      <!-- Mobile Top Header Bar (Shown only on Mobile/Tablet <= 1024px) -->
+      <!-- Mobile Top Header Bar -->
       <header class="mobile-top-header">
         <a href="index.html" class="brand-logo">Afwo.</a>
         <button type="button" class="icon-btn js-menu-toggle" aria-label="Buka Menu Navigasi" id="btn-open-menu">
@@ -227,143 +224,107 @@
 
       <!-- Main Content -->
       <main class="app-main">
-      
-      <!-- Back Link & Title Group -->
-      <div class="edit-header-wrapper">
-        <a href="clients.html" id="btn-back-nav" class="back-arrow-link" aria-label="Kembali ke Data Pelanggan">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-          </svg>
-        </a>
-        <div class="edit-title-group">
-          <h1 class="edit-page-title" id="page-title">Edit Pelanggan</h1>
-          <p class="edit-page-subtitle" id="page-subtitle">Perbarui data nr.</p>
-        </div>
-      </div>
-
-      <!-- Form Container Card -->
-      <form id="form-edit-client" class="card edit-form-card" onsubmit="return false;">
-        
-        <div class="form-fields-stack">
+        <div class="absensi-page-stack">
           
-          <!-- Row 1: Nama & No WhatsApp (2 columns) -->
-          <div class="form-grid-2col">
-            <div class="form-group-item">
-              <label class="form-label" for="input-customer-name">Nama <span class="required-star">*</span></label>
-              <div class="form-input-box">
-                <input type="text" id="input-customer-name" class="form-input-field" data-field="name" value="nr" placeholder="Nama Lengkap" required>
+          <!-- Page Header -->
+          <div class="absensi-header-section">
+            <h1 class="absensi-page-title">Absensi Karyawan</h1>
+            <p class="absensi-page-subtitle">Catat kehadiran harian. Uang makan Rp25.000 dibayar per hari hadir untuk karyawan skema per layanan (karyawan % omset harian tidak mendapat uang makan).</p>
+          </div>
+
+          <div id="attendance-toast" class="absensi-toast" role="alert"></div>
+
+          <!-- Card 1: Catat Kehadiran Harian -->
+          <section class="absensi-card" data-field="card-catat-kehadiran">
+            <div class="absensi-card-header">
+              <div class="absensi-card-title-group">
+                <h2 class="absensi-card-title">Catat Kehadiran</h2>
+                <p class="absensi-card-subtitle">Pilih tanggal, centang karyawan yang hadir, lalu simpan.</p>
+              </div>
+
+              <div class="absensi-date-picker-wrap">
+                <span class="absensi-picker-label">Tanggal</span>
+                <input type="date" id="input-attendance-date" class="absensi-date-input" value="2026-09-17" data-field="attendance-date">
               </div>
             </div>
 
-            <div class="form-group-item">
-              <label class="form-label" for="input-customer-phone">No. WhatsApp <span class="required-star">*</span></label>
-              <div class="phone-split-input">
-                <div class="country-select-box">
-                  <select id="select-country-code" class="country-select" data-field="country-code">
-                    <option value="+62" selected>ID Indonesia (+62)</option>
-                    <option value="+1">US (+1)</option>
-                    <option value="+65">SG (+65)</option>
-                    <option value="+60">MY (+60)</option>
+            <div class="absensi-table-container">
+              <table class="absensi-table" id="table-catat-kehadiran">
+                <thead>
+                  <tr>
+                    <th>KARYAWAN</th>
+                    <th>SKEMA</th>
+                    <th style="text-align: center; width: 100px;">HADIR</th>
+                  </tr>
+                </thead>
+                <tbody id="catat-kehadiran-tbody" data-field="daily-attendance-list">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="absensi-card-footer">
+              <span class="absensi-footer-note">Karyawan % Omset Harian tidak menerima uang makan.</span>
+              <button type="button" class="btn-simpan-kehadiran" id="btn-save-attendance" data-field="btn-save-attendance">
+                Simpan Kehadiran
+              </button>
+            </div>
+          </section>
+
+          <!-- Card 2: Rekap Kehadiran & Uang Makan -->
+          <section class="absensi-card" data-field="card-rekap-kehadiran">
+            <div class="absensi-card-header">
+              <div class="absensi-card-title-group">
+                <h2 class="absensi-card-title">Rekap Kehadiran &amp; Uang Makan</h2>
+                <p class="absensi-card-subtitle">Uang makan Rp25.000 per kehadiran, dijumlahkan per bulan dan ikut masuk ke laporan pendapatan karyawan.</p>
+              </div>
+
+              <div class="absensi-rekap-filter-wrap">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <span class="absensi-picker-label">Bulan</span>
+                  <select id="select-rekap-month" class="absensi-select-month" data-field="rekap-month">
+                    <option value="2026-09" selected>September 2026</option>
+                    <option value="2026-08">Agustus 2026</option>
+                    <option value="2026-07">Juli 2026</option>
                   </select>
                 </div>
-                <div class="phone-number-box">
-                  <input type="tel" id="input-customer-phone" class="form-input-field" data-field="phone" value="8123212113" placeholder="81234567890" required>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Row 2: Username Instagram & Jenis Kelamin (2 columns) -->
-          <div class="form-grid-2col">
-            <div class="form-group-item">
-              <label class="form-label" for="input-customer-instagram">Username Instagram</label>
-              <div class="form-input-box">
-                <input type="text" id="input-customer-instagram" class="form-input-field" data-field="instagram" value="@username" placeholder="@username">
+                <button type="button" class="btn-absensi-filter" id="btn-filter-rekap" data-field="btn-filter-rekap">
+                  Tampilkan
+                </button>
               </div>
             </div>
 
-            <div class="form-group-item">
-              <label class="form-label" for="select-customer-gender">Jenis Kelamin</label>
-              <div class="form-input-box">
-                <select id="select-customer-gender" class="form-select-control" data-field="gender">
-                  <option value="Laki-laki" selected>Laki-laki</option>
-                  <option value="Perempuan">Perempuan</option>
-                  <option value="Lainnya">Lainnya / Tidak Disebutkan</option>
-                </select>
-              </div>
+            <div class="absensi-table-container">
+              <table class="absensi-table" id="table-rekap-kehadiran">
+                <thead>
+                  <tr>
+                    <th>KARYAWAN</th>
+                    <th>SKEMA</th>
+                    <th style="text-align: center; width: 120px;">TOTAL HADIR</th>
+                    <th style="text-align: right; width: 180px;">UANG MAKAN</th>
+                  </tr>
+                </thead>
+                <tbody id="rekap-kehadiran-tbody" data-field="monthly-attendance-list">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td>TOTAL</td>
+                    <td></td>
+                    <td style="text-align: center;" id="rekap-total-hadir">53</td>
+                    <td style="text-align: right;" id="rekap-total-uang-makan">Rp750.000</td>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
-          </div>
-
-          <!-- Row 3: Jenis Rambut & Kondisi Rambut (2 columns) -->
-          <div class="form-grid-2col">
-            <div class="form-group-item">
-              <label class="form-label" for="select-customer-hair-type">Jenis Rambut</label>
-              <div class="form-input-box">
-                <select id="select-customer-hair-type" class="form-select-control" data-field="hair-type">
-                  <option value="Ikal" selected>Ikal</option>
-                  <option value="Lurus">Lurus</option>
-                  <option value="Gelombang">Gelombang</option>
-                  <option value="Keriting">Keriting</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group-item">
-              <label class="form-label" for="select-customer-hair-condition">Kondisi Rambut</label>
-              <div class="form-input-box">
-                <select id="select-customer-hair-condition" class="form-select-control" data-field="hair-condition">
-                  <option value="Sehat" selected>Sehat</option>
-                  <option value="Agak Rusak">Agak Rusak</option>
-                  <option value="Rusak">Rusak</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- Row 4: Alamat (full width) -->
-          <div class="form-group-item">
-            <label class="form-label" for="input-customer-address">Alamat</label>
-            <div class="form-input-box">
-              <input type="text" id="input-customer-address" class="form-input-field" data-field="address" placeholder="Alamat Domisili">
-            </div>
-          </div>
-
-          <!-- Row 5: Catatan Khusus (full width) -->
-          <div class="form-group-item">
-            <label class="form-label" for="input-customer-notes">Catatan Khusus</label>
-            <div class="form-input-box">
-              <textarea id="input-customer-notes" class="form-textarea" data-field="notes" rows="3" placeholder="Catatan preferensi, alergi, atau riwayat formula..."></textarea>
-            </div>
-          </div>
-
-          <!-- Action Buttons inside Card -->
-          <div class="form-actions-row">
-            <button type="submit" id="btn-save-customer" class="btn-primary-gold" data-field="btn-save-customer">Simpan Perubahan</button>
-            <a href="clients.html" id="btn-cancel" class="btn-secondary-cancel" data-field="btn-cancel">Batal</a>
-          </div>
+          </section>
 
         </div>
-
-      </form>
-
-    </main>
-
+      </main>
     </div>
   </div>
 
-  <!-- Toast Notification Box -->
-  <div id="toast-success" class="toast-box" role="status" aria-live="polite">
-    <span id="toast-message">Data pelanggan berhasil disimpan!</span>
-  </div>
-
   <script src="scripts/nav.js"></script>
-  <script src="scripts/edit-pelanggan.js"></script>
+  <script src="scripts/absensi.js"></script>
 </body>
 </html>
-
-
-
-
-
-

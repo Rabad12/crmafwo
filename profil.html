@@ -1,33 +1,32 @@
 ﻿<!--
-  TODO INTEGRASI BACKEND:
-  - Form Tambah / Edit Pelanggan (semua data-field="..."):
-    - Submit ke endpoint POST /api/clients (mode add) atau PUT /api/clients/:id (mode edit)
-    - Payload JSON: { name, countryCode, phone, instagram, gender, hairType, address, notes }
-  - Mode Edit di-fetch dari GET /api/clients/:id berdasarkan parameter URL ?id=...
+  TODO INTEGRASI BACKEND (PROFIL):
+  - GET /api/user/profile -> load current user name, email, role, avatar
+  - PUT /api/user/profile (data-field="name", data-field="email", data-field="current-password")
+    -> verifikasi password lama, update nama/email user
+  - PUT /api/user/password (data-field="current-password", data-field="new-password", data-field="confirm-password")
+    -> ganti password akun
 -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Pelanggan - AFWO Hair Design</title>
+  <title>Profil Saya - AFWO Hair Design</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/global.css">
   <link rel="stylesheet" href="styles/nav.css">
-  <link rel="stylesheet" href="styles/edit-pelanggan.css">
+  <link rel="stylesheet" href="styles/profil.css">
 </head>
 <body>
 
-    <!-- Navigation Backdrop Overlay (for mobile drawer) -->
+  <!-- Navigation Backdrop Overlay (for mobile drawer) -->
   <div id="nav-overlay" class="nav-overlay" aria-hidden="true"></div>
 
   <div class="app-layout">
     
-    <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
-        <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
-        <!-- Vertical Admin Sidebar (Permanent on Desktop, Drawer on Mobile) -->
+    <!-- Vertical Admin Sidebar -->
     <aside id="admin-sidebar" class="admin-sidebar" aria-label="Menu Navigasi Admin">
       <!-- Sidebar Brand Header -->
       <div class="sidebar-brand-header">
@@ -43,9 +42,8 @@
         </button>
       </div>
 
-      <!-- Vertical Navigation Menu with Section Groups (Image 3 Reference) -->
+      <!-- Vertical Navigation Menu -->
       <nav class="sidebar-nav-container">
-        
         <!-- Section: MENU -->
         <div class="sidebar-section-label">MENU</div>
         <ul class="sidebar-menu-list">
@@ -187,7 +185,6 @@
             </a>
           </li>
         </ul>
-
       </nav>
 
       <!-- Sidebar User Footer -->
@@ -213,7 +210,7 @@
     <!-- Main Content Area -->
     <div class="app-main-content">
       
-      <!-- Mobile Top Header Bar (Shown only on Mobile/Tablet <= 1024px) -->
+      <!-- Mobile Top Header Bar -->
       <header class="mobile-top-header">
         <a href="index.html" class="brand-logo">Afwo.</a>
         <button type="button" class="icon-btn js-menu-toggle" aria-label="Buka Menu Navigasi" id="btn-open-menu">
@@ -227,143 +224,111 @@
 
       <!-- Main Content -->
       <main class="app-main">
-      
-      <!-- Back Link & Title Group -->
-      <div class="edit-header-wrapper">
-        <a href="clients.html" id="btn-back-nav" class="back-arrow-link" aria-label="Kembali ke Data Pelanggan">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-          </svg>
-        </a>
-        <div class="edit-title-group">
-          <h1 class="edit-page-title" id="page-title">Edit Pelanggan</h1>
-          <p class="edit-page-subtitle" id="page-subtitle">Perbarui data nr.</p>
-        </div>
-      </div>
-
-      <!-- Form Container Card -->
-      <form id="form-edit-client" class="card edit-form-card" onsubmit="return false;">
-        
-        <div class="form-fields-stack">
+        <div class="profil-page-stack">
           
-          <!-- Row 1: Nama & No WhatsApp (2 columns) -->
-          <div class="form-grid-2col">
-            <div class="form-group-item">
-              <label class="form-label" for="input-customer-name">Nama <span class="required-star">*</span></label>
-              <div class="form-input-box">
-                <input type="text" id="input-customer-name" class="form-input-field" data-field="name" value="nr" placeholder="Nama Lengkap" required>
+          <!-- Page Header -->
+          <div class="profil-header-section">
+            <h1 class="profil-page-title">Profil Saya</h1>
+            <p class="profil-page-subtitle">Kelola informasi akun dan kata sandi Anda.</p>
+          </div>
+
+          <!-- Card 1: Informasi Akun -->
+          <section class="profil-card">
+            <!-- User Header Block -->
+            <div class="profil-user-header">
+              <div class="profil-avatar-badge" id="profil-display-avatar">O</div>
+              <div class="profil-user-details">
+                <div class="profil-user-fullname" id="profil-display-name">Owner Afwo</div>
+                <div class="profil-user-email-text" id="profil-display-email">owner@afwo.com</div>
+                <span class="profil-role-pill">Owner</span>
               </div>
             </div>
 
-            <div class="form-group-item">
-              <label class="form-label" for="input-customer-phone">No. WhatsApp <span class="required-star">*</span></label>
-              <div class="phone-split-input">
-                <div class="country-select-box">
-                  <select id="select-country-code" class="country-select" data-field="country-code">
-                    <option value="+62" selected>ID Indonesia (+62)</option>
-                    <option value="+1">US (+1)</option>
-                    <option value="+65">SG (+65)</option>
-                    <option value="+60">MY (+60)</option>
-                  </select>
+            <div id="alert-profil-info" class="profil-form-alert" role="alert"></div>
+
+            <form id="form-profil-info" class="profil-form-grid">
+              <div class="profil-form-group">
+                <label for="profil-input-name" class="profil-label">Nama <span class="req-star">*</span></label>
+                <div class="profil-input-box">
+                  <input type="text" id="profil-input-name" class="profil-input" data-field="name" value="Owner Afwo" required>
                 </div>
-                <div class="phone-number-box">
-                  <input type="tel" id="input-customer-phone" class="form-input-field" data-field="phone" value="8123212113" placeholder="81234567890" required>
+              </div>
+
+              <div class="profil-form-group">
+                <label for="profil-input-email" class="profil-label">Email <span class="req-star">*</span></label>
+                <div class="profil-input-box">
+                  <input type="email" id="profil-input-email" class="profil-input" data-field="email" value="owner@afwo.com" required>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <!-- Row 2: Username Instagram & Jenis Kelamin (2 columns) -->
-          <div class="form-grid-2col">
-            <div class="form-group-item">
-              <label class="form-label" for="input-customer-instagram">Username Instagram</label>
-              <div class="form-input-box">
-                <input type="text" id="input-customer-instagram" class="form-input-field" data-field="instagram" value="@username" placeholder="@username">
+              <!-- Notice Box -->
+              <div class="profil-notice-banner">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span>Untuk mengubah nama atau email, masukkan password Anda saat ini.</span>
               </div>
-            </div>
 
-            <div class="form-group-item">
-              <label class="form-label" for="select-customer-gender">Jenis Kelamin</label>
-              <div class="form-input-box">
-                <select id="select-customer-gender" class="form-select-control" data-field="gender">
-                  <option value="Laki-laki" selected>Laki-laki</option>
-                  <option value="Perempuan">Perempuan</option>
-                  <option value="Lainnya">Lainnya / Tidak Disebutkan</option>
-                </select>
+              <div class="profil-form-group">
+                <label for="profil-input-curr-password" class="profil-label">Password Saat Ini <span class="req-star">*</span></label>
+                <div class="profil-input-box">
+                  <input type="password" id="profil-input-curr-password" class="profil-input input-tinted" data-field="current-password" placeholder="••••••••" required>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <!-- Row 3: Jenis Rambut & Kondisi Rambut (2 columns) -->
-          <div class="form-grid-2col">
-            <div class="form-group-item">
-              <label class="form-label" for="select-customer-hair-type">Jenis Rambut</label>
-              <div class="form-input-box">
-                <select id="select-customer-hair-type" class="form-select-control" data-field="hair-type">
-                  <option value="Ikal" selected>Ikal</option>
-                  <option value="Lurus">Lurus</option>
-                  <option value="Gelombang">Gelombang</option>
-                  <option value="Keriting">Keriting</option>
-                </select>
+              <div class="profil-card-actions">
+                <button type="submit" class="btn-profil-submit">
+                  Simpan Perubahan
+                </button>
               </div>
-            </div>
+            </form>
+          </section>
 
-            <div class="form-group-item">
-              <label class="form-label" for="select-customer-hair-condition">Kondisi Rambut</label>
-              <div class="form-input-box">
-                <select id="select-customer-hair-condition" class="form-select-control" data-field="hair-condition">
-                  <option value="Sehat" selected>Sehat</option>
-                  <option value="Agak Rusak">Agak Rusak</option>
-                  <option value="Rusak">Rusak</option>
-                </select>
+          <!-- Card 2: Ubah Password -->
+          <section class="profil-card">
+            <h2 class="profil-card-title">Ubah Password</h2>
+            <p class="profil-card-subtitle">Pastikan password baru minimal 8 karakter.</p>
+
+            <div id="alert-profil-password" class="profil-form-alert" role="alert"></div>
+
+            <form id="form-profil-password" class="profil-form-grid">
+              <div class="profil-form-group">
+                <label for="pass-current" class="profil-label">Password Saat Ini <span class="req-star">*</span></label>
+                <div class="profil-input-box">
+                  <input type="password" id="pass-current" class="profil-input" data-field="current-password" placeholder="Masukkan password saat ini" required>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <!-- Row 4: Alamat (full width) -->
-          <div class="form-group-item">
-            <label class="form-label" for="input-customer-address">Alamat</label>
-            <div class="form-input-box">
-              <input type="text" id="input-customer-address" class="form-input-field" data-field="address" placeholder="Alamat Domisili">
-            </div>
-          </div>
+              <div class="profil-form-group">
+                <label for="pass-new" class="profil-label">Password Baru <span class="req-star">*</span></label>
+                <div class="profil-input-box">
+                  <input type="password" id="pass-new" class="profil-input" data-field="new-password" placeholder="Minimal 8 karakter" minlength="8" required>
+                </div>
+              </div>
 
-          <!-- Row 5: Catatan Khusus (full width) -->
-          <div class="form-group-item">
-            <label class="form-label" for="input-customer-notes">Catatan Khusus</label>
-            <div class="form-input-box">
-              <textarea id="input-customer-notes" class="form-textarea" data-field="notes" rows="3" placeholder="Catatan preferensi, alergi, atau riwayat formula..."></textarea>
-            </div>
-          </div>
+              <div class="profil-form-group">
+                <label for="pass-confirm" class="profil-label">Konfirmasi Password Baru <span class="req-star">*</span></label>
+                <div class="profil-input-box">
+                  <input type="password" id="pass-confirm" class="profil-input" data-field="confirm-password" placeholder="Ulangi password baru" minlength="8" required>
+                </div>
+              </div>
 
-          <!-- Action Buttons inside Card -->
-          <div class="form-actions-row">
-            <button type="submit" id="btn-save-customer" class="btn-primary-gold" data-field="btn-save-customer">Simpan Perubahan</button>
-            <a href="clients.html" id="btn-cancel" class="btn-secondary-cancel" data-field="btn-cancel">Batal</a>
-          </div>
+              <div class="profil-card-actions">
+                <button type="submit" class="btn-profil-submit">
+                  Perbarui Password
+                </button>
+              </div>
+            </form>
+          </section>
 
         </div>
-
-      </form>
-
-    </main>
-
+      </main>
     </div>
   </div>
 
-  <!-- Toast Notification Box -->
-  <div id="toast-success" class="toast-box" role="status" aria-live="polite">
-    <span id="toast-message">Data pelanggan berhasil disimpan!</span>
-  </div>
-
   <script src="scripts/nav.js"></script>
-  <script src="scripts/edit-pelanggan.js"></script>
+  <script src="scripts/profil.js"></script>
 </body>
 </html>
-
-
-
-
-
-

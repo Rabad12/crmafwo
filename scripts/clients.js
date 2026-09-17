@@ -1,143 +1,170 @@
-﻿/**
- * AFWO Hair Design - Customer Directory Script (Exact Form Match)
- * Columns strictly aligned with Form Tambah/Edit Pelanggan:
- * Nama, No. WA, Username IG, Jenis Kelamin, Jenis Rambut, Kondisi Rambut, Alamat, Catatan Khusus.
+/**
+ * AFWO Hair Design - Client Directory Script
+ * Data, filtering, search, sorting, and detail popup modal for Pelanggan module.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-
-  // Comprehensive Client Database matching the Form fields
+  // Comprehensive mock client data matching all fields
   const clientsData = [
+    {
+      id: 'budi-santoso',
+      name: 'Budi Santoso',
+      phone: '+62 81345678901',
+      instagram: '@budisantoso.re',
+      gender: 'Laki-laki',
+      hairType: 'Lurus',
+      hairCondition: 'Sehat',
+      domicile: 'Kelapa Gading, Jakarta Utara',
+      specialNotes: 'Pembersihan ketombe berkala.'
+    },
+    {
+      id: 'dewi-anggraini',
+      name: 'Dewi Anggraini',
+      phone: '+62 81233445566',
+      instagram: '@dewi_anggraini',
+      gender: 'Perempuan',
+      hairType: 'Keriting',
+      hairCondition: 'Rusak',
+      domicile: 'Serpong, BSD City, Tangerang',
+      specialNotes: 'Ujung rambut bercabang parah, disarankan keratin treatment rutin.'
+    },
     {
       id: 'eleanor-vance',
       name: 'Eleanor Vance',
-      countryCode: '+62',
       phone: '+62 8112233445',
-      instagram: '@eleanor.vance',
+      instagram: '@eleanor.v',
       gender: 'Perempuan',
-      hairType: 'Gelombang',
-      hairCondition: 'Agak Rusak',
-      address: 'Jl. Senopati No. 45, Surabaya Barat',
-      notes: 'Sensitif terhadap amonia, lebih suka pewarnaan organik balayage.',
-      avatar: 'EV'
+      hairType: 'Lurus',
+      hairCondition: 'Sehat',
+      domicile: 'Kebayoran Baru, Jakarta Selatan',
+      specialNotes: 'Kulit kepala sensitif, hindari air terlalu panas. Suka aroma floral.'
+    },
+    {
+      id: 'marcus-sterling',
+      name: 'Marcus Sterling',
+      phone: '+62 81899001122',
+      instagram: '@m.sterling_id',
+      gender: 'Laki-laki',
+      hairType: 'Ikal',
+      hairCondition: 'Sehat',
+      domicile: 'Pondok Indah, Jakarta Selatan',
+      specialNotes: 'Potong fade tipis samping, styling gunakan matte clay.'
     },
     {
       id: 'melati-putri',
       name: 'Melati Putri',
-      countryCode: '+62',
       phone: '+62 81711223344',
-      instagram: '@melati.putri',
+      instagram: '@melati.hair',
       gender: 'Perempuan',
       hairType: 'Gelombang',
-      hairCondition: 'Rusak',
-      address: 'Graha Famili Blok C-12, Surabaya Barat',
-      notes: 'Riwayat bleaching berulang, butuh masker keratin intensif.',
-      avatar: 'MP'
+      hairCondition: 'Agak Rusak',
+      domicile: 'Bintaro Jaya Sektor 9, Tangerang Selatan',
+      specialNotes: 'Riwayat bleaching 2x, butuh ekstra serum sebelum blow dry.'
     },
     {
       id: 'sari-handayani',
       name: 'Sari Handayani',
-      countryCode: '+62',
       phone: '+62 81298765432',
       instagram: '@sari_handayani',
       gender: 'Perempuan',
       hairType: 'Lurus',
       hairCondition: 'Sehat',
-      address: 'Tegalsari No. 88, Surabaya Pusat',
-      notes: 'Potongan layer bob, creambath & blow dry rutin.',
-      avatar: 'SH'
-    },
-    {
-      id: 'marcus-sterling',
-      name: 'Marcus Sterling',
-      countryCode: '+62',
-      phone: '+62 81899001122',
-      instagram: '@marcus_sterling',
-      gender: 'Laki-laki',
-      hairType: 'Keriting',
-      hairCondition: 'Sehat',
-      address: 'Citraland Puri Golf, Surabaya Barat',
-      notes: 'Signature executive grooming, styling pomade matte.',
-      avatar: 'MS'
-    },
-    {
-      id: 'budi-santoso',
-      name: 'Budi Santoso',
-      countryCode: '+62',
-      phone: '+62 81345678901',
-      instagram: '@budi_santoso99',
-      gender: 'Laki-laki',
-      hairType: 'Lurus',
-      hairCondition: 'Sehat',
-      address: 'Mulyorejo Timur No. 15, Surabaya Timur',
-      notes: 'Grooming & cut rutin setiap 3 minggu.',
-      avatar: 'BS'
-    },
-    {
-      id: 'dewi-anggraini',
-      name: 'Dewi Anggraini',
-      countryCode: '+62',
-      phone: '+62 81233445566',
-      instagram: '@dewi.anggraini',
-      gender: 'Perempuan',
-      hairType: 'Ikal',
-      hairCondition: 'Agak Rusak',
-      address: 'Gayungan PTT No. 4, Surabaya Selatan',
-      notes: 'Hair tonic treatment & anti hair-fall serum.',
-      avatar: 'DA'
+      domicile: 'Tebet Timur, Jakarta Selatan',
+      specialNotes: 'Rutin creambath 2 minggu sekali, lebih nyaman dengan Stylist Rina.'
     }
   ];
 
   // DOM Elements
   const searchInput = document.getElementById('client-search');
   const sortSelect = document.getElementById('client-sort-select');
+  const mobileSortSelect = document.getElementById('client-mobile-sort-select');
+  const mobileConditionSelect = document.getElementById('client-mobile-condition-select');
   const filterTabs = document.querySelectorAll('.client-filter-tab');
   const tableBody = document.getElementById('client-table-body');
   const emptyState = document.getElementById('clients-empty-state');
-  const totalBadge = document.getElementById('client-total-badge');
 
-  let activeFilter = 'all';
+  // Modal Elements
+  const detailModal = document.getElementById('client-detail-modal');
+  const btnCloseModal = document.getElementById('btn-close-client-modal');
+  const mdlName = document.getElementById('mdl-client-name');
+  const mdlPhone = document.getElementById('mdl-client-phone');
+  const mdlInstagram = document.getElementById('mdl-client-instagram');
+  const mdlGender = document.getElementById('mdl-client-gender');
+  const mdlHairType = document.getElementById('mdl-client-hair-type');
+  const mdlHairCondition = document.getElementById('mdl-client-hair-condition');
+  const mdlDomicile = document.getElementById('mdl-client-domicile');
+  const mdlNotes = document.getElementById('mdl-client-notes');
+  const mdlBtnEdit = document.getElementById('mdl-btn-edit');
+  const mdlBtnAppointment = document.getElementById('mdl-btn-appointment');
 
-  function renderClients() {
-    const query = (searchInput ? searchInput.value.toLowerCase().trim() : '');
-    const sortBy = (sortSelect ? sortSelect.value : 'name-asc');
+  let activeConditionFilter = 'all';
 
-    // Filter
-    let filtered = clientsData.filter(c => {
-      // Condition Filter
-      if (activeFilter === 'sehat' && c.hairCondition !== 'Sehat') return false;
-      if (activeFilter === 'agak-rusak' && c.hairCondition !== 'Agak Rusak') return false;
-      if (activeFilter === 'rusak' && c.hairCondition !== 'Rusak') return false;
+  function openDetailModal(client) {
+    if (!detailModal) return;
+    if (mdlName) mdlName.textContent = client.name;
+    if (mdlPhone) mdlPhone.textContent = client.phone;
+    if (mdlInstagram) mdlInstagram.textContent = client.instagram || '-';
+    if (mdlGender) mdlGender.textContent = client.gender;
+    if (mdlHairType) mdlHairType.textContent = client.hairType;
+    if (mdlHairCondition) mdlHairCondition.textContent = client.hairCondition;
+    if (mdlDomicile) mdlDomicile.textContent = client.domicile || '-';
+    if (mdlNotes) mdlNotes.textContent = client.specialNotes || 'Tidak ada catatan khusus.';
 
-      // Search Query
-      if (query) {
-        const matchName = c.name.toLowerCase().includes(query);
-        const matchPhone = c.phone.includes(query);
-        const matchIg = c.instagram.toLowerCase().includes(query);
-        const matchHair = c.hairType.toLowerCase().includes(query);
-        const matchCond = c.hairCondition.toLowerCase().includes(query);
-        const matchAddress = c.address.toLowerCase().includes(query);
-        const matchNotes = c.notes.toLowerCase().includes(query);
-        if (!matchName && !matchPhone && !matchIg && !matchHair && !matchCond && !matchAddress && !matchNotes) return false;
-      }
+    if (mdlBtnEdit) mdlBtnEdit.href = `edit-pelanggan.html?mode=edit&id=${client.id}`;
+    if (mdlBtnAppointment) mdlBtnAppointment.href = `add-appointment.html?clientId=${client.id}&from=clients`;
 
-      return true;
+    detailModal.classList.add('is-open');
+  }
+
+  function closeDetailModal() {
+    if (detailModal) detailModal.classList.remove('is-open');
+  }
+
+  if (btnCloseModal) btnCloseModal.addEventListener('click', closeDetailModal);
+  if (detailModal) {
+    detailModal.addEventListener('click', (e) => {
+      if (e.target === detailModal) closeDetailModal();
     });
+  }
 
-    // Sort
-    if (sortBy === 'name-asc') {
+  // Render Table Rows (Focused strictly on important columns)
+  function renderClients() {
+    let filtered = [...clientsData];
+    const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
+    // Condition Filter
+    if (activeConditionFilter !== 'all') {
+      filtered = filtered.filter(c => {
+        const condSlug = c.hairCondition.toLowerCase().replace(/\s+/g, '-');
+        return condSlug === activeConditionFilter;
+      });
+    }
+
+    // Search Query Filter
+    if (query) {
+      filtered = filtered.filter(c => {
+        return c.name.toLowerCase().includes(query) ||
+               c.phone.toLowerCase().includes(query) ||
+               c.instagram.toLowerCase().includes(query) ||
+               c.domicile.toLowerCase().includes(query) ||
+               c.hairType.toLowerCase().includes(query) ||
+               c.specialNotes.toLowerCase().includes(query);
+      });
+    }
+
+    // Sorting
+    const sortVal = sortSelect ? sortSelect.value : (mobileSortSelect ? mobileSortSelect.value : 'name-asc');
+    if (sortVal === 'name-asc') {
       filtered.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortBy === 'name-desc') {
+    } else if (sortVal === 'name-desc') {
       filtered.sort((a, b) => b.name.localeCompare(a.name));
-    } else if (sortBy === 'hair-type') {
+    } else if (sortVal === 'hair-type') {
       filtered.sort((a, b) => a.hairType.localeCompare(b.hairType));
-    } else if (sortBy === 'condition') {
+    } else if (sortVal === 'condition') {
       filtered.sort((a, b) => a.hairCondition.localeCompare(b.hairCondition));
     }
 
-    if (totalBadge) totalBadge.textContent = `${filtered.length} Pelanggan`;
-
-    // Render Table or Empty State
+    // Handle Empty State
     if (filtered.length === 0) {
       if (tableBody) tableBody.innerHTML = '';
       if (emptyState) emptyState.style.display = 'block';
@@ -153,64 +180,89 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (client.hairCondition === 'Rusak') conditionClass = 'condition-rusak';
 
         return `
-          <tr>
-            <td style="font-weight: 700; color: var(--text-muted);">${index + 1}</td>
+          <tr data-client-id="${client.id}" class="js-client-row">
             <td>
-              <div class="client-avatar-cell">
-                <div class="client-avatar-box">${client.avatar}</div>
-                <div>
-                  <a href="profil-pelanggan.html?id=${client.id}" class="client-name-title">${client.name}</a>
-                </div>
-              </div>
+              <span class="client-name-title">${client.name}</span>
             </td>
-            <td>
+            <td class="col-phone">
               <span class="client-phone-num">${client.phone}</span>
             </td>
-            <td>
-              <span style="font-size: 0.84rem; color: var(--text-secondary); font-weight: 600;">${client.instagram}</span>
-            </td>
-            <td>
+            <td class="col-gender">
               <span class="gender-tag">${client.gender}</span>
             </td>
-            <td>
+            <td class="col-hair-type">
               <span class="hair-type-badge">${client.hairType}</span>
             </td>
-            <td>
+            <td class="col-condition">
               <span class="condition-badge ${conditionClass}">${client.hairCondition}</span>
             </td>
-            <td>
-              <span style="font-size: 0.82rem; color: var(--text-primary); max-width: 220px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${client.address}">${client.address}</span>
+            <td class="col-notes">
+              <span class="client-notes-ellipsis" title="${client.specialNotes}">${client.specialNotes}</span>
             </td>
-            <td>
-              <span style="font-size: 0.8rem; color: var(--text-muted); max-width: 240px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${client.notes}">${client.notes}</span>
-            </td>
-            <td style="text-align: right;">
+            <td style="text-align: right;" onclick="event.stopPropagation();">
               <div class="client-actions-cell">
-                <a href="profil-pelanggan.html?id=${client.id}" class="btn-client-action btn-profile-link">Profil</a>
-                <a href="edit-pelanggan.html?mode=edit&id=${client.id}" class="btn-client-action btn-profile-link">Edit</a>
-                <a href="add-appointment.html?clientId=${client.id}" class="btn-client-action btn-appointment-link">+ Janji Temu</a>
+                <a href="edit-pelanggan.html?mode=edit&id=${client.id}" class="btn-client-action btn-client-edit">Edit</a>
+                <a href="add-appointment.html?clientId=${client.id}&from=clients" class="btn-client-action btn-client-schedule">+ Janji</a>
               </div>
             </td>
           </tr>
         `;
       }).join('');
+
+      // Attach row click listeners for detail modal
+      tableBody.querySelectorAll('.js-client-row').forEach(row => {
+        row.addEventListener('click', () => {
+          const clientId = row.getAttribute('data-client-id');
+          const found = clientsData.find(c => c.id === clientId);
+          if (found) openDetailModal(found);
+        });
+      });
     }
   }
 
-  // Event Listeners
-  if (searchInput) searchInput.addEventListener('input', renderClients);
-  if (sortSelect) sortSelect.addEventListener('change', renderClients);
-
+  // Desktop Filter Tabs Event
   filterTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       filterTabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      activeFilter = tab.getAttribute('data-filter') || 'all';
+      activeConditionFilter = tab.getAttribute('data-filter') || 'all';
+      if (mobileConditionSelect) mobileConditionSelect.value = activeConditionFilter;
       renderClients();
     });
   });
 
+  // Mobile Condition Select Event
+  if (mobileConditionSelect) {
+    mobileConditionSelect.addEventListener('change', (e) => {
+      activeConditionFilter = e.target.value;
+      filterTabs.forEach(t => {
+        t.classList.toggle('active', (t.getAttribute('data-filter') || 'all') === activeConditionFilter);
+      });
+      renderClients();
+    });
+  }
+
+  // Search Input Event
+  if (searchInput) {
+    searchInput.addEventListener('input', renderClients);
+  }
+
+  // Desktop Sort Select Event
+  if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+      if (mobileSortSelect) mobileSortSelect.value = e.target.value;
+      renderClients();
+    });
+  }
+
+  // Mobile Sort Select Event
+  if (mobileSortSelect) {
+    mobileSortSelect.addEventListener('change', (e) => {
+      if (sortSelect) sortSelect.value = e.target.value;
+      renderClients();
+    });
+  }
+
   // Initial Render
   renderClients();
-
 });

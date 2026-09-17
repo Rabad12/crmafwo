@@ -34,6 +34,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const mode = urlParams.get('mode') || 'add';
   const editId = urlParams.get('id');
+  const fromParam = urlParams.get('from') || urlParams.get('returnUrl');
+  const clientParam = urlParams.get('clientId');
+
+  const btnCancel = document.getElementById('btn-cancel');
+  const btnBackNav = document.getElementById('btn-back-nav');
+
+  // If navigated from clients page, clicking Cancel or Back returns to clients.html
+  if (fromParam === 'clients') {
+    if (btnCancel) btnCancel.href = 'clients.html';
+    if (btnBackNav) btnBackNav.href = 'clients.html';
+  }
+
+  // Pre-select client if passed in URL
+  if (clientParam && clientSelect) {
+    clientSelect.value = clientParam;
+  }
 
   // Mock Appointment DB for edit pre-population
   const mockAppointments = {

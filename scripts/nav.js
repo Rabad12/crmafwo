@@ -1,7 +1,7 @@
-/**
+﻿/**
  * AFWO Hair Design - Admin Sidebar & Responsive Navigation Script
  * Manages vertical sidebar interactions, mobile drawer open/close transitions,
- * backdrop blur, and highlights the active route across all pages.
+ * backdrop blur, dynamic session display, and highlights the active route across all pages.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -54,6 +54,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Sync sidebar user info from sessionStorage
+  const savedUserStr = sessionStorage.getItem('afwo_logged_in_user');
+  if (savedUserStr) {
+    try {
+      const user = JSON.parse(savedUserStr);
+      const sidebarName = document.getElementById('sidebar-user-name') || document.querySelector('.sidebar-user-meta .user-name');
+      const sidebarAvatar = document.getElementById('sidebar-avatar') || document.querySelector('.user-avatar-circle');
+      if (sidebarName && user.name) sidebarName.textContent = user.name;
+      if (sidebarAvatar && user.name) sidebarAvatar.textContent = user.name.charAt(0).toUpperCase();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  // Handle logout links
+  const logoutLinks = document.querySelectorAll('#nav-logout-link, .sidebar-logout-btn');
+  logoutLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      // Allow navigation to login.html or redirect
+      sessionStorage.removeItem('afwo_logged_in_user');
+      window.location.href = 'login.html';
+    });
+  });
+
   // =========================================================================
   // DYNAMIC ACTIVE MENU RESOLUTION (VERTICAL ADMIN SIDEBAR)
   // =========================================================================
@@ -87,6 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
       activeKey = 'reports-income';
     } else if (currentPath.includes('laporan.html')) {
       activeKey = 'reports-sales';
+    } else if (currentPath.includes('absensi.html')) {
+      activeKey = 'absensi';
+    } else if (currentPath.includes('profil.html')) {
+      activeKey = 'profil';
     } else {
       activeKey = 'dashboard';
     }
