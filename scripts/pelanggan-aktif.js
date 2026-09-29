@@ -150,6 +150,23 @@ document.addEventListener('DOMContentLoaded', () => {
     return 'Rp' + Math.round(val).toLocaleString('id-ID');
   }
 
+  /* Format tampilan saja untuk nomor WhatsApp: "+62 811-2233-445".
+     Nilai client.phone di data mock tidak diubah dan tidak dipakai lagi
+     di tempat lain; ini murni pemformatan untuk ditampilkan. */
+  function formatPhoneDisplay(phone) {
+    const raw = String(phone || '').trim();
+    const digits = raw.replace(/\D/g, '');
+    if (!digits) return raw;
+    if (digits.length <= 4) return raw;
+    const prefix = digits.length > 10 ? '+' + digits.slice(0, digits.length - 10) + ' ' : '';
+    const national = digits.length > 10 ? digits.slice(-10) : digits;
+    const head = national.slice(0, 3);
+    const rest = national.slice(3);
+    const groups = rest.match(/.{1,4}/g) || [];
+    return prefix + [head, ...groups].join('-');
+  }
+
+
   function formatDisplayDate(dateStr) {
     const d = new Date(dateStr);
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
@@ -276,54 +293,54 @@ document.addEventListener('DOMContentLoaded', () => {
       if (tableWrapper) tableWrapper.style.display = 'block';
       if (emptyStateContainer) emptyStateContainer.style.display = 'none';
 
-      if (tableTbody) {
-        tableTbody.innerHTML = activeClientsList.map((client, index) => {
-          let badgeClass = 'badge-reguler';
-          if (client.segment.includes('VIP')) badgeClass = 'badge-vip';
-          else if (client.segment.includes('Loyal')) badgeClass = 'badge-loyal';
-
-          return `
-            <tr>
-              <td style="font-weight: 700; color: var(--text-3);">${index + 1}</td>
-              <td>
-                <div class="client-meta-cell">
-                  <div>
-                    <a href="profil-pelanggan.html?id=${client.id}" class="client-name-link">${client.name}</a>
-                    <div><span class="client-segment-badge ${badgeClass}">${client.segment}</span></div>
+        if (tableTbody) {
+          tableTbody.innerHTML = activeClientsList.map((client, index) => {
+            let badgeClass = 'badge-reguler';
+            if (client.segment.includes('VIP')) badgeClass = 'badge-vip';
+            else if (client.segment.includes('Loyal')) badgeClass = 'badge-loyal';
+  
+            return `
+              <tr>
+                <td class="col-no">${index + 1}</td>
+                <td class="col-customer">
+                  <div class="client-meta-cell">
+                    <div>
+                      <a href="profil-pelanggan.html?id=${client.id}" class="client-name-link">${client.name}</a>
+                      <div><span class="client-segment-badge ${badgeClass}">${client.segment}</span></div>
+                    </div>
                   </div>
-                </div>
-              </td>
-              <td>
-                <span style="font-weight: 600; color: var(--text-1); font-family: monospace;">${client.phone}</span>
-              </td>
-              <td>
-                <span class="visit-badge">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--text-link);">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                  </svg>
-                  ${client.visits} Kunjungan
-                </span>
-              </td>
-              <td>
-                <span class="spend-amount-highlight">${formatIDR(client.totalSpend)}</span>
-              </td>
-              <td>
-                <span style="font-size: 0.83rem; color: var(--text-2);">${formatDisplayDate(client.lastVisit)}</span>
-              </td>
-              <td>
-                <span style="font-size: 0.83rem; font-weight: 600; color: var(--text-1);">${client.favService}</span>
-              </td>
-              <td style="text-align: right;">
-                <div class="action-buttons-cell">
-                  <a href="profil-pelanggan.html?id=${client.id}" class="btn-table-action btn-view-profile">Profil</a>
-                  <a href="add-appointment.html?clientId=${client.id}" class="btn-table-action btn-view-profile" style="background-color: var(--accent-soft); color: var(--text-link); border-color: var(--border-accent-soft);">+ Janji Temu</a>
-                </div>
-              </td>
-            </tr>
-          `;
-        }).join('');
-      }
+                </td>
+                <td class="col-phone">
+                  <span class="phone-value">${formatPhoneDisplay(client.phone)}</span>
+                </td>
+                <td class="col-visits">
+                  <span class="visit-badge">
+                    <svg class="visit-badge__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" focusable="false">
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                    </svg>
+                    <strong class="visit-badge__num">${client.visits}</strong><span class="visit-badge__unit"> kali</span>
+                  </span>
+                </td>
+                <td class="col-spend">
+                  <span class="spend-amount-highlight">${formatIDR(client.totalSpend)}</span>
+                </td>
+                <td class="col-last">
+                  <span class="last-visit-value">${formatDisplayDate(client.lastVisit)}</span>
+                </td>
+                <td class="col-fav">
+                  <span class="fav-service-value">${client.favService}</span>
+                </td>
+                <td class="col-action">
+                  <div class="action-buttons-cell">
+                    <a href="profil-pelanggan.html?id=${client.id}" class="btn-table-action btn-view-profile">Profil</a>
+                    <a href="add-appointment.html?clientId=${client.id}" class="btn-table-action btn-view-profile btn-appointment-cta">+ Janji Temu</a>
+                  </div>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
     }
   }
 

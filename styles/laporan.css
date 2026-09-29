@@ -1,277 +1,236 @@
 /* ==========================================================================
-   AFWO HAIR DESIGN - REPORTS & RECAP (LAPORAN) STYLES (RESPONSIVE)
+   laporan.css — Halaman Laporan Penjualan
+   Struktur memakai komponen global (page-header, card, segmented, stat-card,
+   btn, badge). File ini hanya menangani susunan khusus halaman ini.
+   Semua warna memakai token dari styles/global.css.
    ========================================================================== */
 
-/* Header Intro */
-.report-intro-section {
+/* --------------------------------------------------------------------------
+   1. Baris periode (segmented control global)
+   -------------------------------------------------------------------------- */
+.report-period-row {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: 4px;
-  margin-bottom: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
 }
 
-.report-title {
-  font-size: 1.65rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--text-1);
-  line-height: 1.2;
-}
-
-.report-subtitle {
-  font-size: 0.88rem;
-  color: var(--text-2);
-  line-height: 1.4;
-}
-
-/* Period Pill Switcher */
-.period-switch-bar {
-  display: flex;
-  background-color: var(--surface-2);
-  border-radius: var(--radius-md);
-  padding: 4px;
-  width: fit-content;
-  margin-bottom: 20px;
-  gap: 4px;
-}
-
-.period-pill-btn {
-  border: none;
-  background: transparent;
-  padding: 6px 18px;
-  border-radius: var(--radius-md);
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--text-2);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.period-pill-btn.active {
-  background-color: var(--ink);
-  color: var(--text-on-ink);
-  box-shadow: var(--shadow-sm);
-}
-
-/* Card Filter Laporan */
+/* --------------------------------------------------------------------------
+   2. Kartu filter
+   -------------------------------------------------------------------------- */
 .report-filter-card {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 18px 20px;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 20px;
+  margin-bottom: var(--sp-4);
 }
 
 .report-filter-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--sp-3) var(--sp-4);
+  align-items: end;
+}
+
+.report-filter-full {
+  grid-column: 1 / -1;
 }
 
 .form-group-item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+
+.form-label {
+  font-size: var(--fs-12);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--text-3);
 }
 
 .form-input-box {
+  position: relative;
   display: flex;
   align-items: center;
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 10px 14px;
-  gap: 8px;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-  width: 100%;
+  transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
 }
 
 .form-input-box:focus-within {
-  border-color: var(--ink);
-  box-shadow: 0 0 0 3px var(--black-06);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
 }
 
-.form-select-control,
-.form-input-control {
+.form-input-control,
+.form-select-control {
   width: 100%;
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-3);
   border: none;
   background: transparent;
-  font-size: 0.92rem;
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
   color: var(--text-1);
+  border-radius: var(--radius-md);
+}
+
+.form-input-control:focus,
+.form-select-control:focus {
   outline: none;
+}
+
+.form-select-control {
+  appearance: none;
+  padding-right: var(--sp-6);
   cursor: pointer;
 }
 
-.form-input-control {
-  cursor: text;
-}
-
-/* Searchable Combobox Worker */
+/* --------------------------------------------------------------------------
+   3. Combobox karyawan
+   -------------------------------------------------------------------------- */
 .combobox-wrapper {
   position: relative;
-  width: 100%;
 }
 
 .combobox-input-box {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 10px 14px;
-  cursor: pointer;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
 }
 
 .combobox-input-box:focus-within {
-  border-color: var(--ink);
-  box-shadow: 0 0 0 3px var(--black-06);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
 }
 
 .combobox-search-field {
+  width: 100%;
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-3);
+  padding-right: var(--sp-6);
   border: none;
   background: transparent;
-  outline: none;
-  font-size: 0.92rem;
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
   color: var(--text-1);
-  width: 100%;
-  cursor: pointer;
 }
 
 .combobox-search-field:focus {
-  cursor: text;
+  outline: none;
 }
 
 .combobox-dropdown-panel {
-  display: none;
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
   right: 0;
+  z-index: 30;
+  display: none;
+  max-height: 232px;
+  overflow-y: auto;
+  padding: var(--sp-1);
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 100;
 }
 
-.combobox-dropdown-panel.show {
+.combobox-wrapper.open .combobox-dropdown-panel {
   display: block;
 }
 
 .combobox-option-row {
-  padding: 10px 14px;
-  font-size: 0.88rem;
-  font-weight: 600;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
   color: var(--text-1);
   cursor: pointer;
-  transition: background-color 0.1s ease;
+  transition: background-color var(--dur-fast) var(--ease);
 }
 
-.combobox-option-row:hover,
+.combobox-option-row:hover {
+  background-color: var(--surface-3);
+}
+
 .combobox-option-row.selected {
-  background-color: var(--surface-2);
+  background-color: var(--accent-soft);
+  color: var(--text-link);
+  font-weight: var(--fw-bold);
 }
 
-/* AI Insight Card */
+/* --------------------------------------------------------------------------
+   4. Kartu AI Insight
+   -------------------------------------------------------------------------- */
 .ai-insight-card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: linear-gradient(135deg, var(--accent-soft) 0%, var(--accent-soft) 100%);
-  border: 1px solid var(--border-accent);
-  border-radius: var(--radius-lg);
-  padding: 18px 20px;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 20px;
+  margin-bottom: var(--sp-4);
+  background-color: var(--accent-soft);
+  border-color: var(--border-accent-soft);
 }
 
 .ai-insight-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
 }
 
 .ai-sparkle-icon {
-  color: var(--text-link);
+  color: var(--accent);
+  flex-shrink: 0;
 }
 
 .ai-insight-title {
-  font-size: 0.92rem;
-  font-weight: 800;
-  color: var(--text-link);
-  letter-spacing: 0.01em;
+  font-size: var(--fs-16);
+  font-weight: var(--fw-bold);
+  color: var(--text-1);
 }
 
 .ai-insight-body {
-  font-size: 0.86rem;
-  color: var(--text-link);
-  line-height: 1.45;
+  font-size: var(--fs-14);
+  line-height: 1.6;
+  color: var(--text-2);
+  margin: 0;
 }
 
 .ai-insight-body.empty {
+  color: var(--text-3);
   font-style: italic;
-  color: var(--text-2);
 }
 
 .ai-insight-footer {
-  display: flex;
-  align-items: center;
-  margin-top: 2px;
+  margin-top: var(--sp-3);
 }
 
-.btn-ai-summary-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--text-link);
-  font-size: 0.82rem;
-  font-weight: 800;
-  text-decoration: none;
-  padding: 7px 12px;
-  background-color: var(--gold-a12);
-  border-radius: var(--radius-md);
-  transition: all 0.15s ease;
-  border: 1px solid var(--gold-a25);
-  cursor: pointer;
+.ai-summary-link {
+  font-size: var(--fs-13);
+  padding-inline: var(--sp-2);
 }
 
-.btn-ai-summary-link:hover {
-  background-color: var(--gold-a25);
-  transform: translateX(2px);
-}
-
-/* Revenue Chart Card */
+/* --------------------------------------------------------------------------
+   5. Kartu grafik pendapatan
+   -------------------------------------------------------------------------- */
 .revenue-chart-card {
+  margin-bottom: var(--sp-4);
+}
+
+.growth-badge-pill {
+  flex-shrink: 0;
+}
+
+.revenue-chart-body {
   display: flex;
   flex-direction: column;
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 22px 24px;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 20px;
-  overflow: hidden;
-  position: relative;
-}
-
-.revenue-chart-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 12px;
+  gap: var(--sp-3);
 }
 
 .chart-header-left {
@@ -281,413 +240,330 @@
 }
 
 .chart-label-sm {
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--text-3);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
   text-transform: uppercase;
+  color: var(--text-3);
 }
 
 .chart-revenue-val {
-  font-size: 1.55rem;
-  font-weight: 800;
+  font-size: var(--fs-24);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
   color: var(--text-1);
-  letter-spacing: -0.02em;
-}
-
-.growth-badge-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background-color: var(--accent-soft);
-  color: var(--text-1);
-  padding: 4px 10px;
-  border-radius: var(--radius-md);
-  font-size: 0.76rem;
-  font-weight: 800;
 }
 
 .svg-bar-chart-container {
-  width: 100%;
-  height: 180px;
-  margin-top: 10px;
   position: relative;
-  overflow: hidden;
+  width: 100%;
+  /* Rasio sama dengan viewBox (700x150) supaya batang tidak terdistorsi
+     walau svg memakai preserveAspectRatio="none". */
+  aspect-ratio: 700 / 150;
 }
 
 .svg-bar-chart-container svg {
   width: 100%;
   height: 100%;
   display: block;
-}
-
-.chart-bar-rect {
-  cursor: pointer;
-  transition: transform 0.2s ease, fill 0.2s ease, opacity 0.2s ease;
-  transform-origin: bottom;
-  fill: var(--chart-series-2);
-}
-
-.chart-bar-rect:hover {
-  opacity: 0.85;
-  filter: brightness(1.2);
-}
-
-.chart-bar-rect.peak-bar {
-  fill: var(--chart-series-1);
+  overflow: visible;
 }
 
 .chart-axis-labels {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 0 0 0;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--text-2);
-  border-top: 1px solid var(--border-accent);
-  margin-top: 6px;
+  justify-content: space-between;
+  gap: var(--sp-1);
+  margin-top: var(--sp-1);
 }
 
 .chart-axis-labels span {
   flex: 1;
   text-align: center;
-}
-
-/* Floating Chart Tooltip */
-.chart-tooltip-floating {
-  position: absolute;
-  top: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--surface-contrast);
-  color: var(--text-on-contrast);
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  font-size: 0.78rem;
-  font-weight: 700;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-  z-index: 10;
-  box-shadow: 0 4px 12px var(--black-24);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-semibold);
+  color: var(--text-3);
   white-space: nowrap;
 }
 
-.chart-tooltip-floating.show {
-  opacity: 1;
+.chart-tooltip-floating {
+  position: absolute;
+  z-index: 5;
+  display: none;
+  padding: var(--sp-1) var(--sp-2);
+  background-color: var(--surface-contrast);
+  color: var(--text-on-contrast);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+  pointer-events: none;
 }
 
-/* Customer Metrics Cards */
+.chart-tooltip-floating.show {
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   6. Kartu statistik pelanggan
+   -------------------------------------------------------------------------- */
 .metrics-grid-duo {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
-  margin-bottom: 20px;
-}
-
-.metric-banner-card {
-  position: relative;
-  overflow: hidden;
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 18px 20px;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.metric-banner-label {
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--text-3);
-  text-transform: uppercase;
-}
-
-.metric-banner-num {
-  font-size: 1.85rem;
-  font-weight: 900;
-  color: var(--text-1);
-  line-height: 1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
 }
 
 .retention-progress-bar {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 4px;
+  flex-direction: column;
+  gap: var(--sp-1);
 }
 
 .progress-track {
-  flex: 1;
-  height: 6px;
-  background-color: var(--surface-2);
-  border-radius: var(--radius-md);
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background-color: var(--n-900);
+  opacity: 0.18;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--surface-contrast) 0%, var(--surface-contrast) 100%);
-  border-radius: var(--radius-md);
-}
-
-.progress-label-text {
-  font-size: 0.74rem;
-  font-weight: 700;
-  color: var(--text-2);
-  white-space: nowrap;
+  border-radius: 999px;
+  background-color: var(--text-on-accent);
 }
 
 .metric-change-pill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 0.78rem;
-  font-weight: 700;
+  gap: var(--sp-1);
+  align-self: flex-start;
+  padding: 4px var(--sp-2);
+  border-radius: 999px;
+  background-color: var(--accent-soft);
   color: var(--text-link);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-bold);
 }
 
-.metric-watermark-icon {
-  position: absolute;
-  right: 12px;
-  bottom: 10px;
-  opacity: 0.18;
-  color: var(--text-link);
-  pointer-events: none;
+.metric-change-pill svg {
+  flex-shrink: 0;
 }
 
-/* 3 Stat Cards Row */
+/* --------------------------------------------------------------------------
+   7. Tiga kartu ringkasan
+   -------------------------------------------------------------------------- */
 .report-stat-triplet {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
 }
 
-.report-stat-mini-card {
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 16px 18px;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.mini-stat-label {
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  color: var(--text-3);
-  text-transform: uppercase;
-}
-
-.mini-stat-val {
-  font-size: 1.28rem;
-  font-weight: 900;
-  color: var(--text-1);
-}
-
-/* Category Breakdown Grid 2x2 */
+/* --------------------------------------------------------------------------
+   8. Rincian kategori layanan
+   -------------------------------------------------------------------------- */
 .category-breakdown-card {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 20px;
-}
-
-.category-breakdown-title {
-  font-size: 0.96rem;
-  font-weight: 800;
-  color: var(--text-1);
+  margin-bottom: var(--sp-4);
 }
 
 .category-visual-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
 }
 
 .cat-tile-box {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 16px 12px;
-  background-color: var(--surface);
+  gap: var(--sp-1);
+  padding: var(--sp-3) var(--sp-2);
+  background-color: var(--surface-inset);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  gap: 6px;
+  border-radius: var(--radius-lg);
   text-align: center;
 }
 
 .cat-tile-icon {
-  color: var(--text-1);
+  color: var(--accent);
+  flex-shrink: 0;
 }
 
 .cat-tile-percentage {
-  font-size: 1.25rem;
-  font-weight: 900;
+  font-size: var(--fs-20);
+  font-weight: var(--fw-extrabold);
+  line-height: var(--lh-tight);
   color: var(--text-1);
-  line-height: 1;
 }
 
 .cat-tile-name {
-  font-size: 0.76rem;
-  font-weight: 700;
+  font-size: var(--fs-12);
+  font-weight: var(--fw-semibold);
   color: var(--text-2);
 }
 
 .cat-detail-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  border-top: 1px solid var(--border);
-  padding-top: 14px;
 }
 
 .cat-detail-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.86rem;
+  gap: var(--sp-3);
+  padding: var(--sp-3) 0;
+  border-top: 1px solid var(--border);
 }
 
 .cat-detail-left {
   display: flex;
   flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .cat-detail-name {
-  font-weight: 700;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-semibold);
   color: var(--text-1);
 }
 
 .cat-detail-count {
-  font-size: 0.75rem;
+  font-size: var(--fs-12);
   color: var(--text-3);
 }
 
 .cat-detail-total {
-  font-weight: 800;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  color: var(--text-1);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   9. Banner ringkasan kategori
+   Permukaan emas muda + teks gelap agar tetap terbaca di light maupun dark.
+   Tombol memakai .btn global sehingga kontrasnya terjamin.
+   -------------------------------------------------------------------------- */
+.report-summary-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  margin-bottom: var(--sp-4);
+  background-color: var(--accent-soft);
+  border: 1px solid var(--border-accent-soft);
+  border-radius: var(--radius-xl);
+}
+
+.report-summary-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.report-summary-label {
+  font-size: var(--fs-12);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.report-summary-total {
+  font-size: var(--fs-24);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
   color: var(--text-1);
 }
 
-/* Dark Summary Banner */
-.dark-summary-banner {
-  background-color: var(--surface-contrast);
-  color: var(--text-on-contrast);
-  border-radius: var(--radius-lg);
-  padding: 22px 20px;
-  box-shadow: 0 8px 24px var(--black-16);
+.report-summary-actions {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 14px;
-  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
 }
 
-.dark-summary-label {
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: var(--text-on-contrast-2);
-  text-transform: uppercase;
-}
-
-.dark-summary-total-val {
-  font-size: 1.65rem;
-  font-weight: 900;
-  color: var(--gold-300); /* Warm Gold */
-  letter-spacing: -0.01em;
-}
-
-.dark-summary-btn-group {
-  display: flex;
-  width: 100%;
-  gap: 10px;
-}
-
-.btn-banner-export {
-  flex: 1;
-  background-color: var(--surface-contrast);
-  color: var(--text-on-contrast);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.btn-banner-export:hover {
-  background-color: var(--surface-contrast);
-}
-
-.btn-banner-generate {
-  flex: 1;
-  background-color: var(--surface-contrast);
-  color: var(--text-on-contrast);
-  border: none;
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
-  font-size: 0.82rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.btn-banner-generate:hover {
-  background-color: var(--surface-contrast);
-}
-
-/* Read-Only Transaction History Section */
+/* --------------------------------------------------------------------------
+   10. Riwayat transaksi
+   -------------------------------------------------------------------------- */
 .report-history-section {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-bottom: 20px;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
 }
 
-.report-history-heading {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--text-1);
-}
-
-/* Tablet & Desktop Responsiveness */
-@media (min-width: 640px) {
-  .report-title {
-    font-size: 1.95rem;
-  }
-  .report-filter-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .metrics-grid-duo {
-    grid-template-columns: 1fr 1fr;
-  }
+/* --------------------------------------------------------------------------
+   11. Responsif
+   -------------------------------------------------------------------------- */
+@media (max-width: 1023px) {
   .report-stat-triplet {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .report-stat-triplet > :last-child {
+    grid-column: 1 / -1;
+  }
+
   .category-visual-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 767px) {
+  .metrics-grid-duo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .report-stat-triplet {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .report-stat-triplet > :last-child {
+    grid-column: auto;
+  }
+
+  .report-filter-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .svg-bar-chart-container {
+    aspect-ratio: 700 / 190;
+  }
+
+  .chart-axis-labels span {
+    font-size: 10px;
+  }
+
+  .report-summary-banner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .report-summary-actions {
+    width: 100%;
+  }
+
+  .report-summary-actions .btn {
+    flex: 1 1 140px;
+  }
+
+  .cat-detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-1);
+  }
+
+  .cat-detail-total {
+    font-size: var(--fs-16);
   }
 }

@@ -570,18 +570,23 @@
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 6px;
   width: 100%;
+  align-items: stretch;
 }
 
+/* Kotak tanggal bulanan WAJIB persegi (1:1) dan tidak boleh dipengaruhi isi.
+   Lebar diambil dari kolom grid, tinggi dari aspect-ratio. Tanpa min-height
+   dan tanpa grid-auto-rows supaya semua baris sama tinggi. */
 .month-day-cell {
   background-color: var(--surface);
   border: 1px solid var(--border-accent);
   border-radius: var(--radius-md);
-  min-height: 105px;
-  padding: 6px 8px;
+  aspect-ratio: 1 / 1;
+  padding: 5px 6px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  transition: all 0.15s ease;
+  gap: 3px;
+  min-height: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
   min-width: 0;
   overflow: hidden;
   cursor: pointer;
@@ -594,7 +599,6 @@
   box-shadow: 0 4px 14px var(--gold-a18);
   transform: translateY(-1px);
 }
-
 .month-day-cell.other-month {
   background-color: var(--surface);
   opacity: 0.45;
@@ -609,7 +613,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 2px;
+  gap: 4px;
+  flex: 0 0 auto;
+  min-height: 22px;
 }
 
 .cell-day-num {
@@ -618,6 +624,7 @@
   color: var(--text-1);
   width: 22px;
   height: 22px;
+  flex: 0 0 22px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -629,20 +636,37 @@
   color: var(--text-on-ink);
 }
 
+/* Daftar event di dalam kotak: tinggi ditentukan kotak, bukan isi. */
+.cell-event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 0;
+  flex: 1 1 auto;
+  /* Tidak dipotong di sini: penanda "+N lagi" diposisikan absolut pada sel,
+     sedangkan pembatas halaman tetapDijaga oleh overflow:hidden di .month-day-cell. */
+  overflow: visible;
+}
+
 /* Appointment Chip in Month Cell - Read-Only on Main Grid per User Directive */
 .apt-chip-item {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 3px 6px;
+  gap: 3px;
+  padding: 2px 3px;
   border-radius: var(--radius-xs);
-  font-size: 0.72rem;
+  font-size: 0.66rem;
+  line-height: 1.25;
+  height: 16px;
+  flex: 0 0 16px;
+  min-width: 0;
   font-weight: 700;
   pointer-events: none; /* User requirement: Must click date first */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   border-left: 3px solid;
+  min-width: 0;
 }
 
 .apt-chip-item:hover {
@@ -652,21 +676,48 @@
 
 .apt-chip-time {
   font-weight: 800;
-  font-size: 0.68rem;
-  flex-shrink: 0;
+  font-size: 0.62rem;
+  flex: 0 0 auto;
+}
+
+/* Di kotak bulanan 1:1 lebar kolom hanya ~76px. Jam tidak terbaca berdampingan
+   dengan nama, jadi yang ditampilkan hanya nama pelanggan; jam tetap tersedia
+   lewat title chip dan penuh di modal detail hari. */
+.month-cells-grid .apt-chip-time {
+  display: none;
 }
 
 .apt-chip-client {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .apt-more-badge {
-  font-size: 0.68rem;
-  font-weight: 700;
+  /* Diposisikan absolut di sudut sel supaya tidak menambah tinggi daftar chip
+     (kotak sel 1:1 punya tinggi tetap, sehingga badge lama ikut terpotong). */
+  position: absolute;
+  right: 5px;
+  bottom: 3px;
+  z-index: 2;
+  padding: 0 3px;
+  border-radius: var(--radius-xs);
+  background-color: var(--surface);
+  font-size: 0.6rem;
+  line-height: 13px;
+  font-weight: 800;
   color: var(--text-3);
-  padding: 2px 4px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+  height: 15px;
+  flex: 0 0 15px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   cursor: pointer;
 }
 
@@ -1493,14 +1544,50 @@
     font-size: 0.8rem;
   }
   .month-day-cell {
-    min-height: 80px;
-    padding: 4px 4px;
+    padding: 3px 3px;
+    gap: 2px;
   }
   .apt-chip-item {
-    font-size: 0.65rem;
-    padding: 2px 4px;
+    display: none;
+  }
+  .apt-more-badge {
+    display: none;
+  }
+  /* Mobile: penanda appointment berupa titik emas, maksimal 3, tanpa chip teks. */
+  .cell-dot-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    flex: 0 0 auto;
+    min-height: 0;
+  }
+  .cell-dot {
+    width: 4px;
+    height: 4px;
+    flex: 0 0 4px;
+    border-radius: 50%;
+    background-color: var(--accent);
+  }
+  .cell-day-num {
+    width: 20px;
+    height: 20px;
+    flex-basis: 20px;
+    font-size: 0.75rem;
   }
   .month-days-header {
     font-size: 0.68rem;
+  }
+}
+
+/* Desktop/tablet: baris titik hanya muncul di mode titik (<640px). */
+.cell-dot-row {
+  display: none;
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  /* Tablet: hanya 1 chip per kotak. */
+  .cell-event-list .apt-chip-item:nth-of-type(n + 2) {
+    display: none;
   }
 }

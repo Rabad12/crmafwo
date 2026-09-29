@@ -173,14 +173,14 @@
 /* KPI Mini Grid */
 .active-clients-kpi-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 20px;
 }
 
 @media (min-width: 1024px) {
   .active-clients-kpi-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
   }
 }
@@ -208,12 +208,16 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-
 .kpi-mini-value {
   font-size: 1.45rem;
   font-weight: 900;
   color: var(--text-1);
   letter-spacing: -0.02em;
+  /* Nominal rupiah panjang (mis. Rp4.450.000) tidak boleh meluber di kartu
+     KPI sempit; izinkan patah antar karakter. */
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .kpi-mini-card.featured-gold-kpi .kpi-mini-value {
@@ -267,6 +271,9 @@
   border-collapse: collapse;
   text-align: left;
   font-size: 0.88rem;
+  /* line-height bulat (px) supaya tinggi setiap baris identik,
+     tidak meleset 1px akibat akumulasi pecahan. */
+  line-height: 20px;
 }
 
 .active-clients-table th {
@@ -278,6 +285,8 @@
   letter-spacing: 0.05em;
   border-bottom: 2px solid var(--border);
   background-color: var(--accent-soft);
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 .active-clients-table td {
@@ -286,6 +295,45 @@
   color: var(--text-1);
   font-weight: 500;
   vertical-align: middle;
+  line-height: 20px;
+  /* Tinggi sel tetap (border-box) supaya tinggi tiap baris identik,
+     tidak ada sel yang meleset 1px karena pembulatan. */
+  height: 72px;
+}
+
+/* Lebar kolom eksplisit supaya tidak saling mendesak.
+   Hanya LAYANAN FAVORIT boleh membungkus (maks 2 baris). */
+.active-clients-table .col-no { min-width: 52px; }
+.active-clients-table .col-customer { min-width: 190px; }
+.active-clients-table .col-phone { min-width: 160px; }
+.active-clients-table .col-visits { min-width: 104px; }
+.active-clients-table .col-spend { min-width: 128px; }
+.active-clients-table .col-last { min-width: 132px; }
+.active-clients-table .col-fav { min-width: 150px; }
+.active-clients-table .col-action { min-width: 190px; }
+
+/* NO, WHATSAPP, KUNJUNGAN, TOTAL, TERAKHIR, AKSI: satu baris, tidak pernah membungkus. */
+.active-clients-table .col-no,
+.active-clients-table .col-phone,
+.active-clients-table .col-visits,
+.active-clients-table .col-spend,
+.active-clients-table .col-last,
+.active-clients-table .col-action {
+  white-space: nowrap;
+}
+
+.active-clients-table .col-fav {
+  white-space: normal;
+  overflow-wrap: break-word;
+  max-width: 220px;
+}
+
+.active-clients-table .col-fav .fav-service-value {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .active-clients-table tr:hover td {
@@ -327,6 +375,7 @@
 .client-segment-badge {
   display: inline-block;
   font-size: 0.68rem;
+  line-height: 16px;
   font-weight: 700;
   padding: 1px 6px;
   border-radius: var(--radius-md);
@@ -351,30 +400,88 @@
 .visit-badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  white-space: nowrap;
   font-weight: 700;
+  color: var(--text-1);
+  line-height: 1;
+}
+
+.visit-badge__icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  color: var(--text-link);
+}
+
+.visit-badge__num {
+  font-weight: 800;
+  color: var(--text-1);
+}
+
+.visit-badge__unit {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-3);
+}
+
+.phone-value {
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--text-1);
+  white-space: nowrap;
+}
+
+.last-visit-value {
+  font-size: 0.83rem;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+.fav-service-value {
+  font-size: 0.83rem;
+  font-weight: 600;
   color: var(--text-1);
 }
 
 .spend-amount-highlight {
   font-weight: 800;
   color: var(--text-link);
+  white-space: nowrap;
+}
+
+.active-clients-table .col-action {
+  text-align: right;
 }
 
 .action-buttons-cell {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 6px;
+  gap: 8px;
+  flex-wrap: nowrap;
 }
 
 .btn-table-action {
   font-size: 0.78rem;
   font-weight: 700;
-  padding: 6px 12px;
+  height: 36px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 0 12px;
   border-radius: var(--radius-sm);
   text-decoration: none;
   transition: all 0.15s ease;
+}
+
+.btn-appointment-cta {
+  background-color: var(--accent-soft);
+  color: var(--text-link);
+  border-color: var(--border-accent-soft);
 }
 
 .btn-view-profile {
@@ -408,4 +515,119 @@
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-2);
+}
+
+/* --------------------------------------------------------------------------
+   TABEL SEJAKAR DI LAYAR SEMPIT: tiap baris menjadi kartu bertumpuk,
+   label kolom di atas nilai. Label diambil dari ::before per kolom supaya
+   markup tabel tidak perlu atribut tambahan.
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  .table-responsive-wrapper {
+    overflow-x: visible;
+  }
+
+  .active-clients-table,
+  .active-clients-table tbody,
+  .active-clients-table tr,
+  .active-clients-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .active-clients-table thead {
+    display: none;
+  }
+
+  .active-clients-table tr {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+
+  .active-clients-table tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .active-clients-table tr:hover td {
+    background-color: transparent;
+  }
+
+  .active-clients-table td {
+    display: grid;
+    grid-template-columns: minmax(104px, 40%) minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    white-space: normal;
+    max-width: none;
+    height: auto;
+  }
+
+  .active-clients-table td:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  /* NO dan PELANGGAN jadi blok penuh tanpa label. */
+  .active-clients-table .col-no,
+  .active-clients-table .col-customer {
+    display: block;
+    padding-bottom: 10px;
+  }
+
+  .active-clients-table .col-no {
+    padding-top: 0;
+    font-size: 0.72rem;
+    color: var(--text-3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .active-clients-table .col-customer {
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Label kolom di atas nilai, lewat ::before per indeks kolom. */
+  .active-clients-table td::before {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+  .active-clients-table .col-phone::before { content: "No. WhatsApp"; }
+  .active-clients-table .col-visits::before { content: "Kunjungan"; }
+  .active-clients-table .col-spend::before { content: "Total Transaksi"; }
+  .active-clients-table .col-last::before { content: "Terakhir Berkunjung"; }
+  .active-clients-table .col-fav::before { content: "Layanan Favorit"; }
+  .active-clients-table .col-action::before { content: "Aksi"; }
+
+  /* Kolom KUNJUNGAN tetap satu baris walau kartu bertumpuk. */
+  .active-clients-table .col-visits .visit-badge {
+    white-space: nowrap;
+  }
+
+  /* Di mode kartu kolom LAYANAN FAVORIT jadi satu-satunya tempat membaca
+     nama layanan, jadi teksnya dibiarkan penuh tanpa pemotongan 2 baris. */
+  .active-clients-table .col-fav .fav-service-value {
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    display: block;
+    overflow: visible;
+  }
+
+  .active-clients-table .col-action {
+    text-align: left;
+  }
+
+  /* Dua tombol boleh turun ke baris berikutnya pada kartu sempit;
+     yang dijaga tetap kolom KUNJUNGAN/WHITELIST yang tidak membungkus. */
+  .action-buttons-cell {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
 }

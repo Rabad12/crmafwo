@@ -311,6 +311,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
+    // Jumlah chip yang boleh tampil mengikuti lebar layar: mobile memakai titik
+    // saja (lihat CSS), tablet 1 chip, desktop 2 chip. Data tidak berubah, hanya tampilan.
+    const viewportW = window.innerWidth;
+    const maxDisplay = viewportW < 641 ? 0 : (viewportW < 1025 ? 1 : 2);
+
     const firstDayIndex = new Date(year, month, 1).getDay();
     const adjustedFirstDay = (firstDayIndex === 0 ? 6 : firstDayIndex - 1);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -347,7 +352,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const dayApts = filteredApts.filter(a => a.date === dateStr);
 
       let aptsHtml = '';
-      const maxDisplay = 3;
       dayApts.slice(0, maxDisplay).forEach(apt => {
         const client = getClient(apt.clientId);
         aptsHtml += `
@@ -359,14 +363,21 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (dayApts.length > maxDisplay) {
-        aptsHtml += `<div class="apt-more-badge">+${dayApts.length - maxDisplay} lainnya</div>`;
+        aptsHtml += `<div class="apt-more-badge" title="${dayApts.length} appointment">+${dayApts.length - maxDisplay} lagi</div>`;
       }
+
+      // Baris titik emas hanya untuk mode mobile (<640px, diatur di CSS).
+      const dotCount = Math.min(dayApts.length, 3);
+      const dotsHtml = dotCount
+        ? `<div class="cell-dot-row">${'<span class="cell-dot"></span>'.repeat(dotCount)}</div>`
+        : '';
 
       cell.innerHTML = `
         <div class="cell-top-bar">
           <span class="cell-day-num">${d}</span>
         </div>
-        ${aptsHtml}
+        <div class="cell-event-list">${aptsHtml}</div>
+        ${dotsHtml}
       `;
 
       // User directive: Clicking ANY part of date opens Daily Google Calendar schedule
@@ -1017,7 +1028,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Initial Boot
-  renderFilterLists();
-  renderCalendar();
-});
+    // Jumlah chip per kotak bergantung lebar layar, jadi render ulang saat resize.
+    // Hanya tampilan yang dihitung ulang; data dan state kalender tidak berubah.
+    let resizeTimer = null;
+    let lastChipTier = (window.innerWidth < 641 ? 0 : (window.innerWidth < 1025 ? 1 : 2));
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const tier = (window.innerWidth < 641 ? 0 : (window.innerWidth < 1025 ? 1 : 2));
+        if (tier !== lastChipTier) {
+          lastChipTier = tier;
+          renderCalendar();
+        }
+      }, 180);
+    });
+
+    // Initial Boot
+    renderFilterLists();
+    renderCalendar();
+  });

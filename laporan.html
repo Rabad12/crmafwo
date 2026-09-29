@@ -1,4 +1,4 @@
-<!--
+﻿<!--
   TODO INTEGRASI BACKEND:
   - id="today-income", id="transaction-count", id="payment-breakdown", id="recent-transactions-list"
     -> di-fetch dari endpoint /api/dashboard/summary
@@ -31,7 +31,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reports & Recap - AFWO Hair Design</title>
+  <title>Laporan Penjualan - AFWO Hair Design</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -200,20 +200,37 @@
       <!-- Main Content -->
       <main class="app-main">
       
-      <!-- Intro Section -->
-      <div class="report-intro-section">
-        <h1 class="report-title">Reports & Recap</h1>
-        <p class="report-subtitle">Performance insights and analytics.</p>
+      <!-- Page Header (pola global) -->
+      <div class="page-header">
+        <span class="page-header__eyebrow">Laporan Penjualan</span>
+        <div class="page-header__row">
+          <div>
+            <h1 class="page-header__title" id="report-page-title">Ringkasan Penjualan</h1>
+            <p class="page-header__subtitle">Pantau omset, jumlah transaksi, dan layanan terlaris pada periode terpilih.</p>
+          </div>
+          <div class="page-header__actions">
+            <button type="button" class="btn btn--secondary" id="btn-reset-report-filter">Reset</button>
+            <button type="button" class="btn btn--primary" id="btn-apply-report-filter">Terapkan Filter</button>
+          </div>
+        </div>
       </div>
 
-      <!-- Period Pill Switcher (Daily / Monthly) -->
-      <div class="period-switch-bar">
-        <button type="button" class="period-pill-btn active" data-period="daily">Daily</button>
-        <button type="button" class="period-pill-btn" data-period="monthly">Monthly</button>
+      <!-- Period Switcher Harian / Bulanan -->
+      <div class="report-period-row">
+        <div class="segmented" role="group" aria-label="Tampilan periode">
+          <button type="button" class="segmented__item active" data-period="daily" aria-pressed="true">Harian</button>
+          <button type="button" class="segmented__item" data-period="monthly" aria-pressed="false">Bulanan</button>
+        </div>
       </div>
 
       <!-- Card Filter Laporan -->
-      <div class="report-filter-card" data-field="report-filters">
+      <section class="card report-filter-card" data-field="report-filters">
+        <div class="card__header">
+          <div class="card__title-group">
+            <h2 class="card__title">Filter Laporan</h2>
+            <p class="card__subtitle">Tentukan periode, jenis pengerjaan, dan karyawan yang dihitung.</p>
+          </div>
+        </div>
         <div class="report-filter-grid">
           
           <!-- Periode Dropdown -->
@@ -257,7 +274,7 @@
           </div>
 
           <!-- Searchable Karyawan Combobox (Span Full Grid) -->
-          <div class="form-group-item" style="grid-column: 1 / -1;">
+          <div class="form-group-item report-filter-full">
             <label class="form-label" for="worker-search-input">Karyawan</label>
             <div class="combobox-wrapper" id="report-worker-filter" data-field="report-worker-filter">
               <div class="combobox-input-box" id="combobox-input-box">
@@ -278,141 +295,153 @@
           </div>
 
         </div>
-      </div>
+      </section>
 
-      <!-- Card AI Insight — Analisa Keuntungan -->
-      <div class="ai-insight-card" id="ai-insight-card" data-field="ai-insight-card">
+      <!-- Card AI Insight â€” Analisa Keuntungan -->
+      <section class="card ai-insight-card" id="ai-insight-card" data-field="ai-insight-card">
         <div class="ai-insight-header">
-          <svg class="ai-sparkle-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <svg class="ai-sparkle-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
             <path d="M12 2L14.39 8.26L21 9.27L16.27 13.88L17.82 20.4L12 16.77L6.18 20.4L7.73 13.88L3 9.27L9.61 8.26L12 2Z"></path>
           </svg>
-          <span class="ai-insight-title">AI Insight - Analisa Keuntungan</span>
+          <span class="ai-insight-title">Ringkasan AI â€” Analisa Keuntungan</span>
         </div>
         <p class="ai-insight-body" id="ai-insight-text" data-field="ai-insight-text">
-          Omset periode ini didominasi layanan Warna & Highlights dengan margin tertinggi. Disarankan menambah slot booking untuk layanan Balayage di akhir pekan karena permintaan konsisten naik dibanding hari kerja.
+          Omset periode ini didominasi layanan Warna &amp; Highlights dengan margin tertinggi. Disarankan menambah slot booking untuk layanan Balayage di akhir pekan karena permintaan konsisten naik dibanding hari kerja.
         </p>
         <div class="ai-insight-footer">
-          <a href="#" class="btn-ai-summary-link" id="btn-ai-summary" data-action="view-ai-summary" data-field="btn-ai-summary">
-            <span>Buka Ringkasan & Rekomendasi Lengkap AI</span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <a href="#" class="btn btn--ghost ai-summary-link" id="btn-ai-summary" data-action="view-ai-summary" data-field="btn-ai-summary">
+            <span>Buka Ringkasan &amp; Rekomendasi Lengkap</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </a>
         </div>
-      </div>
+      </section>
 
       <!-- Total Revenue & SVG Bar Chart Card -->
-      <div class="revenue-chart-card" data-field="revenue-chart-card">
-        <div class="revenue-chart-header">
-          <div class="chart-header-left">
-            <span class="chart-label-sm">Total Revenue</span>
-            <span class="chart-revenue-val" id="chart-revenue-val">Rp. 42.850.000</span>
+      <section class="card revenue-chart-card" data-field="revenue-chart-card">
+        <div class="card__header">
+          <div class="card__title-group">
+            <h2 class="card__title">Grafik Pendapatan</h2>
+            <p class="card__subtitle">Perbandingan omset harian pada periode terpilih.</p>
           </div>
-          <span class="growth-badge-pill">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <span class="badge badge--accent growth-badge-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <line x1="7" y1="17" x2="17" y2="7"></line>
               <polyline points="7 7 17 7 17 17"></polyline>
             </svg>
-            +12.5%
+            <span>+12.5% dari periode lalu</span>
           </span>
         </div>
 
-        <!-- SVG Bar Chart Canvas (Connected to Backend Database API) -->
-        <div class="svg-bar-chart-container" id="bar-chart-wrapper">
-          <div id="chart-floating-tooltip" class="chart-tooltip-floating"></div>
-          <svg viewBox="0 0 700 150" id="svg-bar-chart" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="barGradientPrimary" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="var(--surface-contrast)"></stop>
-                <stop offset="100%" stop-color="var(--surface-contrast)"></stop>
-              </linearGradient>
-              <linearGradient id="barGradientPeak" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="var(--accent)"></stop>
-                <stop offset="100%" stop-color="var(--gold-600)"></stop>
-              </linearGradient>
-            </defs>
-            <!-- Background grid lines spanning full 700px width -->
-            <line x1="0" y1="35" x2="700" y2="35" stroke="var(--chart-grid)" stroke-dasharray="4 4" stroke-width="1.2" />
-            <line x1="0" y1="80" x2="700" y2="80" stroke="var(--chart-grid)" stroke-dasharray="4 4" stroke-width="1.2" />
-            <line x1="0" y1="125" x2="700" y2="125" stroke="var(--chart-axis)" stroke-width="1.2" />
-            
-            <!-- Dynamic Bar Group populated by JS / Database API -->
-            <g id="chart-bars-group"></g>
-          </svg>
-        </div>
+        <div class="revenue-chart-body">
+          <div class="chart-header-left">
+            <span class="chart-label-sm">Total Pendapatan</span>
+            <span class="chart-revenue-val" id="chart-revenue-val">Rp 42.850.000</span>
+          </div>
 
-        <!-- Sumbu X Axis Labels (Populated dynamically via JS) -->
-        <div class="chart-axis-labels" id="chart-axis-labels">
-          <span>Mon</span>
-          <span>Tue</span>
-          <span>Wed</span>
-          <span>Thu</span>
-          <span>Fri</span>
-          <span>Sat</span>
-          <span>Sun</span>
+          <!-- SVG Bar Chart Canvas (Connected to Backend Database API) -->
+          <div class="svg-bar-chart-container" id="bar-chart-wrapper">
+            <div id="chart-floating-tooltip" class="chart-tooltip-floating"></div>
+            <svg viewBox="0 0 700 150" id="svg-bar-chart" preserveAspectRatio="none" role="img" aria-label="Grafik batang omset harian">
+              <defs>
+                <linearGradient id="barGradientPrimary" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="var(--surface-contrast)"></stop>
+                  <stop offset="100%" stop-color="var(--surface-contrast)"></stop>
+                </linearGradient>
+                <linearGradient id="barGradientPeak" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="var(--accent)"></stop>
+                  <stop offset="100%" stop-color="var(--gold-600)"></stop>
+                </linearGradient>
+              </defs>
+
+              <!-- Dynamic Bar Group populated by JS / Database API -->
+              <g id="chart-bars-group"></g>
+            </svg>
+          </div>
+
+          <!-- Sumbu X Axis Labels (Populated dynamically via JS) -->
+          <div class="chart-axis-labels" id="chart-axis-labels">
+            <span>Kam</span>
+            <span>Jum</span>
+            <span>Sab</span>
+            <span>Min</span>
+            <span>Sen</span>
+            <span>Sel</span>
+            <span>Rab</span>
+          </div>
         </div>
-      </div>
+      </section>
 
       <!-- Customer Metrics Cards (Active & New Customers) -->
       <div class="metrics-grid-duo">
         
         <!-- Active Customers Card -->
-        <div class="metric-banner-card">
-          <span class="metric-banner-label">Active Customers</span>
-          <span class="metric-banner-num">842</span>
+        <article class="stat-card stat-card--gold">
+          <div class="stat-card__top">
+            <span class="stat-card__label">Pelanggan Aktif</span>
+            <svg class="stat-card__deco" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+              <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"></path>
+            </svg>
+          </div>
+          <span class="stat-card__value">842</span>
           <div class="retention-progress-bar">
             <div class="progress-track">
               <div class="progress-fill" style="width: 75%;"></div>
             </div>
-            <span class="progress-label-text">75% Retention</span>
+            <span class="stat-card__subtext">75% Retensi</span>
           </div>
-          <svg class="metric-watermark-icon" width="68" height="68" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"></path>
-          </svg>
-        </div>
+        </article>
 
         <!-- New Customers Card -->
-        <div class="metric-banner-card">
-          <span class="metric-banner-label">New Customers</span>
-          <span class="metric-banner-num">128</span>
-          <div class="metric-change-pill">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <article class="stat-card stat-card--soft">
+          <div class="stat-card__top">
+            <span class="stat-card__label">Pelanggan Baru</span>
+            <svg class="stat-card__deco" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+              <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+            </svg>
+          </div>
+          <span class="stat-card__value">128</span>
+          <span class="metric-change-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <line x1="12" y1="19" x2="12" y2="5"></line>
               <polyline points="5 12 12 5 19 12"></polyline>
             </svg>
-            <span>+24 this week</span>
-          </div>
-          <svg class="metric-watermark-icon" width="68" height="68" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
-          </svg>
-        </div>
+            <span>+24 pelanggan minggu ini</span>
+          </span>
+        </article>
 
       </div>
 
       <!-- Row 3 Stat Cards -->
       <div class="report-stat-triplet" id="report-stats" data-field="report-stats">
         
-        <div class="report-stat-mini-card">
-          <span class="mini-stat-label">TOTAL OMSET</span>
-          <span class="mini-stat-val" id="report-total-revenue" data-field="total-revenue">Rp 9.150.000</span>
-        </div>
+        <article class="stat-card">
+          <span class="stat-card__label">Total Omset</span>
+          <span class="stat-card__value" id="report-total-revenue" data-field="total-revenue">Rp 9.150.000</span>
+        </article>
 
-        <div class="report-stat-mini-card">
-          <span class="mini-stat-label">JUMLAH TRANSAKSI</span>
-          <span class="mini-stat-val" id="report-transaction-count" data-field="transaction-count">24</span>
-        </div>
+        <article class="stat-card">
+          <span class="stat-card__label">Jumlah Transaksi</span>
+          <span class="stat-card__value" id="report-transaction-count" data-field="transaction-count">24 Transaksi</span>
+        </article>
 
-        <div class="report-stat-mini-card">
-          <span class="mini-stat-label">RATA-RATA OMSET / TRANSAKSI</span>
-          <span class="mini-stat-val" id="report-average-revenue" data-field="average-revenue">Rp 381.250</span>
-        </div>
+        <article class="stat-card">
+          <span class="stat-card__label">Rata-rata Omset / Transaksi</span>
+          <span class="stat-card__value" id="report-average-revenue" data-field="average-revenue">Rp 381.250</span>
+        </article>
 
       </div>
 
       <!-- Service Category Breakdown Card -->
-      <div class="category-breakdown-card" id="category-breakdown" data-field="category-breakdown">
-        <h2 class="category-breakdown-title">Service Category Breakdown</h2>
+      <section class="card category-breakdown-card" id="category-breakdown" data-field="category-breakdown">
+        <div class="card__header">
+          <div class="card__title-group">
+            <h2 class="card__title">Rincian Kategori Layanan</h2>
+            <p class="card__subtitle">Kontribusi tiap kategori terhadap total omset periode ini.</p>
+          </div>
+        </div>
 
         <!-- 2x2 Grid Visual Tiles -->
         <div class="category-visual-grid">
@@ -426,7 +455,7 @@
               <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
             </svg>
             <span class="cat-tile-percentage">45%</span>
-            <span class="cat-tile-name">Hair Styling</span>
+            <span class="cat-tile-name">Styling Rambut</span>
           </div>
 
           <div class="cat-tile-box">
@@ -435,7 +464,7 @@
               <path d="M12 7v5l3 3"></path>
             </svg>
             <span class="cat-tile-percentage">30%</span>
-            <span class="cat-tile-name">Treatments</span>
+            <span class="cat-tile-name">Perawatan</span>
           </div>
 
           <div class="cat-tile-box">
@@ -443,7 +472,7 @@
               <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
             </svg>
             <span class="cat-tile-percentage">15%</span>
-            <span class="cat-tile-name">Color</span>
+            <span class="cat-tile-name">Warna</span>
           </div>
 
           <div class="cat-tile-box">
@@ -452,7 +481,7 @@
               <line x1="7" y1="7" x2="7.01" y2="7"></line>
             </svg>
             <span class="cat-tile-percentage">10%</span>
-            <span class="cat-tile-name">Retail</span>
+            <span class="cat-tile-name">Produk</span>
           </div>
 
         </div>
@@ -461,7 +490,7 @@
         <div class="cat-detail-list">
           <div class="cat-detail-row">
             <div class="cat-detail-left">
-              <span class="cat-detail-name">Warna & Highlights</span>
+              <span class="cat-detail-name">Warna &amp; Highlights</span>
               <span class="cat-detail-count" data-field="category-count">18 transaksi</span>
             </div>
             <span class="cat-detail-total" data-field="category-total">Rp 4.150.000</span>
@@ -492,21 +521,26 @@
           </div>
         </div>
 
-      </div>
+      </section>
 
-      <!-- Dark Summary Banner with Actions -->
-      <div class="dark-summary-banner" data-field="category-summary-banner">
-        <span class="dark-summary-label">CATEGORY SUMMARY (ALL)</span>
-        <div class="dark-summary-total-val" id="dark-summary-total-val">Total: Rp 9.150.000</div>
-        <div class="dark-summary-btn-group">
-          <button type="button" class="btn-banner-export" id="btn-export-csv" data-field="btn-export-csv">EXPORT CSV</button>
-          <button type="button" class="btn-banner-generate" id="btn-generate-report" data-field="btn-generate-report">GENERATE REPORT</button>
+      <!-- Ringkasan Kategori dengan Aksi -->
+      <section class="report-summary-banner" data-field="category-summary-banner">
+        <div class="report-summary-text">
+          <span class="report-summary-label">Ringkasan Kategori (Semua)</span>
+          <span class="report-summary-total" id="dark-summary-total-val">Total: Rp 9.150.000</span>
         </div>
-      </div>
+        <div class="report-summary-actions">
+          <button type="button" class="btn btn--secondary btn-banner-export" id="btn-export-csv" data-field="btn-export-csv">Ekspor CSV</button>
+          <button type="button" class="btn btn--primary btn-banner-generate" id="btn-generate-report" data-field="btn-generate-report">Buat Laporan</button>
+        </div>
+      </section>
 
       <!-- Read-Only Transaction History Section (Sesuai Desain Halaman Transaksi) -->
-      <div class="report-history-section" data-field="report-history-section">
-        <h2 class="report-history-heading">Riwayat Transaksi</h2>
+      <section class="report-history-section" data-field="report-history-section">
+        <div class="section-heading">
+          <h2 class="card__title">Riwayat Transaksi</h2>
+          <p class="card__subtitle">Rincian transaksi harian pada periode terpilih.</p>
+        </div>
 
         <!-- Group 1: Hari Ini -->
         <div class="daily-group-card">
@@ -518,11 +552,11 @@
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
               </svg>
-              <span class="daily-date-title">Hari Ini — Rabu, 26 Agustus 2026</span>
+              <span class="daily-date-title">Hari Ini â€” Rabu, 26 Agustus 2026</span>
             </div>
             <div class="daily-summary-pills">
               <span class="daily-count-badge">3 Transaksi</span>
-              <span class="daily-total-revenue">Rp830.000</span>
+              <span class="daily-total-revenue">Rp 830.000</span>
             </div>
           </div>
           
@@ -564,7 +598,7 @@
                     <span class="payment-method-badge qris">QRIS</span>
                   </td>
                   <td>
-                    <span class="trx-status-badge selesai">Selesai (Paid)</span>
+                    <span class="trx-status-badge selesai">Selesai (Lunas)</span>
                   </td>
                   <td style="text-align: right;">
                     <a href="riwayat.html" class="btn-action-receipt">Detail Struk</a>
@@ -594,7 +628,7 @@
                     <span class="payment-method-badge tunai">Tunai</span>
                   </td>
                   <td>
-                    <span class="trx-status-badge selesai">Selesai (Paid)</span>
+                    <span class="trx-status-badge selesai">Selesai (Lunas)</span>
                   </td>
                   <td style="text-align: right;">
                     <a href="riwayat.html" class="btn-action-receipt">Detail Struk</a>
@@ -624,7 +658,7 @@
                     <span class="payment-method-badge qris">QRIS</span>
                   </td>
                   <td>
-                    <span class="trx-status-badge menunggu">Menunggu (Pending)</span>
+                    <span class="trx-status-badge menunggu">Menunggu Pembayaran</span>
                   </td>
                   <td style="text-align: right;">
                     <a href="riwayat.html" class="btn-action-receipt">Detail Struk</a>
@@ -645,11 +679,11 @@
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
               </svg>
-              <span class="daily-date-title">Kemarin — Selasa, 25 Agustus 2026</span>
+              <span class="daily-date-title">Kemarin â€” Selasa, 25 Agustus 2026</span>
             </div>
             <div class="daily-summary-pills">
               <span class="daily-count-badge">2 Transaksi</span>
-              <span class="daily-total-revenue">Rp970.000</span>
+              <span class="daily-total-revenue">Rp 970.000</span>
             </div>
           </div>
           
@@ -691,7 +725,7 @@
                     <span class="payment-method-badge transfer">Transfer</span>
                   </td>
                   <td>
-                    <span class="trx-status-badge selesai">Selesai (Paid)</span>
+                    <span class="trx-status-badge selesai">Selesai (Lunas)</span>
                   </td>
                   <td style="text-align: right;">
                     <a href="riwayat.html" class="btn-action-receipt">Detail Struk</a>
@@ -721,7 +755,7 @@
                     <span class="payment-method-badge qris">QRIS</span>
                   </td>
                   <td>
-                    <span class="trx-status-badge selesai">Selesai (Paid)</span>
+                    <span class="trx-status-badge selesai">Selesai (Lunas)</span>
                   </td>
                   <td style="text-align: right;">
                     <a href="riwayat.html" class="btn-action-receipt">Detail Struk</a>
@@ -746,7 +780,7 @@
             </div>
             <div class="daily-summary-pills">
               <span class="daily-count-badge">2 Transaksi</span>
-              <span class="daily-total-revenue">Rp750.000</span>
+              <span class="daily-total-revenue">Rp 750.000</span>
             </div>
           </div>
           
@@ -782,13 +816,13 @@
                     <span class="stylist-worker-name">Stylist: <strong>Budi</strong></span>
                   </td>
                   <td>
-                    <span class="trx-total-amount">Rp750.000</span>
+                    <span class="trx-total-amount">Rp 750.000</span>
                   </td>
                   <td>
                     <span class="payment-method-badge qris">QRIS</span>
                   </td>
                   <td>
-                    <span class="trx-status-badge selesai">Selesai (Paid)</span>
+                    <span class="trx-status-badge selesai">Selesai (Lunas)</span>
                   </td>
                   <td style="text-align: right;">
                     <a href="riwayat.html" class="btn-action-receipt">Detail Struk</a>
@@ -829,7 +863,7 @@
           </div>
         </div>
 
-      </div>
+      </section>
 
     </main>
 
