@@ -1,4 +1,4 @@
-﻿/**
+/**
  * AFWO Hair Design - Absensi Karyawan Engine
  * Handles daily attendance checking, calculations for uang makan (Rp25.000/hari for per layanan scheme),
  * and monthly attendance aggregation.
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <td style="text-align: center; font-weight: 700;">
             ${hadirCount}
           </td>
-          <td style="text-align: right; font-weight: 700; color: var(--text-primary);">
+          <td style="text-align: right; font-weight: 700; color: var(--text-1);">
             ${isOmset ? '-' : formatIDR(uangMakan)}
           </td>
         </tr>

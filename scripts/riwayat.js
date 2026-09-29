@@ -1,4 +1,4 @@
-﻿/**
+/**
  * AFWO Hair Design - Transaction History Controller (Reference 1 Match)
  * Groups transactions per day in a structured detail table, handles status tabs,
  * dynamic search, date range filters, real-time KPI updates, and receipt modal previews.
@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <tr data-trx-id="${trx.id}">
             <td style="width: 110px;">
               <a href="#" class="trans-order-id-link js-open-receipt" data-trx-id="${trx.id}">${trx.id}</a>
-              <div style="font-size: 0.72rem; color: var(--text-muted);">${trx.time} WIB</div>
+              <div style="font-size: 0.72rem; color: var(--text-3);">${trx.time} WIB</div>
             </td>
             <td>
               <div class="trans-client-meta">
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="daily-group-card">
           <div class="daily-group-header">
             <div class="daily-group-title">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2.5">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-link)" stroke-width="2.5">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                 <line x1="16" y1="2" x2="16" y2="6"></line>
                 <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
               <span class="daily-group-badge">${dayTrxs.length} Transaksi</span>
-              <span style="font-size: 0.82rem; font-weight: 800; color: #B45309;">${formatIDR(dayTotal)}</span>
+              <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-link);">${formatIDR(dayTotal)}</span>
             </div>
           </div>
 
@@ -324,46 +324,47 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!trx || !modalBody || !modal) return;
 
     modalBody.innerHTML = `
-      <div style="text-align: center; border-bottom: 1px dashed var(--border-color); padding-bottom: 12px; margin-bottom: 12px;">
-        <h2 style="font-size: 1.3rem; font-weight: 900; margin: 0; color: var(--text-primary);">Afwo. Hair Design</h2>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 2px 0 0 0;">Official Salon Payment Receipt</p>
+      <div style="text-align: center; border-bottom: 1px dashed var(--border); padding-bottom: 12px; margin-bottom: 12px;">
+        <h2 style="font-size: 1.3rem; font-weight: 900; margin: 0; color: var(--text-1);">Afwo. Hair Design</h2>
+        <p style="font-size: 0.78rem; color: var(--text-3); margin: 2px 0 0 0;">Official Salon Payment Receipt</p>
       </div>
 
       <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 8px;">
-        <span style="color: var(--text-muted);">No. Transaksi:</span>
+        <span style="color: var(--text-3);">No. Transaksi:</span>
         <strong style="font-family: monospace;">${trx.id}</strong>
       </div>
       <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 8px;">
-        <span style="color: var(--text-muted);">Waktu:</span>
+        <span style="color: var(--text-3);">Waktu:</span>
         <strong>${trx.date} - ${trx.time} WIB</strong>
       </div>
       <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 8px;">
-        <span style="color: var(--text-muted);">Pelanggan:</span>
+        <span style="color: var(--text-3);">Pelanggan:</span>
         <strong>${trx.client.name} (${trx.client.phone})</strong>
       </div>
       <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 12px;">
-        <span style="color: var(--text-muted);">Stylist:</span>
+        <span style="color: var(--text-3);">Stylist:</span>
         <strong>${trx.worker}</strong>
       </div>
 
-      <div style="border-top: 1px dashed var(--border-color); border-bottom: 1px dashed var(--border-color); padding: 10px 0; margin-bottom: 12px;">
+      <div style="border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border); padding: 10px 0; margin-bottom: 12px;">
         <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.88rem; margin-bottom: 4px;">
           <span>${trx.service}</span>
           <span>${formatIDR(trx.amount)}</span>
         </div>
       </div>
 
-      <div style="display: flex; justify-content: space-between; font-size: 1.05rem; font-weight: 900; color: #B45309; margin-bottom: 8px;">
+      <div style="display: flex; justify-content: space-between; font-size: 1.05rem; font-weight: 900; color: var(--text-link); margin-bottom: 8px;">
         <span>TOTAL:</span>
         <span>${formatIDR(trx.amount)}</span>
       </div>
-      <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-muted);">
+      <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-3);">
         <span>Metode Pembayaran:</span>
-        <span style="font-weight: 700; color: var(--text-primary);">${trx.paymentMethod}</span>
+        <span style="font-weight: 700; color: var(--text-1);">${trx.paymentMethod}</span>
       </div>
     `;
 
     modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
   }
 
   // Event Listeners
@@ -388,15 +389,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  if (btnCloseModal) {
-    btnCloseModal.addEventListener('click', () => {
-      if (modal) modal.classList.remove('show');
-    });
-  }
+    if (btnCloseModal) {
+      btnCloseModal.addEventListener('click', () => {
+        if (modal) {
+          modal.classList.remove('show');
+          modal.setAttribute('aria-hidden', 'true');
+        }
+      });
+    }
 
   if (btnModalCloseAction) {
     btnModalCloseAction.addEventListener('click', () => {
-      if (modal) modal.classList.remove('show');
+      if (modal) {
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+      }
     });
   }
 

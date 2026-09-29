@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. DATABASE STORE / MOCK SUMMARY PAYLOAD
   // =========================================================================
   const dashboardStore = {
-    userGreeting: "Ayu",
     dateFormatted: "Rabu, 26 Agustus 2026",
     todayIncome: 3450000,
     incomeGrowth: "+18% dari kemarin",
@@ -71,8 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const todayTransEl = document.getElementById('today-transactions-count');
     const lowStockEl = document.getElementById('low-stock-count');
 
-    if (welcomeTitle && data.userGreeting) {
-      welcomeTitle.textContent = `Selamat datang kembali, ${data.userGreeting}`;
+    if (welcomeTitle) {
+      welcomeTitle.textContent = 'Selamat datang kembali';
     }
     if (welcomeSubtitle && data.dateFormatted) {
       welcomeSubtitle.textContent = `Ringkasan aktivitas hari ini, ${data.dateFormatted}.`;
@@ -157,8 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
         circle.setAttribute('cx', pt.x.toFixed(1));
         circle.setAttribute('cy', pt.y.toFixed(1));
         circle.setAttribute('r', '4');
-        circle.setAttribute('fill', '#FFFFFF');
-        circle.setAttribute('stroke', '#C5932D');
+        circle.setAttribute('fill', 'var(--surface)');
+        circle.setAttribute('stroke', 'var(--gold-600)');
         circle.setAttribute('stroke-width', '2.5');
         circle.setAttribute('class', 'chart-interactive-point');
 

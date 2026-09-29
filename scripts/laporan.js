@@ -1,4 +1,4 @@
-﻿/**
+/**
  * AFWO Hair Design - Laporan Penjualan (Sales Report) Engine
  * Manages Date Presets, KPI Computations, Category Breakdown,
  * Dynamic SVG Geometry Peak-Highlighted Chart, and Transaction Records.
@@ -15,7 +15,7 @@ const ReportDatabaseAPI = {
     { id: 'TRX-121088', date: '2026-08-25', time: '11:00 WIB', client: 'Melati Putri', phone: '+62 81711223344', service: 'Keratin Smooth Treatment', worker: 'Budi', amount: 850000, category: 'Smoothing & Perm', method: 'QRIS', status: 'Selesai (Paid)' },
     { id: 'TRX-121087', date: '2026-08-25', time: '14:20 WIB', client: 'Marcus Sterling', phone: '+62 81899001122', service: 'Haircut & Styling', worker: 'Agus Pratama', amount: 120000, category: 'Potong Rambut', method: 'Tunai', status: 'Selesai (Paid)' },
     { id: 'TRX-121086', date: '2026-08-24', time: '09:45 WIB', client: 'Dewi Anggraini', phone: '+62 81233445566', service: 'Full Bleaching + Color', worker: 'Rina', amount: 950000, category: 'Coloring', method: 'Transfer', status: 'Selesai (Paid)' },
-    { id: 'TRX-121085', date: '2026-08-24', time: '16:00 WIB', client: 'Sari Handayani', phone: '+62 81298765432', service: 'L'Oreal Hair Masker', worker: 'Rina', amount: 150000, category: 'Hair Spa & Treatment', method: 'QRIS', status: 'Selesai (Paid)' }
+    { id: 'TRX-121085', date: '2026-08-24', time: '16:00 WIB', client: 'Sari Handayani', phone: '+62 81298765432', service: 'L\'Oreal Hair Masker', worker: 'Rina', amount: 150000, category: 'Hair Spa & Treatment', method: 'QRIS', status: 'Selesai (Paid)' }
   ],
 
   async fetchReportData(filters = {}) {
@@ -112,9 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     let gridLinesHtml = `
-      <line x1="0" y1="${paddingTop}" x2="${svgWidth}" y2="${paddingTop}" stroke="#F3F4F6" stroke-dasharray="3 3" stroke-width="1.2" />
-      <line x1="0" y1="${paddingTop + chartHeight * 0.5}" x2="${svgWidth}" y2="${paddingTop + chartHeight * 0.5}" stroke="#F3F4F6" stroke-dasharray="3 3" stroke-width="1.2" />
-      <line x1="0" y1="${paddingTop + chartHeight}" x2="${svgWidth}" y2="${paddingTop + chartHeight}" stroke="#E5E7EB" stroke-width="1.5" />
+      <line x1="0" y1="${paddingTop}" x2="${svgWidth}" y2="${paddingTop}" stroke="var(--chart-grid)" stroke-dasharray="3 3" stroke-width="1.2" />
+      <line x1="0" y1="${paddingTop + chartHeight * 0.5}" x2="${svgWidth}" y2="${paddingTop + chartHeight * 0.5}" stroke="var(--chart-grid)" stroke-dasharray="3 3" stroke-width="1.2" />
+      <line x1="0" y1="${paddingTop + chartHeight}" x2="${svgWidth}" y2="${paddingTop + chartHeight}" stroke="var(--chart-axis)" stroke-width="1.5" />
     `;
 
     let barsHtml = '';
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const x = (index * slotWidth) + (slotWidth - barWidth) / 2;
       const y = paddingTop + chartHeight - height;
       const isPeak = index === peakIndex;
-      const barColor = isPeak ? '#E5A93C' : '#1E2024';
+      const barColor = isPeak ? 'var(--accent)' : 'var(--surface-3)';
 
       barsHtml += `
         <g class="chart-bar-group" style="cursor: pointer;">

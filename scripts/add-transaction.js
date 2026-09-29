@@ -1,4 +1,4 @@
-﻿/**
+/**
  * AFWO Hair Design - Add Transaction / Edit Reservation Script
  * Manages:
  * 1. Searchable client combobox (type-to-filter dropdown with auto phone population)
@@ -61,8 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (matches.length === 0) {
       nameDropdown.innerHTML = `
         <div class="combobox-no-results">
-          <strong style="color: var(--text-primary);">Pelanggan tidak ditemukan.</strong>
-          <span style="display:block; font-size: 0.76rem; margin-top: 2px; color: var(--text-muted);">Nomor telepon dapat diisi manual sebagai data klien baru.</span>
+          <strong style="color: var(--text-1);">Pelanggan tidak ditemukan.</strong>
+          <span style="display:block; font-size: 0.76rem; margin-top: 2px; color: var(--text-3);">Nomor telepon dapat diisi manual sebagai data klien baru.</span>
         </div>`;
     } else {
       nameDropdown.innerHTML = matches.map(c => `
@@ -146,8 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (matches.length === 0) {
       phoneDropdown.innerHTML = `
         <div class="combobox-no-results">
-          <strong style="color: var(--text-primary);">Nomor belum terdaftar di database.</strong>
-          <span style="display:block; font-size: 0.76rem; margin-top: 2px; color: var(--text-muted);">Nomor ini akan tersimpan otomatis saat transaksi dibuat.</span>
+          <strong style="color: var(--text-1);">Nomor belum terdaftar di database.</strong>
+          <span style="display:block; font-size: 0.76rem; margin-top: 2px; color: var(--text-3);">Nomor ini akan tersimpan otomatis saat transaksi dibuat.</span>
         </div>`;
     } else {
       phoneDropdown.innerHTML = matches.map(c => `

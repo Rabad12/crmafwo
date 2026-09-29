@@ -1,4 +1,4 @@
-﻿/**
+/**
  * AFWO Hair Design - Pendapatan Bulanan Karyawan Script
  * Handles monthly income breakdown calculations, month selector,
  * dynamic footer aggregation, and individual salary slip modal preview & printing.
@@ -240,31 +240,31 @@ document.addEventListener('DOMContentLoaded', () => {
       return `
         <tr>
           <td>
-            <strong style="color: var(--text-primary); font-size: 0.88rem;">${r.name}</strong>
+            <strong style="color: var(--text-1); font-size: 0.88rem;">${r.name}</strong>
           </td>
           <td>
             <span class="${badgeClass}">${r.schemeLabel}</span>
           </td>
           <td>
-            <span style="color: var(--text-secondary);">${r.commService > 0 ? formatIDR(r.commService) : '-'}</span>
+            <span style="color: var(--text-2);">${r.commService > 0 ? formatIDR(r.commService) : '-'}</span>
           </td>
           <td>
-            <span style="color: var(--text-secondary);">${r.commDaily > 0 ? formatIDR(r.commDaily) : '-'}</span>
+            <span style="color: var(--text-2);">${r.commDaily > 0 ? formatIDR(r.commDaily) : '-'}</span>
           </td>
           <td>
-            <span style="font-weight: 700; color: ${totalComm > 0 ? '#B45309' : 'var(--text-muted)'};">${formatIDR(totalComm)}</span>
+            <span style="font-weight: 700; color: ${totalComm > 0 ? 'var(--text-link)' : 'var(--text-3)'};">${formatIDR(totalComm)}</span>
           </td>
           <td>
-            <span style="font-weight: 600; color: var(--text-primary);">${r.salary > 0 ? formatIDR(r.salary) : 'Rp0'}</span>
+            <span style="font-weight: 600; color: var(--text-1);">${r.salary > 0 ? formatIDR(r.salary) : 'Rp0'}</span>
           </td>
           <td>
-            <span style="color: var(--text-primary);">${r.attendanceDays > 0 ? r.attendanceDays : '-'}</span>
+            <span style="color: var(--text-1);">${r.attendanceDays > 0 ? r.attendanceDays : '-'}</span>
           </td>
           <td>
-            <span style="color: var(--text-secondary);">${r.mealAllowance > 0 ? formatIDR(r.mealAllowance) : '-'}</span>
+            <span style="color: var(--text-2);">${r.mealAllowance > 0 ? formatIDR(r.mealAllowance) : '-'}</span>
           </td>
           <td>
-            <strong style="color: var(--text-primary); font-size: 0.9rem;">${formatIDR(totalIncome)}</strong>
+            <strong style="color: var(--text-1); font-size: 0.9rem;">${formatIDR(totalIncome)}</strong>
           </td>
           <td style="text-align: right;">
             <button type="button" class="btn-slip-detail js-open-monthly-slip" data-id="${r.id}">
@@ -322,11 +322,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (slipMealVal) slipMealVal.textContent = formatIDR(record.mealAllowance);
     if (slipNetTotal) slipNetTotal.textContent = formatIDR(totalBersih);
 
-    if (modalOverlay) modalOverlay.style.display = 'flex';
+    if (modalOverlay) { modalOverlay.style.display = 'flex'; modalOverlay.setAttribute('aria-hidden', 'false'); }
   }
 
   function closeSlipModal() {
-    if (modalOverlay) modalOverlay.style.display = 'none';
+    if (modalOverlay) { modalOverlay.style.display = 'none'; modalOverlay.setAttribute('aria-hidden', 'true'); }
   }
 
   if (btnShowMonth) btnShowMonth.addEventListener('click', renderMonthlyIncome);

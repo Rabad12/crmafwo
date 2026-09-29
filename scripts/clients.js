@@ -114,10 +114,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mdlBtnAppointment) mdlBtnAppointment.href = `add-appointment.html?clientId=${client.id}&from=clients`;
 
     detailModal.classList.add('is-open');
+    detailModal.setAttribute('aria-hidden', 'false');
   }
-
+  
   function closeDetailModal() {
-    if (detailModal) detailModal.classList.remove('is-open');
+    if (detailModal) {
+      detailModal.classList.remove('is-open');
+      detailModal.setAttribute('aria-hidden', 'true');
+    }
   }
 
   if (btnCloseModal) btnCloseModal.addEventListener('click', closeDetailModal);

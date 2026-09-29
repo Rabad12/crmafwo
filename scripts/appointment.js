@@ -9,21 +9,23 @@ document.addEventListener('DOMContentLoaded', () => {
   // =========================================================================
   // 1. DATA REPOSITORY (MOCK DATABASE READY FOR API INTEGRATION)
   // =========================================================================
+  // Warna klien/stylist memakai token tema (emas + netral) supaya ikut
+  // berubah saat light/dark. ID, nama, telepon, dan avatar tidak diubah.
   const clientsData = [
-    { id: 'eleanor-vance', name: 'Eleanor Vance', color: '#F59E0B', bg: '#FEF3C7', avatar: 'EV', phone: '+62 8112233445' },
-    { id: 'sari-handayani', name: 'Sari Handayani', color: '#10B981', bg: '#D1FAE5', avatar: 'SH', phone: '+62 81298765432' },
-    { id: 'budi-santoso', name: 'Budi Santoso', color: '#3B82F6', bg: '#DBEAFE', avatar: 'BS', phone: '+62 81345678901' },
-    { id: 'melati-putri', name: 'Melati Putri', color: '#8B5CF6', bg: '#EDE9FE', avatar: 'MP', phone: '+62 81711223344' },
-    { id: 'marcus-sterling', name: 'Marcus Sterling', color: '#EC4899', bg: '#FCE7F3', avatar: 'MS', phone: '+62 81899001122' },
-    { id: 'dewi-anggraini', name: 'Dewi Anggraini', color: '#E5A93C', bg: '#FFFBEB', avatar: 'DA', phone: '+62 81233445566' }
+    { id: 'eleanor-vance', name: 'Eleanor Vance', color: 'var(--text-link)', bg: 'var(--accent-soft)', avatar: 'EV', phone: '+62 8112233445' },
+    { id: 'sari-handayani', name: 'Sari Handayani', color: 'var(--text-link)', bg: 'var(--accent-soft-2)', avatar: 'SH', phone: '+62 81298765432' },
+    { id: 'budi-santoso', name: 'Budi Santoso', color: 'var(--text-1)', bg: 'var(--surface-3)', avatar: 'BS', phone: '+62 81345678901' },
+    { id: 'melati-putri', name: 'Melati Putri', color: 'var(--text-2)', bg: 'var(--surface-2)', avatar: 'MP', phone: '+62 81711223344' },
+    { id: 'marcus-sterling', name: 'Marcus Sterling', color: 'var(--text-link)', bg: 'var(--surface-3)', avatar: 'MS', phone: '+62 81899001122' },
+    { id: 'dewi-anggraini', name: 'Dewi Anggraini', color: 'var(--text-1)', bg: 'var(--accent-soft)', avatar: 'DA', phone: '+62 81233445566' }
   ];
 
   const workersData = [
-    { id: 'agus-pratama', name: 'Agus Pratama', specialty: 'Senior Stylist', color: '#E5A93C', bg: '#FFFBEB' },
-    { id: 'ada-wong', name: 'Ada Wong', specialty: 'Lead Hair Stylist', color: '#EC4899', bg: '#FCE7F3' },
-    { id: 'budi', name: 'Budi', specialty: 'Color Specialist', color: '#3B82F6', bg: '#DBEAFE' },
-    { id: 'rina', name: 'Rina', specialty: 'Hair Spa & Treatment', color: '#10B981', bg: '#D1FAE5' },
-    { id: 'dimas', name: 'Dimas', specialty: 'Barber & Grooming', color: '#8B5CF6', bg: '#EDE9FE' }
+    { id: 'agus-pratama', name: 'Agus Pratama', specialty: 'Senior Stylist', color: 'var(--text-link)', bg: 'var(--accent-soft)' },
+    { id: 'ada-wong', name: 'Ada Wong', specialty: 'Lead Hair Stylist', color: 'var(--text-link)', bg: 'var(--accent-soft-2)' },
+    { id: 'budi', name: 'Budi', specialty: 'Color Specialist', color: 'var(--text-1)', bg: 'var(--surface-3)' },
+    { id: 'rina', name: 'Rina', specialty: 'Hair Spa & Treatment', color: 'var(--text-2)', bg: 'var(--surface-2)' },
+    { id: 'dimas', name: 'Dimas', specialty: 'Barber & Grooming', color: 'var(--text-link)', bg: 'var(--surface-3)' }
   ];
 
   let appointmentsData = [
@@ -242,11 +244,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function getClient(id) {
-    return clientsData.find(c => c.id === id) || { name: 'Klien', color: '#6B7280', bg: '#F3F4F6', avatar: 'KL', phone: '' };
+    return clientsData.find(c => c.id === id) || { name: 'Klien', color: 'var(--text-2)', bg: 'var(--surface-3)', avatar: 'KL', phone: '' };
   }
 
   function getWorker(id) {
-    return workersData.find(w => w.id === id) || { name: 'Stylist', color: '#E5A93C', bg: '#FFFBEB' };
+    return workersData.find(w => w.id === id) || { name: 'Stylist', color: 'var(--text-link)', bg: 'var(--accent-soft)' };
   }
 
   function formatDateStr(year, month, day) {
@@ -349,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dayApts.slice(0, maxDisplay).forEach(apt => {
         const client = getClient(apt.clientId);
         aptsHtml += `
-          <div class="apt-chip-item" style="background-color: ${client.bg}; color: #111827; border-left-color: ${client.color};" title="${apt.time} ${client.name} - ${apt.service}">
+          <div class="apt-chip-item" style="background-color: ${client.bg}; color: var(--text-1); border-left-color: ${client.color};" title="${apt.time} ${client.name} - ${apt.service}">
             <span class="apt-chip-time" style="color: ${client.color};">${apt.time}</span>
             <span class="apt-chip-client">${client.name}</span>
           </div>
@@ -420,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let headerHtml = `
       <div class="week-grid-header-row">
-        <div class="week-head-cell" style="color: var(--text-muted);">GMT+7</div>
+        <div class="week-head-cell" style="color: var(--text-3);">GMT+7</div>
         ${weekDays.map(d => {
           const dStr = formatDateStr(d.getFullYear(), d.getMonth(), d.getDate());
           const isToday = dStr === todayStr;
@@ -454,7 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const heightPx = Math.max(42, (apt.duration / 60) * 52 - 4);
 
             aptsHtml += `
-              <div class="week-apt-block" style="top: ${topPx}px; height: ${heightPx}px; background-color: ${client.bg}; border-left-color: ${client.color}; color: #111827; pointer-events: none;">
+              <div class="week-apt-block" style="top: ${topPx}px; height: ${heightPx}px; background-color: ${client.bg}; border-left-color: ${client.color}; color: var(--text-1); pointer-events: none;">
                 <div class="week-apt-time" style="color: ${client.color};">${apt.time}</div>
                 <div class="week-apt-title">${client.name}</div>
                 <div class="week-apt-stylist">${worker.name}</div>

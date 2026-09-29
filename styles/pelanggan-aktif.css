@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    AFWO HAIR DESIGN - DATA PELANGGAN AKTIF STYLES
    ========================================================================== */
 
@@ -18,29 +18,29 @@
   align-items: center;
   justify-content: center;
   padding: 8px 18px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   font-size: 0.85rem;
   font-weight: 700;
   text-decoration: none;
-  color: var(--text-secondary);
-  background-color: #FFFFFF;
-  border: 1px solid var(--border-color);
+  color: var(--text-2);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   transition: all 0.15s ease;
   white-space: nowrap;
 }
 
 .report-subnav-link:hover {
-  background-color: #F3F4F6;
-  color: var(--text-primary);
-  border-color: #CBD5E1;
+  background-color: var(--surface-2);
+  color: var(--text-1);
+  border-color: var(--border-accent);
 }
 
 .report-subnav-link.active {
-  background-color: #B45309;
-  background: linear-gradient(135deg, #B45309 0%, #92400E 100%);
-  color: #FFFFFF;
-  border-color: #92400E;
-  box-shadow: 0 2px 6px rgba(180, 83, 9, 0.25);
+  background-color: var(--surface-contrast);
+  background: linear-gradient(135deg, var(--surface-contrast) 0%, var(--surface-contrast) 100%);
+  color: var(--text-on-contrast);
+  border-color: var(--border-accent);
+  box-shadow: 0 2px 6px var(--gold-a25);
 }
 
 /* Header Section */
@@ -55,19 +55,19 @@
   font-size: 1.55rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: var(--text-primary);
+  color: var(--text-1);
   line-height: 1.2;
 }
 
 .active-clients-subtitle {
   font-size: 0.88rem;
-  color: var(--text-secondary);
+  color: var(--text-2);
 }
 
 /* Filter Card */
 .active-clients-filter-card {
-  background-color: #FFFFFF;
-  border: 1px solid var(--border-color);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 16px 20px;
   box-shadow: var(--shadow-sm);
@@ -97,22 +97,22 @@
 .filter-field-label {
   font-size: 0.82rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-1);
 }
 
 .filter-input-box {
   display: flex;
   align-items: center;
-  background-color: #FFFFFF;
-  border: 1px solid var(--border-color);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 8px 12px;
   transition: all 0.15s ease;
 }
 
 .filter-input-box:focus-within {
-  border-color: var(--dark-solid);
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px var(--black-06);
 }
 
 .filter-select-control,
@@ -123,7 +123,7 @@
   font-family: var(--font-sans);
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-1);
   outline: none;
   cursor: pointer;
 }
@@ -135,8 +135,8 @@
 }
 
 .btn-filter-dark {
-  background-color: var(--dark-solid);
-  color: #FFFFFF;
+  background-color: var(--ink);
+  color: var(--text-on-ink);
   border: none;
   padding: 9px 20px;
   border-radius: var(--radius-md);
@@ -148,14 +148,14 @@
 }
 
 .btn-filter-dark:hover {
-  background-color: #2D3139;
+  background-color: var(--surface-contrast);
   transform: translateY(-1px);
 }
 
 .btn-reset-light {
-  background-color: #FFFFFF;
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  background-color: var(--surface);
+  color: var(--text-1);
+  border: 1px solid var(--border);
   padding: 9px 18px;
   border-radius: var(--radius-md);
   font-size: 0.85rem;
@@ -166,8 +166,8 @@
 }
 
 .btn-reset-light:hover {
-  background-color: #F3F4F6;
-  border-color: #CBD5E1;
+  background-color: var(--surface-2);
+  border-color: var(--border-accent);
 }
 
 /* KPI Mini Grid */
@@ -186,8 +186,8 @@
 }
 
 .kpi-mini-card {
-  background-color: #FFFFFF;
-  border: 1px solid var(--border-color);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 16px;
   display: flex;
@@ -197,14 +197,14 @@
 }
 
 .kpi-mini-card.featured-gold-kpi {
-  border-color: #FDE68A;
-  background: linear-gradient(180deg, #FFFDF8 0%, #FFFFFF 100%);
+  border-color: var(--border-accent);
+  background: linear-gradient(180deg, var(--accent-soft) 0%, var(--surface) 100%);
 }
 
 .kpi-mini-label {
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--text-muted);
+  color: var(--text-3);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -212,23 +212,23 @@
 .kpi-mini-value {
   font-size: 1.45rem;
   font-weight: 900;
-  color: var(--text-primary);
+  color: var(--text-1);
   letter-spacing: -0.02em;
 }
 
 .kpi-mini-card.featured-gold-kpi .kpi-mini-value {
-  color: #B45309;
+  color: var(--text-link);
 }
 
 .kpi-mini-sub {
   font-size: 0.75rem;
-  color: var(--text-secondary);
+  color: var(--text-2);
 }
 
 /* Results Card */
 .active-clients-results-card {
-  background-color: #FFFFFF;
-  border: 1px solid var(--border-color);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 20px;
   box-shadow: var(--shadow-sm);
@@ -253,7 +253,7 @@
 .sort-label {
   font-size: 0.82rem;
   font-weight: 700;
-  color: var(--text-muted);
+  color: var(--text-3);
 }
 
 /* Table Styles */
@@ -273,23 +273,23 @@
   padding: 12px 14px;
   font-size: 0.75rem;
   font-weight: 800;
-  color: var(--text-muted);
+  color: var(--text-3);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-bottom: 2px solid var(--border-color);
-  background-color: #F9FAFB;
+  border-bottom: 2px solid var(--border);
+  background-color: var(--accent-soft);
 }
 
 .active-clients-table td {
   padding: 14px;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-1);
   font-weight: 500;
   vertical-align: middle;
 }
 
 .active-clients-table tr:hover td {
-  background-color: #F8FAFC;
+  background-color: var(--accent-soft);
 }
 
 .client-meta-cell {
@@ -302,8 +302,8 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: #FEF3C7;
-  color: #B45309;
+  background-color: var(--accent-soft);
+  color: var(--text-link);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -314,13 +314,13 @@
 
 .client-name-link {
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-1);
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
 .client-name-link:hover {
-  color: #B45309;
+  color: var(--text-link);
   text-decoration: underline;
 }
 
@@ -329,23 +329,23 @@
   font-size: 0.68rem;
   font-weight: 700;
   padding: 1px 6px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   margin-top: 2px;
 }
 
 .badge-vip {
-  background-color: #FEF3C7;
-  color: #92400E;
+  background-color: var(--accent-soft);
+  color: var(--text-link);
 }
 
 .badge-loyal {
-  background-color: #D1FAE5;
-  color: #065F46;
+  background-color: var(--accent-soft);
+  color: var(--text-1);
 }
 
 .badge-reguler {
-  background-color: #DBEAFE;
-  color: #1E40AF;
+  background-color: var(--accent-soft);
+  color: var(--text-link);
 }
 
 .visit-badge {
@@ -353,12 +353,12 @@
   align-items: center;
   gap: 4px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-1);
 }
 
 .spend-amount-highlight {
   font-weight: 800;
-  color: #B45309;
+  color: var(--text-link);
 }
 
 .action-buttons-cell {
@@ -378,22 +378,22 @@
 }
 
 .btn-view-profile {
-  background-color: #F3F4F6;
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  background-color: var(--surface-2);
+  color: var(--text-1);
+  border: 1px solid var(--border);
 }
 
 .btn-view-profile:hover {
-  background-color: #E5E7EB;
+  background-color: var(--surface-2);
 }
 
 /* Empty State Card (Exact match to Reference Screenshot) */
 .empty-state-card {
   padding: 50px 20px;
   text-align: center;
-  border: 1px dashed var(--border-color);
+  border: 1px dashed var(--border);
   border-radius: var(--radius-md);
-  background-color: #FAFAFA;
+  background-color: var(--surface);
 }
 
 .empty-state-content {
@@ -407,5 +407,5 @@
 .empty-state-text {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-2);
 }

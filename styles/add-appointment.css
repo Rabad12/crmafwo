@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    AFWO HAIR DESIGN - ADD / EDIT APPOINTMENT FORM STYLES (MATCHING DESIGN THEME)
    ========================================================================== */
 
@@ -13,13 +13,13 @@
 .form-inline-action-link {
   font-size: 0.8rem;
   font-weight: 700;
-  color: #B45309;
+  color: var(--text-link);
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
 .form-inline-action-link:hover {
-  color: var(--text-primary);
+  color: var(--text-1);
   text-decoration: underline;
 }
 
@@ -34,7 +34,7 @@
 .quick-slot-label {
   font-size: 0.76rem;
   font-weight: 700;
-  color: var(--text-muted);
+  color: var(--text-3);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -47,11 +47,11 @@
 }
 
 .slot-pill-btn {
-  background-color: #FFFFFF;
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-2);
   padding: 6px 14px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   font-size: 0.8rem;
   font-weight: 700;
   font-family: var(--font-sans);
@@ -60,20 +60,20 @@
 }
 
 .slot-pill-btn:hover {
-  border-color: #CBD5E1;
-  color: var(--text-primary);
+  border-color: var(--border-accent);
+  color: var(--text-1);
 }
 
 .slot-pill-btn.active {
-  background-color: var(--dark-solid);
-  border-color: var(--dark-solid);
-  color: #FFFFFF;
+  background-color: var(--ink);
+  border-color: var(--ink);
+  color: var(--text-on-ink);
 }
 
 .input-suffix-text {
   font-size: 0.84rem;
   font-weight: 700;
-  color: var(--text-muted);
+  color: var(--text-3);
   margin-left: 8px;
   flex-shrink: 0;
 }
@@ -81,7 +81,7 @@
 /* Error messages hidden by default */
 .field-error-msg {
   font-size: 0.78rem;
-  color: #DC2626;
+  color: var(--text-link);
   font-weight: 600;
   margin-top: 4px;
   display: none;

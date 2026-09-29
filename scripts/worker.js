@@ -89,10 +89,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mdlBtnEdit) mdlBtnEdit.href = `edit-worker.html?mode=edit&id=${worker.id}`;
 
     detailModal.classList.add('is-open');
+    detailModal.setAttribute('aria-hidden', 'false');
   }
-
+  
   function closeWorkerModal() {
-    if (detailModal) detailModal.classList.remove('is-open');
+    if (detailModal) {
+      detailModal.classList.remove('is-open');
+      detailModal.setAttribute('aria-hidden', 'true');
+    }
   }
 
   if (btnCloseModal) btnCloseModal.addEventListener('click', closeWorkerModal);
@@ -157,13 +161,13 @@ document.addEventListener('DOMContentLoaded', () => {
               <span class="worker-phone-num">${worker.phone}</span>
             </td>
             <td class="col-salary">
-              <strong style="color: var(--text-primary); font-size: 0.88rem;">${formatIDR(worker.salary)}</strong>
+              <strong style="color: var(--text-1); font-size: 0.88rem;">${formatIDR(worker.salary)}</strong>
             </td>
             <td class="col-scheme">
               <span class="client-segment-badge ${schemeBadgeClass}">${worker.commissionSchemeLabel}</span>
             </td>
             <td class="col-rate">
-              <span style="font-weight: 700; color: var(--text-primary); font-size: 0.84rem;">${worker.commissionRate}</span>
+              <span style="font-weight: 700; color: var(--text-1); font-size: 0.84rem;">${worker.commissionRate}</span>
             </td>
             <td style="text-align: right;" onclick="event.stopPropagation();">
               <div class="worker-actions-cell">

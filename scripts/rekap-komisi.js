@@ -1,4 +1,4 @@
-﻿/**
+/**
  * AFWO Hair Design - Rekap Komisi & Slip Script
  * Manages commission summary calculations, date filters, employee breakdown tables,
  * and individual salary/commission slip modal preview with print capabilities.
@@ -123,20 +123,20 @@ document.addEventListener('DOMContentLoaded', () => {
         <tr>
           <td>
             <div style="display: flex; align-items: center; gap: 10px;">
-              <strong style="color: var(--text-primary); font-size: 0.9rem;">${staff.name}</strong>
+              <strong style="color: var(--text-1); font-size: 0.9rem;">${staff.name}</strong>
             </div>
           </td>
           <td>
             <span class="${badgeClass}">${staff.schemeLabel}</span>
           </td>
           <td>
-            <span style="font-weight: 600; color: var(--text-primary);">${staff.salary > 0 ? formatIDR(staff.salary) : 'Rp0'}</span>
+            <span style="font-weight: 600; color: var(--text-1);">${staff.salary > 0 ? formatIDR(staff.salary) : 'Rp0'}</span>
           </td>
           <td>
-            <span style="font-weight: 700; color: ${staff.commission > 0 ? '#B45309' : 'var(--text-muted)'};">${formatIDR(staff.commission)}</span>
+            <span style="font-weight: 700; color: ${staff.commission > 0 ? 'var(--text-link)' : 'var(--text-3)'};">${formatIDR(staff.commission)}</span>
           </td>
           <td>
-            <strong style="color: var(--text-primary); font-size: 0.92rem;">${formatIDR(totalIncome)}</strong>
+            <strong style="color: var(--text-1); font-size: 0.92rem;">${formatIDR(totalIncome)}</strong>
           </td>
           <td style="text-align: right;">
             <button type="button" class="btn-view-slip js-open-slip" data-id="${staff.id}">
@@ -180,11 +180,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (slipMealVal) slipMealVal.textContent = formatIDR(staff.mealAllowance);
     if (slipNetTotal) slipNetTotal.textContent = formatIDR(totalBersih);
 
-    if (modalOverlay) modalOverlay.style.display = 'flex';
+    if (modalOverlay) { modalOverlay.style.display = 'flex'; modalOverlay.setAttribute('aria-hidden', 'false'); }
   }
 
   function closeSlipModal() {
-    if (modalOverlay) modalOverlay.style.display = 'none';
+    if (modalOverlay) { modalOverlay.style.display = 'none'; modalOverlay.setAttribute('aria-hidden', 'true'); }
   }
 
   // Quick Period Switcher Handler

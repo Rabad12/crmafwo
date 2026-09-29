@@ -11,14 +11,14 @@
 .edit-produk-title {
   font-size: 1.65rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--text-1);
   line-height: 1.2;
   letter-spacing: -0.01em;
 }
 
 .edit-produk-subtitle {
   font-size: 0.88rem;
-  color: var(--text-secondary);
+  color: var(--text-2);
   margin-top: 4px;
   font-weight: 400;
 }
@@ -37,8 +37,8 @@
   flex-direction: column;
   gap: 20px;
   padding: 26px 28px;
-  background-color: #FFFFFF;
-  border: 1px solid var(--border-color);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
 }
@@ -67,13 +67,13 @@
 .form-label {
   font-size: 0.88rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-1);
   letter-spacing: -0.005em;
 }
 
 .field-help-text {
   font-size: 0.76rem;
-  color: #6B7280;
+  color: var(--text-2);
   line-height: 1.4;
 }
 
@@ -81,8 +81,8 @@
 .form-input-box {
   display: flex;
   align-items: center;
-  background-color: #FFFFFF;
-  border: 1px solid #E5E7EB;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 10px 14px;
   gap: 8px;
@@ -90,13 +90,13 @@
 }
 
 .form-input-box:focus-within {
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 0 3px rgba(229, 169, 60, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--gold-a15);
 }
 
 .form-input-box.disabled-like {
-  background-color: #FAF8F5;
-  border-color: #EFE8DC;
+  background-color: var(--surface);
+  border-color: var(--border);
 }
 
 .form-input-control {
@@ -106,12 +106,12 @@
   font-size: 0.92rem;
   font-family: var(--font-sans);
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-1);
   outline: none;
 }
 
 .form-input-control::placeholder {
-  color: #9CA3AF;
+  color: var(--text-2);
 }
 
 .form-select-control {
@@ -121,7 +121,7 @@
   font-size: 0.92rem;
   font-family: var(--font-sans);
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-1);
   outline: none;
   cursor: pointer;
 }
@@ -138,8 +138,8 @@
 }
 
 .btn-add-brand-gold {
-  background-color: #C69238;
-  color: #FFFFFF;
+  background-color: var(--surface-contrast);
+  color: var(--text-on-contrast);
   border: none;
   border-radius: var(--radius-md);
   font-size: 0.85rem;
@@ -155,7 +155,7 @@
 }
 
 .btn-add-brand-gold:hover {
-  background-color: #B57F26;
+  background-color: var(--surface-contrast);
   transform: translateY(-1px);
 }
 
@@ -184,27 +184,27 @@
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
-  border: 1px solid #E5E7EB;
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background-color: #FFFFFF;
+  background-color: var(--surface);
   cursor: pointer;
   user-select: none;
   transition: all 0.15s ease;
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-1);
 }
 
 .category-radio-card:hover {
-  background-color: #FBFBFA;
-  border-color: #D1D5DB;
+  background-color: var(--surface);
+  border-color: var(--border);
 }
 
 .category-radio-card.active,
 .category-radio-card:has(input[type="radio"]:checked) {
-  border-color: #E5A93C;
-  background-color: #FFFDF8;
-  box-shadow: 0 1px 4px rgba(229, 169, 60, 0.12);
+  border-color: var(--border-accent);
+  background-color: var(--accent-soft);
+  box-shadow: 0 1px 4px var(--gold-a12);
 }
 
 .category-radio-card input[type="radio"] {
@@ -215,17 +215,17 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  border: 2px solid #D1D5DB;
+  border: 2px solid var(--border);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   transition: all 0.15s ease;
-  background-color: #FFFFFF;
+  background-color: var(--surface);
 }
 
 .category-radio-card input[type="radio"]:checked + .radio-custom-dot {
-  border-color: #E5A93C;
+  border-color: var(--border-accent);
 }
 
 .category-radio-card input[type="radio"]:checked + .radio-custom-dot::after {
@@ -233,7 +233,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #E5A93C;
+  background-color: var(--surface-contrast);
 }
 
 .radio-card-label {
@@ -254,15 +254,15 @@
   user-select: none;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-1);
 }
 
 .checkbox-custom-label input[type="checkbox"] {
   width: 17px;
   height: 17px;
-  accent-color: #E5A93C;
+  accent-color: var(--accent);
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 /* Bottom Action Buttons */
@@ -274,8 +274,8 @@
 }
 
 .btn-dark-solid {
-  background-color: #2D2319;
-  color: #FFFFFF;
+  background-color: var(--surface-contrast);
+  color: var(--text-on-contrast);
   border: none;
   border-radius: var(--radius-md);
   padding: 11px 24px;
@@ -288,15 +288,15 @@
 }
 
 .btn-dark-solid:hover {
-  background-color: #1A130C;
+  background-color: var(--surface-contrast);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
 
 .btn-light-outline {
-  background-color: #FFFFFF;
-  color: #4B5563;
-  border: 1px solid #E5E7EB;
+  background-color: var(--surface);
+  color: var(--text-1);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 11px 22px;
   font-size: 0.9rem;
@@ -308,7 +308,7 @@
 }
 
 .btn-light-outline:hover {
-  background-color: #F9FAFB;
-  border-color: #D1D5DB;
-  color: #111827;
+  background-color: var(--accent-soft);
+  border-color: var(--border);
+  color: var(--text-1);
 }

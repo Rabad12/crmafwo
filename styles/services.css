@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    AFWO HAIR DESIGN - SERVICE MANAGEMENT STYLES (RESPONSIVE)
    ========================================================================== */
 
@@ -15,13 +15,13 @@
   font-size: 1.65rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: var(--text-primary);
+  color: var(--text-1);
   line-height: 1.2;
 }
 
 .services-subtitle {
   font-size: 0.88rem;
-  color: var(--text-secondary);
+  color: var(--text-2);
   line-height: 1.4;
 }
 
@@ -31,8 +31,8 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background-color: var(--dark-solid);
-  color: #FFFFFF;
+  background-color: var(--ink);
+  color: var(--text-on-ink);
   padding: 13px 18px;
   border-radius: var(--radius-md);
   font-size: 0.92rem;
@@ -46,7 +46,7 @@
 }
 
 .btn-add-full:hover {
-  background-color: var(--dark-hover);
+  background-color: var(--ink-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -72,11 +72,11 @@
 }
 
 .pill-tab-btn {
-  background-color: #FFFFFF;
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-2);
   padding: 8px 16px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   font-size: 0.82rem;
   font-weight: 700;
   font-family: var(--font-sans);
@@ -86,14 +86,14 @@
 }
 
 .pill-tab-btn:hover {
-  border-color: #9CA3AF;
-  color: var(--text-primary);
+  border-color: var(--border-strong);
+  color: var(--text-1);
 }
 
 .pill-tab-btn.active {
-  background-color: var(--dark-solid);
-  border-color: var(--dark-solid);
-  color: #FFFFFF;
+  background-color: var(--ink);
+  border-color: var(--ink);
+  color: var(--text-on-ink);
 }
 
 /* Services List Stack */
@@ -109,9 +109,9 @@
   flex-direction: column;
   gap: 10px;
   padding: 20px;
-  background-color: #FFFFFF;
+  background-color: var(--surface);
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
@@ -140,27 +140,27 @@
 
 .category-tag.potong,
 .category-tag.hair {
-  background-color: #FEF3C7;
-  color: #92400E;
+  background-color: var(--accent-soft);
+  color: var(--text-link);
 }
 
 .category-tag.styling {
-  background-color: #E0E7FF;
-  color: #3730A3;
+  background-color: var(--accent-soft);
+  color: var(--text-link);
 }
 
 .category-tag.warna {
-  background-color: #FCE7F3;
-  color: #9D174D;
+  background-color: var(--accent-soft);
+  color: var(--text-link);
 }
 
 .category-tag.spa {
-  background-color: #FEF2F2;
-  color: #991B1B;
+  background-color: var(--accent-soft);
+  color: var(--text-link);
 }
 
 .btn-edit-icon {
-  color: #6B7280;
+  color: var(--text-2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -171,20 +171,20 @@
 }
 
 .btn-edit-icon:hover {
-  color: var(--text-primary);
+  color: var(--text-1);
   transform: scale(1.15);
 }
 
 .service-card-name {
   font-size: 1.12rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--text-1);
   margin-top: 2px;
 }
 
 .service-card-desc {
   font-size: 0.84rem;
-  color: var(--text-secondary);
+  color: var(--text-2);
   line-height: 1.45;
 }
 
@@ -194,7 +194,7 @@
   justify-content: space-between;
   margin-top: 6px;
   padding-top: 10px;
-  border-top: 1px solid #F3F4F6;
+  border-top: 1px solid var(--border);
 }
 
 .service-duration-box {
@@ -203,13 +203,13 @@
   gap: 6px;
   font-size: 0.84rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-2);
 }
 
 .service-price-val {
   font-size: 1rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--text-1);
 }
 
 /* Empty State */
@@ -217,7 +217,7 @@
   display: none;
   text-align: center;
   padding: 40px 20px;
-  color: var(--text-muted);
+  color: var(--text-3);
 }
 
 .empty-filter-state.show {

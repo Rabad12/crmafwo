@@ -1,4 +1,4 @@
-﻿/**
+/**
  * AFWO Hair Design - Data Pelanggan Aktif Controller
  * Manages dynamic date-range calculations, transaction aggregation per client,
  * quick period switches (Bulan Ini, Bulan Lalu, 30 Hari, Tahun Ini),
@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           return `
             <tr>
-              <td style="font-weight: 700; color: var(--text-muted);">${index + 1}</td>
+              <td style="font-weight: 700; color: var(--text-3);">${index + 1}</td>
               <td>
                 <div class="client-meta-cell">
                   <div>
@@ -294,11 +294,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
               </td>
               <td>
-                <span style="font-weight: 600; color: var(--text-primary); font-family: monospace;">${client.phone}</span>
+                <span style="font-weight: 600; color: var(--text-1); font-family: monospace;">${client.phone}</span>
               </td>
               <td>
                 <span class="visit-badge">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: #B45309;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--text-link);">
                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                     <circle cx="9" cy="7" r="4"></circle>
                   </svg>
@@ -309,15 +309,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="spend-amount-highlight">${formatIDR(client.totalSpend)}</span>
               </td>
               <td>
-                <span style="font-size: 0.83rem; color: var(--text-secondary);">${formatDisplayDate(client.lastVisit)}</span>
+                <span style="font-size: 0.83rem; color: var(--text-2);">${formatDisplayDate(client.lastVisit)}</span>
               </td>
               <td>
-                <span style="font-size: 0.83rem; font-weight: 600; color: var(--text-primary);">${client.favService}</span>
+                <span style="font-size: 0.83rem; font-weight: 600; color: var(--text-1);">${client.favService}</span>
               </td>
               <td style="text-align: right;">
                 <div class="action-buttons-cell">
                   <a href="profil-pelanggan.html?id=${client.id}" class="btn-table-action btn-view-profile">Profil</a>
-                  <a href="add-appointment.html?clientId=${client.id}" class="btn-table-action btn-view-profile" style="background-color: #FEF3C7; color: #92400E; border-color: #FDE68A;">+ Janji Temu</a>
+                  <a href="add-appointment.html?clientId=${client.id}" class="btn-table-action btn-view-profile" style="background-color: var(--accent-soft); color: var(--text-link); border-color: var(--border-accent-soft);">+ Janji Temu</a>
                 </div>
               </td>
             </tr>
