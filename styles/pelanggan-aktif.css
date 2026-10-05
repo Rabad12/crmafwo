@@ -382,19 +382,25 @@
   margin-top: 2px;
 }
 
+/* Tier VIP: emas lembut + border emas lembut, teks charcoal */
 .badge-vip {
-  background-color: var(--accent-soft);
-  color: var(--text-link);
-}
-
-.badge-loyal {
-  background-color: var(--accent-soft);
+  background-color: var(--accent-soft-2);
   color: var(--text-1);
+  border: 1px solid var(--border-accent-soft);
 }
 
+/* Tier Loyal: outline netral */
+.badge-loyal {
+  background-color: transparent;
+  color: var(--text-2);
+  border: 1px solid var(--border-strong);
+}
+
+/* Tier Reguler: netral lembut */
 .badge-reguler {
-  background-color: var(--accent-soft);
-  color: var(--text-link);
+  background-color: var(--surface-3);
+  color: var(--text-2);
+  border: 1px solid var(--border);
 }
 
 .visit-badge {

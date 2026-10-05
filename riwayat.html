@@ -14,7 +14,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/global.css">
-  <script>(function(){try{var k="afwo_theme",t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <meta name="theme-color" content="#F7F6F3">
+  <script>(function(){try{var k="afwo_theme",t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");t="light";}var m=document.querySelector('meta[name="theme-color"]');if(m){m.setAttribute("content",t==="dark"?"#141414":"#F7F6F3");}})();</script>
   <link rel="stylesheet" href="styles/nav.css">
   <link rel="stylesheet" href="styles/riwayat.css">
 </head>
@@ -202,8 +203,8 @@
               <span class="trans-kpi-num" id="kpi-total-orders">14</span>
             </div>
             <div class="trans-kpi-chart">
-              <svg viewBox="0 0 80 32" class="sparkline-svg sparkline-blue">
-                <path d="M0 24 Q 15 10, 30 20 T 60 8 T 80 14" fill="none" stroke="var(--chart-series-1)" stroke-width="2.4"/>
+              <svg viewBox="0 0 80 32" class="sparkline-svg sparkline-neutral">
+                <path d="M0 24 Q 15 10, 30 20 T 60 8 T 80 14" fill="none" stroke="var(--chart-series-2)" stroke-width="2.4"/>
                 <path d="M0 24 Q 15 10, 30 20 T 60 8 T 80 14 L 80 32 L 0 32 Z" fill="var(--chart-area-1)"/>
               </svg>
             </div>
@@ -216,8 +217,8 @@
               <span class="trans-kpi-num" id="kpi-completed-orders">12</span>
             </div>
             <div class="trans-kpi-chart">
-              <svg viewBox="0 0 80 32" class="sparkline-svg sparkline-green">
-                <path d="M0 20 Q 20 6, 40 16 T 70 8 T 80 6" fill="none" stroke="var(--chart-series-2)" stroke-width="2.4"/>
+              <svg viewBox="0 0 80 32" class="sparkline-svg sparkline-done">
+                <path d="M0 20 Q 20 6, 40 16 T 70 8 T 80 6" fill="none" stroke="var(--chart-series-done)" stroke-width="2.4"/>
                 <path d="M0 20 Q 20 6, 40 16 T 70 8 T 80 6 L 80 32 L 0 32 Z" fill="var(--chart-area-2)"/>
               </svg>
             </div>
@@ -230,8 +231,8 @@
               <span class="trans-kpi-num" id="kpi-pending-orders">2</span>
             </div>
             <div class="trans-kpi-chart">
-              <svg viewBox="0 0 80 32" class="sparkline-svg sparkline-orange">
-                <path d="M0 16 Q 25 24, 50 12 T 80 20" fill="none" stroke="var(--chart-series-3)" stroke-width="2.4"/>
+              <svg viewBox="0 0 80 32" class="sparkline-svg sparkline-pending">
+                <path d="M0 16 Q 25 24, 50 12 T 80 20" fill="none" stroke="var(--chart-series-pending)" stroke-width="2.4"/>
                 <path d="M0 16 Q 25 24, 50 12 T 80 20 L 80 32 L 0 32 Z" fill="var(--chart-area-3)"/>
               </svg>
             </div>
@@ -315,8 +316,8 @@
         <!-- Injected via JS -->
       </div>
       <div class="modal-footer-row">
-        <button type="button" class="btn-print-receipt" id="btn-print-receipt">🖨️ Cetak Struk</button>
-        <button type="button" class="btn-modal-close-action" id="btn-modal-close-action">Tutup</button>
+        <button type="button" class="btn btn-secondary" id="btn-modal-close-action">Tutup</button>
+        <button type="button" class="btn btn-primary" id="btn-print-receipt">🖨️ Cetak Struk</button>
       </div>
     </div>
   </div>

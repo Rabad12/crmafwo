@@ -46,7 +46,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/global.css">
-  <script>(function(){try{var k="afwo_theme",t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <meta name="theme-color" content="#F7F6F3">
+  <script>(function(){try{var k="afwo_theme",t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");t="light";}var m=document.querySelector('meta[name="theme-color"]');if(m){m.setAttribute("content",t==="dark"?"#141414":"#F7F6F3");}})();</script>
   <link rel="stylesheet" href="styles/nav.css">
   <link rel="stylesheet" href="styles/dashboard.css">
 </head>
@@ -301,9 +302,9 @@
                   <defs>
                     <!-- Soft Gold Fill Gradient -->
                     <linearGradient id="areaGradientGold" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.25"/>
-                      <stop offset="85%" stop-color="var(--surface)" stop-opacity="0.08"/>
-                      <stop offset="100%" stop-color="var(--surface)" stop-opacity="0.0"/>
+                      <stop offset="0%" stop-color="var(--chart-area-top)"/>
+                      <stop offset="85%" stop-color="var(--chart-area-mid)"/>
+                      <stop offset="100%" stop-color="var(--chart-area-end)"/>
                     </linearGradient>
                   </defs>
 
@@ -318,7 +319,8 @@
                   <path id="chart-area-path" fill="url(#areaGradientGold)" d="M 30,120 Q 120,95 210,105 T 390,70 T 570,30 L 570,145 L 30,145 Z"></path>
 
                   <!-- Dynamic SVG Line Stroke -->
-                  <path id="chart-line-path" fill="none" stroke="var(--gold-600)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" d="M 30,120 Q 120,95 210,105 T 390,70 T 570,30"></path>
+                  <!-- Garis data utama: --chart-series-1 sudah >=3:1 di kedua tema -->
+                  <path id="chart-line-path" fill="none" stroke="var(--chart-series-1)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" d="M 30,120 Q 120,95 210,105 T 390,70 T 570,30"></path>
 
                   <!-- Data Points Container -->
                   <g id="chart-points-group">

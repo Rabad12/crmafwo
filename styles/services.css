@@ -2,13 +2,13 @@
    AFWO HAIR DESIGN - SERVICE MANAGEMENT STYLES (RESPONSIVE)
    ========================================================================== */
 
-/* Header & Intro */
+/* Header & Intro
+   Jarak ke tombol "Tambah" sekarang datang dari .page-primary-action
+   (margin-top 16px), jadi blok ini tidak lagi memberi margin bawah sendiri. */
 .services-intro-section {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-top: 4px;
-  margin-bottom: 16px;
+  gap: var(--sp-2);
 }
 
 .services-title {
@@ -25,10 +25,7 @@
   line-height: 1.4;
 }
 
-/* Add New Service Button: sistem tombol global (btn-block) + jarak bawah */
-#add-service-btn {
-  margin-bottom: 18px;
-}
+/* Jarak tombol "Tambah" memakai class global .page-primary-action */
 
 /* Horizontal Pill Filter Tabs */
 .pill-filter-container {
@@ -36,8 +33,7 @@
   align-items: center;
   gap: 8px;
   overflow-x: auto;
-  padding-bottom: 6px;
-  margin-bottom: 18px;
+  margin-bottom: var(--sp-4);
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
 }
@@ -75,8 +71,8 @@
 .services-list-grid {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-bottom: 24px;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
 }
 
 .service-card {
@@ -207,6 +203,6 @@
   .services-list-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: var(--sp-4);
   }
 }

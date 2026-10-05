@@ -2,13 +2,13 @@
    AFWO HAIR DESIGN - PRODUCT MANAGEMENT STYLES (RESPONSIVE)
    ========================================================================== */
 
-/* Header & Intro */
+/* Header & Intro
+   Jarak ke tombol "Tambah" sekarang datang dari .page-primary-action
+   (margin-top 16px), jadi blok ini tidak lagi memberi margin bawah sendiri. */
 .products-intro-section {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-top: 4px;
-  margin-bottom: 16px;
+  gap: var(--sp-2);
 }
 
 .products-title {
@@ -51,8 +51,8 @@
 .products-list-grid {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-bottom: 24px;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
 }
 
 .product-card {
@@ -123,6 +123,6 @@
   .products-list-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: var(--sp-4);
   }
 }

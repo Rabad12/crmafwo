@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
         circle.setAttribute('cy', pt.y.toFixed(1));
         circle.setAttribute('r', '4');
         circle.setAttribute('fill', 'var(--surface)');
-        circle.setAttribute('stroke', 'var(--gold-600)');
+        circle.setAttribute('stroke', 'var(--chart-series-1)');
         circle.setAttribute('stroke-width', '2.5');
         circle.setAttribute('class', 'chart-interactive-point');
 

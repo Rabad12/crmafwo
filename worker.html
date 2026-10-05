@@ -14,7 +14,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/global.css">
-  <script>(function(){try{var k="afwo_theme",t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <meta name="theme-color" content="#F7F6F3">
+  <script>(function(){try{var k="afwo_theme",t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");t="light";}var m=document.querySelector('meta[name="theme-color"]');if(m){m.setAttribute("content",t==="dark"?"#141414":"#F7F6F3");}})();</script>
   <link rel="stylesheet" href="styles/nav.css">
   <link rel="stylesheet" href="styles/worker.css">
 </head>
@@ -185,7 +186,7 @@
             <p class="worker-page-subtitle">Kelola tim karyawan, kontak telepon, gaji pokok bulanan, dan pengaturan skema komisi.</p>
           </div>
 
-          <a href="edit-worker.html?mode=add" class="btn btn-primary" id="btn-add-worker" data-field="btn-add-worker">
+          <a href="edit-worker.html?mode=add" class="btn btn-primary page-primary-action" id="btn-add-worker" data-field="btn-add-worker">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -319,7 +320,7 @@
       </div>
 
       <div class="worker-modal-footer">
-        <a href="#" class="btn-modal-edit" id="mdl-btn-worker-edit">Edit Data</a>
+        <a href="#" class="btn btn-primary" id="mdl-btn-worker-edit">Edit Data</a>
       </div>
     </div>
   </div>

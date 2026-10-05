@@ -1,58 +1,76 @@
 /* ==========================================================================
    AFWO HAIR DESIGN - DESIGN SYSTEM (GLOBAL)
    --------------------------------------------------------------------------
-   PALETTE (hanya 4 warna dasar + turunannya netral / tint emas):
-     Abu netral : #F5F6F8   (latar halaman, light mode)
-     Putih       : #FFFFFF   (kartu, input, modal, light mode)
-     Charcoal    : #1F2123   (sidebar, teks utama, tombol gelap, dark mode)
-     Emas        : #E5A93C   (satu-satunya warna aksen)
+   PALET: "EMAS + CHARCOAL"
+     Emas bersih keemasan : #EDB92F  (satu-satunya warna aksen / aksi)
+     Charcoal              : #232323  (teks utama, tombol gelap, kartu kontras)
+     Netral hangat bersih  : #F7F6F3  (skala --n-*, tanpa tint krem/beige)
+     Putih                 : #FFFFFF  (kartu, sidebar light mode, input, modal)
+     Status hijau/merah    : HANYA untuk status, validasi, dan tren -
+                              bukan warna brand (lihat --status-*).
+
+   ATURAN PALET (meng menggantikan aturan "hanya empat warna"):
+     1. Emas = warna AKSI (tombol utama, pill menu aktif, garis/titik grafik,
+        penanda penting). TIDAK PERNAH teks di atas latar terang, dan tidak
+        dipakai sebagai latar kartu besar.
+     2. Teks di atas emas SELALU charcoal (--accent-contrast), bukan putih.
+     3. Charcoal = teks utama, tombol gelap, kartu kontras.
+     4. Netral memakai skala abu hangat bersih (nuansa #F7F6F3).
+     5. Hijau/merah hanya status + tren (badge kecil, ikon, label).
+     6. Teks tautan memakai emas gelap (#8A6D0B) di light, emas (#EDBE50) di dark.
+     7. Sidebar putih di light mode, #181818 di dark mode.
 
    SEMUA nilai warna di file ini hanya berada di blok token (bagian 1 & 2).
-   Komponen di bawah WAJIB memakai var(--token), tidak boleh hex langsung.
-   ========================================================================== */
+   Komponen di bawah WAJIB memakai custom property yang terdefinisi di
+   bagian 1 & 2, tidak boleh hex langsung.
 
+   Pengecualian hardcode yang disengaja di luar blok token:
+     - <meta name="theme-color"> di setiap halaman + scripts/theme.js, karena
+       atribut HTML tidak bisa membaca CSS custom property. Nilainya wajib
+       sama persis dengan --bg-page: #F7F6F3 (light) / #141414 (dark).
+   ========================================================================== */
 /* ==========================================================================
    1. DESIGN TOKENS - LIGHT MODE (default)
    ========================================================================== */
 :root {
   color-scheme: light;
 
-  /* -- 1a. Primitive: netral (campuran putih <-> #1F2123) -- */
+  /* -- 1a. Primitive: skala abu hangat bersih (putih -> charcoal) -- */
   --n-0:    #FFFFFF;
-  --n-25:   #FAFBFC;
-  --n-50:   #F5F6F8;
-  --n-100:  #EDEFF2;
-  --n-200:  #E1E4E8;
-  --n-300:  #D2D6DB;
-  --n-400:  #B3B8BE;
-  --n-450:  #A8ADB5;
-  --n-500:  #8A9098;
-  --n-550:  #868D95;
-  --n-600:  #6A7078;
-  --n-700:  #4A4F56;
-  --n-750:  #43484E;
-  --n-800:  #33373C;
-  --n-825:  #2B2F34;
-  --n-850:  #2E3136;
-  --n-875:  #24272A;
-  --n-880:  #26292C;
-  --n-900:  #1F2123;
-  --n-925:  #17191B;
-  --n-950:  #16181A;
-  --n-975:  #141517;
-  --n-1000: #101112;
+  --n-25:   #FBFAF8;
+  --n-50:   #F7F6F3;
+  --n-100:  #F0EEE9;
+  --n-200:  #E8E5DD;
+  --n-300:  #D8D4CA;
+  --n-400:  #B9B5AB;
+  --n-450:  #A29E94;
+  --n-500:  #8A867D;
+  --n-550:  #7D7970;
+  --n-600:  #6F6B63;
+  --n-700:  #4B4843;
+  --n-750:  #403D39;
+  --n-800:  #34322F;
+  --n-825:  #302E2C;
+  --n-850:  #2C2B29;
+  --n-875:  #272726;
+  --n-880:  #262625;
+  --n-900:  #232323;
+  --n-925:  #1C1C1C;
+  --n-950:  #141414;
+  --n-975:  #0E0E0E;
+  --n-1000: #080808;
 
-  /* -- 1b. Primitive: emas & tint-nya (campuran #E5A93C <-> putih/charcoal) -- */
-  --gold-50:  #FDF7EA;
-  --gold-100: #FAEDD4;
-  --gold-200: #F5DCA8;
-  --gold-300: #F0CB7C;
-  --gold-400: #E8BC5C;
-  --gold-500: #E5A93C;
-  --gold-600: #C8922F;
-  --gold-700: #A5761F;
-  --gold-800: #6E4E12;
-  --gold-900: #3E2C0A;
+  /* -- 1b. Primitive: emas bersih keemasan & tint-nya -- */
+  --gold-50:  #FFF9E6;
+  --gold-100: #FBEECD;
+  --gold-200: #F7DD9A;
+  --gold-300: #F3CE6B;
+  --gold-400: #F0C445;
+  --gold-500: #EDB92F;
+  --gold-600: #D8A322;
+  --gold-700: #A87C14;
+  --gold-800: #6E5008;
+  --gold-900: #3A2A03;
 
   /* -- 1c. Primitive: transparan (hitam/putih untuk overlay & bayangan) -- */
   --black-04: rgba(0, 0, 0, 0.04);
@@ -71,15 +89,15 @@
   --white-16: rgba(255, 255, 255, 0.16);
   --white-24: rgba(255, 255, 255, 0.24);
 
-  /* Veil emas: warna aksen dengan alpha, dipakai untuk fokus/hover/badge.
-     Di dark mode dinaikkan supaya tidak hilang di atas charcoal. */
-  --gold-a04: rgba(229, 169, 60, 0.04);
-  --gold-a08: rgba(229, 169, 60, 0.08);
-  --gold-a12: rgba(229, 169, 60, 0.12);
-  --gold-a15: rgba(229, 169, 60, 0.15);
-  --gold-a18: rgba(229, 169, 60, 0.18);
-  --gold-a25: rgba(229, 169, 60, 0.25);
-  --gold-a35: rgba(229, 169, 60, 0.35);
+  /* Veil emas: rgb(237, 185, 47) dengan alpha, untuk fokus/hover/sel.
+     Di dark mode alphanya dinaikkan supaya tidak hilang di atas charcoal. */
+  --gold-a04: rgba(237, 185, 47, 0.04);
+  --gold-a08: rgba(237, 185, 47, 0.08);
+  --gold-a12: rgba(237, 185, 47, 0.12);
+  --gold-a15: rgba(237, 185, 47, 0.15);
+  --gold-a18: rgba(237, 185, 47, 0.18);
+  --gold-a25: rgba(237, 185, 47, 0.25);
+  --gold-a35: rgba(237, 185, 47, 0.35);
 
   /* -- 1d. SEMANTIC: permukaan -- */
   --bg-page:        var(--n-50);
@@ -89,82 +107,89 @@
   --surface-inset:  var(--n-50);
   --surface-inverse: var(--n-900);
   --surface-overlay: var(--black-72);
-  /* Permukaan kontras: kartu sorotan (mis. kartu Pemasukan). Tetap charcoal
-     #1F2123 di kedua tema supaya hierarki tidak ikut berubah saat tema ganti.
-     Teks di atasnya SELALU terang. */
-  --surface-contrast:  var(--n-900);
-  --text-on-contrast: var(--n-0);
-  --text-on-contrast-2: var(--n-450);   /* sekunder di atas permukaan kontras (konstan) */
+  /* Permukaan kontras: kartu sorotan (mis. kartu Pemasukan). Charcoal di kedua
+     tema supaya hierarki tidak ikut berubah saat tema ganti. Teks di atasnya
+     SELALU terang. */
+  --surface-contrast:  #232323;
+  --text-on-contrast: #FFFFFF;
+  --text-on-contrast-2: #B9B5AB;
 
   /* -- 1e. SEMANTIC: garis -- */
   --border:         var(--n-200);
   --border-strong:  var(--n-300);
   --border-subtle:  var(--n-100);
-  --border-inverse: var(--white-16);
-  --border-accent:  var(--gold-500);
-  --border-accent-soft: var(--gold-200);
+  --border-inverse: var(--white-12);
+  --border-accent:  #EDB92F;
+  --border-accent-soft: #F7DD9A;
 
-  /* -- 1f. SEMANTIC: teks (semua >= WCAG AA 4.5:1) -- */
-  --text-1: var(--n-900);   /* utama   */
-  --text-2: var(--n-700);   /* sekunder 5.4:1 di putih */
-  --text-3: var(--n-600);   /* tersier / helper 5.0:1 di putih */
-  --text-on-accent: var(--n-900); /* teks di atas emas 7.7:1 */
-  --text-on-ink:    var(--n-0);   /* teks di atas charcoal 15.6:1 */
-  --text-link:      var(--gold-800);  /* tautan emas gelap 7.9:1 di putih */
-  --text-inverse:   var(--n-50);
+  /* -- 1f. SEMANTIC: teks -- */
+  --text-1: #232323;          /* utama   15.7:1 di putih */
+  --text-2: #4B4843;          /* sekunder  9.1:1 di putih */
+  --text-3: #6F6B63;          /* tersier   5.3:1 di putih */
+  --text-on-accent: #232323;  /* teks di atas emas 8.7:1 */
+  --text-on-ink:    #FFFFFF;  /* teks di atas charcoal 15.7:1 */
+  --text-link:      #8A6D0B;  /* tautan emas gelap 4.9:1 di putih */
+  --text-inverse:   #FFFFFF;
 
   /* -- 1g. SEMANTIC: aksen emas & tinta -- */
-  --accent:          var(--gold-500);
-  --accent-hover:    var(--gold-400);
-  --accent-active:   var(--gold-600);
-  --accent-contrast: var(--n-900);
-  --accent-soft:     var(--gold-50);              /* badge background */
-  --accent-soft-2:   var(--gold-100);
-  --accent-ring:     rgba(229, 169, 60, 0.32);    /* focus ring */
-  --accent-shadow:   rgba(229, 169, 60, 0.30);
-  --ink:             var(--n-900);
-  --ink-hover:       var(--n-800);
-  --ink-contrast:    var(--n-0);
-  --ink-soft:        var(--n-800);
-  --ink-soft-2:      var(--n-950);
+  --accent:          #EDB92F;
+  --accent-hover:    #F1C455;
+  --accent-active:   #D8A322;
+  --accent-contrast: #232323;   /* teks di atas emas = charcoal */
+  --accent-soft:     #FFF9E6;   /* badge background */
+  --accent-soft-2:   #FBEECD;
+  --accent-ring:     rgba(237, 185, 47, 0.40);  /* focus ring */
+  --accent-shadow:   rgba(237, 185, 47, 0.30);
+  --ink:             #232323;
+  --ink-hover:       #34322F;
+  --ink-contrast:    #FFFFFF;
+  --ink-soft:        #4B4843;
+  --ink-soft-2:      #6F6B63;
 
-  /* Sidebar selalu charcoal #1F2123 di kedua tema, jadi tokennya konstan
-     agar kontras teks di sidebar dan perbedaan terhadap latar tidak ikut berubah.
-     Di dark mode sidebar lebih TERANG dari latar (charcoal gelap) - dibedakan
-     lewat border + elevasi, bukan menyatu. */
-  --sidebar-bg:      var(--n-900);
-  --nav-text-muted:  var(--n-450);  /* 7.6:1 di #1F2123 */
-  --nav-text:        var(--n-50);   /* 13.6:1 di #1F2123 */
-  --nav-hover-bg:    var(--white-08);
-  --nav-border:      var(--white-12);
+  /* Sidebar: PUTIH di light mode (bukan charcoal pekat). Di dark mode #181818.
+     Dipisahkan dari --bg-page lewat border tipis + shadow lembut. */
+  --sidebar-bg:      #FFFFFF;
+  --nav-text:        #4B4843;                  /* 9.1:1 di sidebar */
+  --nav-text-muted:  #6F6B63;                  /* 5.3:1 di sidebar */
+  --nav-hover-bg:    rgba(35, 35, 35, 0.06);
+  --nav-border:      #E8E5DD;
 
-  /* -- 1h. SEMANTIC: status (tanpa warna semantik hijau/merah) -- */
-  --status-done-bg:      var(--n-900);
-  --status-done-fg:      var(--n-0);
-  --status-done-border:  var(--n-900);
-  --status-progress-bg:  var(--gold-100);
-  --status-progress-fg:  var(--n-900);
-  --status-progress-border: var(--gold-300);
+  /* -- 1h. SEMANTIC: status (hijau/merah hanya untuk status, bukan brand) --
+     Setiap status selalu punya ikon atau label teks, tidak hanya mengandalkan
+     warna. Lihat styles/global.css bagian badge untuk ikonnya. */
+  --status-done-bg:      #E3F3E8;
+  --status-done-fg:      #1E6B3A;
+  --status-done-border:  #BFE3CB;
+  --status-progress-bg:  #FBEECD;
+  --status-progress-fg:  #232323;
+  --status-progress-border: #F7DD9A;
   --status-cancel-bg:    transparent;
-  --status-cancel-fg:    var(--n-600);
-  --status-cancel-border:var(--n-300);
-  --status-warn-bg:      var(--gold-50);
-  --status-warn-fg:      var(--n-900);
-  --status-warn-border:  var(--gold-200);
+  --status-cancel-fg:    #6F6B63;
+  --status-cancel-border:#D8D4CA;
+  --status-warn-bg:      #FFF9E6;
+  --status-warn-fg:      #232323;
+  --status-warn-border:  #F7DD9A;
+  --status-danger-bg:      #FBE6E4;
+  --status-danger-fg:      #A12B25;
+  --status-danger-border:  #F2C2BE;
 
   /* -- 1i. Grafik -- */
-  --chart-series-1: var(--gold-500);
-  --chart-series-2: var(--n-900);
-  --chart-series-3: var(--n-400);
-  --chart-grid:     var(--n-200);
-  --chart-axis:     var(--n-500);
-  --chart-area-top: rgba(229, 169, 60, 0.26);
-  --chart-area-mid: rgba(229, 169, 60, 0.08);
-  --chart-area-end: rgba(229, 169, 60, 0.00);
-  --chart-area-1:   rgba(229, 169, 60, 0.14);
-  --chart-area-2:   rgba(31, 33, 35, 0.10);
-  --chart-area-3:   rgba(229, 169, 60, 0.18);
-  --chart-area-4:   rgba(229, 169, 60, 0.22);
+  --chart-series-1: #A87C14;   /* emas gelap = data utama (>=3:1 di surface) */
+  --chart-series-2: #4B4843;   /* charcoal = garis pembanding putus-putus */
+  --chart-series-3: #6F6B63;   /* abu netral = seri ketiga */
+  /* Sparkline status: warna hanya penguat, label kartu tetap pembawa makna. */
+  --chart-series-done:    #1E6B3A;
+  --chart-series-pending: #A87C14;
+  --chart-grid:     #E8E5DD;
+  --chart-axis:     #8A867D;
+  --chart-bar:      #8A867D;   /* batang normal >=3:1 di surface; sorotan/hover/aktif jadi emas */
+  --chart-area-top: rgba(237, 185, 47, 0.26);
+  --chart-area-mid: rgba(237, 185, 47, 0.08);
+  --chart-area-end: rgba(237, 185, 47, 0.00);
+  --chart-area-1:   rgba(237, 185, 47, 0.14);
+  --chart-area-2:   rgba(35, 35, 35, 0.10);
+  --chart-area-3:   rgba(237, 185, 47, 0.18);
+  --chart-area-4:   rgba(237, 185, 47, 0.22);
 
   /* -- 1j. Skala SPACING (mobile-first, 4/8/12/16/24/32) -- */
   --sp-1: 4px;
@@ -240,81 +265,97 @@
 
 /* ==========================================================================
    2. DESIGN TOKENS - DARK MODE
-   Hanya turunan dari 4 warna dasar. Charcoal tetap #1F2123, emas tetap #E5A93C.
+   Emas tetap kuning keemasan (#F0C445) tapi lebih terang supaya tidak
+   memudar di atas charcoal; teks di atas emas jadi #1E1900 (charcoal gelap).
+   Sidebar #181818, satu tingkat lebih gelap dari --surface.
    ========================================================================== */
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --bg-page:        var(--n-975);
-  --surface:        var(--n-900);
-  --surface-2:      var(--n-875);
-  --surface-3:      var(--n-825);
-  --surface-inset:  var(--n-925);
-  --surface-inverse: var(--n-100);
-  --surface-contrast:  var(--n-900);
-  --text-on-contrast: var(--n-0);
+  --bg-page:        #141414;
+  --surface:        #1E1E1E;
+  --surface-2:      #242424;
+  --surface-3:      #2C2C2C;
+  --surface-inset:  #181818;
+  --surface-inverse: #F4F2EC;
+  --surface-contrast:  #2A2A2A;
+  --text-on-contrast: #F4F2EC;
+  --text-on-contrast-2: #A29E94;
 
-  --border:         var(--n-850);
-  --border-strong:  var(--n-750);
-  --border-subtle:  var(--n-880);
+  --border:         #2E2E2E;
+  --border-strong:  #3D3D3D;
+  --border-subtle:  #262626;
   --border-inverse: var(--black-16);
-  --border-accent:  var(--gold-500);
-  --border-accent-soft: var(--gold-800);
+  --border-accent:  #F0C445;
+  --border-accent-soft: #5C4F2A;
 
-  --text-1: var(--n-50);    /* 13.6:1 di #1F2123 */
-  --text-2: var(--n-450);  /* 7.6:1  di #1F2123 */
-  --text-3: var(--n-550);  /* 5.3:1  di #1F2123 */
-  --text-on-accent: var(--n-1000);
-  --text-on-ink:    var(--n-1000);
-  --text-link:      var(--gold-300);  /* 7.5:1 di #1F2123 */
-  --text-inverse:   var(--n-900);
+  --text-1: #F4F2EC;
+  --text-2: #CFCBC2;
+  --text-3: #A29E94;
+  --text-on-accent: #1E1900;   /* teks di atas emas dark */
+  --text-on-ink:    #F4F2EC;
+  --text-link:      #EDBE50;   /* tautan emas di dark */
+  --text-inverse:   #141414;
 
-  --accent:        var(--gold-500);
-  --accent-hover:  var(--gold-400);
-  --accent-active: var(--gold-300);
-  --accent-contrast: var(--n-1000);
-  --accent-soft:   #2A2113;   /* gold tint di atas charcoal */
-  --accent-soft-2: #3A2C17;
-  --accent-ring:   rgba(229, 169, 60, 0.45);
-  --accent-shadow: rgba(229, 169, 60, 0.24);
-  --gold-a04: rgba(229, 169, 60, 0.10);
-  --gold-a08: rgba(229, 169, 60, 0.16);
-  --gold-a12: rgba(229, 169, 60, 0.22);
-  --gold-a15: rgba(229, 169, 60, 0.26);
-  --gold-a18: rgba(229, 169, 60, 0.30);
-  --gold-a25: rgba(229, 169, 60, 0.38);
-  --gold-a35: rgba(229, 169, 60, 0.50);
-  --ink:           var(--n-50);
-  --ink-hover:     var(--n-25);
-  --ink-contrast:  var(--n-1000);
-  --ink-soft:      var(--n-875);
-  --ink-soft-2:    var(--n-900);
+  --accent:        #F0C445;
+  --accent-hover:  #F4D065;
+  --accent-active: #E0B23A;
+  --accent-contrast: #1E1900;
+  --accent-soft:   #2E2819;   /* gold tint di atas charcoal */
+  --accent-soft-2: #443C25;
+  --accent-ring:   rgba(240, 196, 69, 0.40);
+  --accent-shadow: rgba(240, 196, 69, 0.28);
+  --gold-a04: rgba(240, 196, 69, 0.10);
+  --gold-a08: rgba(240, 196, 69, 0.16);
+  --gold-a12: rgba(240, 196, 69, 0.22);
+  --gold-a15: rgba(240, 196, 69, 0.26);
+  --gold-a18: rgba(240, 196, 69, 0.30);
+  --gold-a25: rgba(240, 196, 69, 0.38);
+  --gold-a35: rgba(240, 196, 69, 0.50);
+  --ink:           #3A3A3A;
+  --ink-hover:     #454545;
+  --ink-contrast:  #F4F2EC;
+  --ink-soft:      #CFCBC2;
+  --ink-soft-2:    #A29E94;
 
-  --status-done-bg:      var(--n-800);
-  --status-done-fg:      var(--n-0);
-  --status-done-border:  var(--n-700);
-  --status-progress-bg:  #3A2C17;
-  --status-progress-fg:  var(--gold-200);
-  --status-progress-border: var(--gold-700);
+  --sidebar-bg:      #181818;
+  --nav-text:        #CFCBC2;
+  --nav-text-muted:  #A29E94;
+  --nav-hover-bg:    rgba(255, 255, 255, 0.06);
+  --nav-border:      #2E2E2E;
+
+  --status-done-bg:      #17301F;
+  --status-done-fg:      #7BD39A;
+  --status-done-border:  #245436;
+  --status-progress-bg:  #443C25;
+  --status-progress-fg:  #F0C445;
+  --status-progress-border: #5C4F2A;
   --status-cancel-bg:    transparent;
-  --status-cancel-fg:    var(--n-550);
-  --status-cancel-border:var(--n-700);
-  --status-warn-bg:      #2A2113;
-  --status-warn-fg:      var(--gold-200);
-  --status-warn-border:  var(--gold-800);
+  --status-cancel-fg:    #A29E94;
+  --status-cancel-border:#3D3D3D;
+  --status-warn-bg:      #2E2819;
+  --status-warn-fg:      #F0C445;
+  --status-warn-border:  #5C4F2A;
+  --status-danger-bg:      #3A1A18;
+  --status-danger-fg:      #F29A94;
+  --status-danger-border:  #6A2E2A;
 
-  --chart-series-1: var(--gold-500);
-  --chart-series-2: var(--n-450);   /* di dark, seri 2 = abu terang */
-  --chart-series-3: var(--n-600);
-  --chart-grid:     var(--n-880);
-  --chart-axis:     var(--n-550);
-  --chart-area-top: rgba(229, 169, 60, 0.30);
-  --chart-area-mid: rgba(229, 169, 60, 0.10);
-  --chart-area-end: rgba(229, 169, 60, 0.00);
-  --chart-area-1:   rgba(229, 169, 60, 0.20);
-  --chart-area-2:   rgba(255, 255, 255, 0.10);
-  --chart-area-3:   rgba(229, 169, 60, 0.26);
-  --chart-area-4:   rgba(229, 169, 60, 0.30);
+  --chart-series-1: #F0C445;  /* emas terang = data utama */
+  --chart-series-2: #CFCBC2;   /* di dark seri 2 = abu terang */
+  --chart-series-3: #A29E94;
+  /* Sparkline status */
+  --chart-series-done:    #7BD39A;
+  --chart-series-pending: #F0C445;
+  --chart-grid:     #2E2E2E;
+  --chart-axis:     #A29E94;
+  --chart-bar:      #7D7970;
+  --chart-area-top: rgba(240, 196, 69, 0.24);
+  --chart-area-mid: rgba(240, 196, 69, 0.07);
+  --chart-area-end: rgba(240, 196, 69, 0.00);
+  --chart-area-1:   rgba(240, 196, 69, 0.20);
+  --chart-area-2:   rgba(184, 180, 168, 0.12);
+  --chart-area-3:   rgba(240, 196, 69, 0.26);
+  --chart-area-4:   rgba(240, 196, 69, 0.30);
 
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.30);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.34), 0 2px 6px rgba(0, 0, 0, 0.28);
@@ -423,10 +464,15 @@ a {
 }
 
 /* Fokus keyboard seragam di seluruh aplikasi */
+/* Focus ring: charcoal 2px offset 2px di light (emas tidak kontras di atas
+   tombol emas), emas di dark. Tetap terlihat di semua jenis tombol. */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--ink);
   outline-offset: 2px;
   border-radius: var(--radius-xs);
+}
+[data-theme="dark"] :focus-visible {
+  outline-color: var(--accent);
 }
 
 .sr-only {
@@ -627,7 +673,8 @@ body.is-locked { overflow: hidden; }
   transition: background-color var(--dur-fast) var(--ease);
 }
 .card__link:hover { background-color: var(--surface-3); }
-.card__link svg { color: var(--accent); }
+/* Ikon tautan: emas gelap di light (ikon min 3:1), emas di dark. */
+.card__link svg { color: var(--text-link); }
 
 .card--interactive { transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
 .card--interactive:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
@@ -683,10 +730,11 @@ body.is-locked { overflow: hidden; }
 
 /* Fokus keyboard: ring emas 3px (cukup kontras di atas putih maupun charcoal) */
 .btn:focus-visible {
-  outline: 3px solid var(--accent-ring);
-  outline-offset: 1px;
-  border-color: var(--accent);
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-color: var(--border-strong);
 }
+[data-theme="dark"] .btn:focus-visible { outline-color: var(--accent); }
 
 .btn:disabled,
 .btn[aria-disabled="true"] {
@@ -699,7 +747,7 @@ body.is-locked { overflow: hidden; }
 /* Utama = emas, teks charcoal */
 .btn-primary {
   background-color: var(--accent);
-  color: var(--text-on-accent);
+  color: var(--accent-contrast);
   border-color: var(--accent);
   box-shadow: var(--shadow-accent);
   font-weight: var(--fw-bold);
@@ -746,6 +794,22 @@ body.is-locked { overflow: hidden; }
 .btn-lg { min-height: 52px; padding: 0 var(--sp-5); font-size: var(--fs-16); border-radius: var(--radius-lg); }
 .btn-block { width: 100%; }
 
+/* ==========================================================================
+   7a. AKSI UTAMA HALAMAN
+   Tombol aksi utama yang berdiri sendiri di antara judul halaman dan tab
+   filter / daftar (mis. "Tambah Produk Baru"). Kasarnya spacing memakai
+   token spacing supaya tidak menempel ke blok di atas maupun di bawahnya.
+   ========================================================================== */
+.page-primary-action {
+  display: flex;
+  margin-top: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+@media (max-width: 767px) {
+  .page-primary-action { width: 100%; }
+}
+
 /* Tombol ikon-only, persegi, sasar sentuh 44px */
 .btn-icon {
   width: var(--touch);
@@ -782,33 +846,48 @@ body.is-locked { overflow: hidden; }
 
 /* ==========================================================================
    7b. AREA AKSI FORM
-   Pola: "Batal" (secondary) lalu "Simpan" (primary), rata kanan di desktop.
-   Di bawah 640px tombol bertumpuk full-width dengan tombol utama di atas.
+   Satu komponen global untuk semua halaman form. Pola tetap di semua lebar:
+   tombol sekunder (Batal) selalu lebih dulu - kiri di baris, atas di kolom -
+   tombol utama (Simpan/Konfirmasi) selalu paling akhir - kanan atau bawah.
+   Urutan ini dijaga oleh DOM. DILARANG memakai column-reverse / row-reverse
+   atau `order` di area aksi, karena keduanya membuat urutan visual berbeda
+   dari urutan ketikan keyboard dan dari urutan yang dibaca screen reader.
    ========================================================================== */
 .form-actions-row {
   display: flex;
-  flex-direction: column-reverse;
-  align-items: stretch;
-  gap: var(--sp-2);
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
   margin-top: var(--sp-5);
   padding-top: var(--sp-4);
   border-top: 1px solid var(--border-subtle);
 }
-/* Tombol utama selalu paling atas saat bertumpuk (visual order) */
-.form-actions-row .btn-primary,
-.form-actions-row .btn-dark {
-  order: -1;
-}
 .form-actions-row .btn {
-  width: 100%;
+  white-space: nowrap;
 }
-@media (min-width: 640px) {
+
+/* <480px: dua tombol berdampingan sama lebar (Batal kiri, Simpan kanan) */
+@media (max-width: 479px) {
   .form-actions-row {
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
   }
-  .form-actions-row .btn { width: auto; }
+  .form-actions-row .btn {
+    width: 100%;
+    min-width: 0;
+    padding-left: var(--sp-2);
+    padding-right: var(--sp-2);
+  }
+}
+
+/* <360px: satu kolom full-width, urutan DOM (Batal atas, Simpan bawah) */
+@media (max-width: 359px) {
+  .form-actions-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ==========================================================================
@@ -1063,7 +1142,8 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 .badge svg { width: 12px; height: 12px; flex-shrink: 0; }
 .badge__dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
-/* Selesai / sukses: pill charcoal terisi, teks putih, ikon centang */
+/* Selesai / sukses: hijau lembut + teks hijau tua + ikon centang.
+   Hijau hanya untuk status - bukan warna brand. */
 .badge--done {
   background-color: var(--status-done-bg);
   color: var(--status-done-fg);
@@ -1088,7 +1168,13 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
   color: var(--status-warn-fg);
   border-color: var(--status-warn-border);
 }
-/* Netral informational */
+/* Gagal / error: merah lembut + teks merah tua + ikon silang/alert */
+.badge--danger {
+  background-color: var(--status-danger-bg);
+  color: var(--status-danger-fg);
+  border-color: var(--status-danger-border);
+}
+/* Netral informasional */
 .badge--neutral {
   background-color: var(--surface-3);
   color: var(--text-1);
@@ -1097,7 +1183,7 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 /* Aksen emas solid */
 .badge--accent {
   background-color: var(--accent);
-  color: var(--text-on-accent);
+  color: var(--accent-contrast);
   border-color: var(--accent);
 }
 /* Judul dicoret untuk status batal */
@@ -1131,7 +1217,7 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 .avatar--sm { width: 32px; height: 32px; font-size: var(--fs-12); }
 .avatar--lg { width: 56px; height: 56px; font-size: var(--fs-20); }
 .avatar--ink { background-color: var(--ink); color: var(--text-on-ink); border-color: transparent; }
-.avatar--gold { background-color: var(--accent); color: var(--text-on-accent); border-color: transparent; }
+.avatar--gold { background-color: var(--accent); color: var(--accent-contrast); border-color: transparent; }
 
 .avatar-placeholder {
   width: var(--touch);
@@ -1322,20 +1408,25 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
   flex: 1;
 }
 
+/* Footer modal mengikuti aturan area aksi form: sekunder/Tutup lebih dulu
+   (kiri di desktop, kiri atas di mobile), utama selalu paling akhir. */
 .modal__footer {
   display: flex;
-  flex-direction: column-reverse;
-  gap: var(--sp-2);
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
   padding: var(--sp-4) var(--sp-5) calc(var(--sp-4) + env(safe-area-inset-bottom));
   border-top: 1px solid var(--border-subtle);
   background-color: var(--surface-2);
   flex-shrink: 0;
 }
-@media (min-width: 640px) {
-  .modal__footer { flex-direction: row; justify-content: flex-end; }
+.modal__footer .btn {
+  white-space: nowrap;
 }
 
-/* Mobile: jadi bottom sheet, aksi menempel di bawah */
+/* Mobile: jadi bottom sheet, aksi menempel di bawah dalam dua kolom */
 @media (max-width: 639px) {
   .modal { padding: 0; align-items: flex-end; }
   .modal__dialog {
@@ -1344,10 +1435,22 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
     border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
     border-bottom: none;
   }
-  .modal__footer .btn { width: 100%; }
   .modal__footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
     padding-bottom: calc(var(--sp-4) + env(safe-area-inset-bottom));
   }
+  .modal__footer .btn {
+    width: 100%;
+    min-width: 0;
+    padding-left: var(--sp-2);
+    padding-right: var(--sp-2);
+  }
+}
+
+@media (max-width: 359px) {
+  .modal__footer { grid-template-columns: 1fr; }
 }
 
 /* Baris detail di dalam modal */
@@ -1514,20 +1617,22 @@ a.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .stat-card--gold {
   background-color: var(--accent);
   border-color: var(--accent);
-  --stat-deco-bg: var(--n-1000);
+  color: var(--accent-contrast);
+  --stat-deco-bg: var(--accent-contrast);
   --stat-deco-opacity: 0.10;
-  --stat-deco-fg: var(--text-on-accent);
+  --stat-deco-fg: var(--accent-contrast);
 }
-.stat-card--gold .stat-card__label { color: var(--text-on-accent); opacity: 0.72; }
+/* Kartu emas: label/nilai teks charcoal di atas emas (bukan putih) */
+.stat-card--gold .stat-card__label { color: var(--accent-contrast); opacity: 0.74; }
 .stat-card--gold .stat-card__value,
-.stat-card--gold .stat-card__subtext { color: var(--text-on-accent); }
+.stat-card--gold .stat-card__subtext { color: var(--accent-contrast); }
 
 /* Varian: charcoal (ikon emas) */
 .stat-card--ink {
   background-color: var(--ink);
   border-color: var(--ink);
   --stat-deco-bg: var(--accent);
-  --stat-deco-opacity: 0.16;
+  --stat-deco-opacity: 0.18;
   --stat-deco-fg: var(--accent);
 }
 .stat-card--ink .stat-card__label { color: var(--text-on-ink); opacity: 0.82; }
@@ -1680,7 +1785,7 @@ a.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
   transition: transform var(--dur-slow) var(--ease), opacity var(--dur-slow) var(--ease);
 }
 .toast-box.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
-.toast-box svg { flex-shrink: 0; color: var(--accent); }
+.toast-box svg { flex-shrink: 0; color: var(--text-link); }
 
 /* ==========================================================================
    19. CHART HELPERS

@@ -93,10 +93,13 @@
   text-decoration: none;
   white-space: nowrap;
 }
-/* Titik brand: emas terang di atas sidebar charcoal, emas gelap di atas
-   latar app-bar. Satu aturan dasar tidak cukup karena latar keduanya berbeda. */
+/* Brand: teks charcoal (--nav-text) + titik emas. Berlaku untuk app-bar
+   maupun sidebar karena keduanya bertenang di light mode. Titik emas
+   HANYA sebagai penanda - tidak pernah jadi warna teks. */
+/* Titik brand: emas gelap di light (sidebar & app-bar keduanya terang,
+   #EDB92F hanya 1.8:1 di sana), emas terang di dark. Tetap satu penanda. */
 .brand-logo__dot { color: var(--text-link); }
-.sidebar-brand-title .brand-logo__dot { color: var(--gold-300); }
+[data-theme="dark"] .brand-logo__dot { color: var(--accent); }
 
 /* Tombol toggle tema (matahari / bulan) */
 .theme-toggle { position: relative; overflow: hidden; }
@@ -119,7 +122,7 @@
   flex-shrink: 0;
   border-radius: 50%;
   background-color: var(--accent);
-  color: var(--text-on-accent);
+  color: var(--accent-contrast);
   border: 2px solid var(--surface);
   box-shadow: var(--shadow-xs);
   font-size: var(--fs-14);
@@ -177,13 +180,16 @@
   color: var(--nav-text);
   text-decoration: none;
 }
+/* Badge brand: charcoal di light, emas di dark (atas permukaan gelap).
+   Emas tidak pernah jadi warna teks di atas latar terang. */
 .sidebar-brand-badge {
   font-size: var(--fs-12);
   font-weight: var(--fw-semibold);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--text-2);
 }
+[data-theme="dark"] .sidebar-brand-badge { color: var(--accent); }
 .nav-close-btn {
   display: inline-flex;
   align-items: center;
@@ -199,7 +205,7 @@
   cursor: pointer;
   transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
-.nav-close-btn:hover { background-color: var(--white-12); color: var(--nav-text); }
+.nav-close-btn:hover { background-color: var(--nav-hover-bg); color: var(--nav-text); }
 
 /* --- Navigation --- */
 .sidebar-nav-container { flex: 1; }
@@ -257,14 +263,14 @@ li.sidebar-nav-item {
 .sidebar-nav-link.active,
 a.sidebar-nav-link.active {
   background-color: var(--accent) !important;
-  color: var(--text-on-accent) !important;
+  color: var(--accent-contrast) !important;
   font-weight: var(--fw-bold) !important;
   box-shadow: var(--shadow-accent);
 }
 .sidebar-nav-link.active::before,
 a.sidebar-nav-link.active::before { content: none !important; }
 .sidebar-nav-link.active .nav-icon,
-a.sidebar-nav-link.active .nav-icon { color: var(--text-on-accent) !important; }
+a.sidebar-nav-link.active .nav-icon { color: var(--accent-contrast) !important; }
 
 /* Ikon garis: satu set, stroke 1.75-2px */
 .nav-icon {
@@ -307,7 +313,7 @@ a.sidebar-nav-link.active .nav-icon { color: var(--text-on-accent) !important; }
   flex-shrink: 0;
   border-radius: 50%;
   background-color: var(--accent);
-  color: var(--text-on-accent);
+  color: var(--accent-contrast);
   font-size: var(--fs-14);
   font-weight: var(--fw-extrabold);
 }
@@ -338,18 +344,18 @@ a.sidebar-nav-link.active .nav-icon { color: var(--text-on-accent) !important; }
   text-decoration: none;
   transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
-.sidebar-logout-btn:hover { background-color: var(--white-12); border-color: var(--white-24); }
+.sidebar-logout-btn:hover { background-color: var(--nav-hover-bg); border-color: var(--border-strong); }
 .sidebar-logout-btn svg { flex-shrink: 0; }
 
 /* Kartu user aktif (halaman Profil) */
 .sidebar-user-card.active {
   background-color: var(--accent);
-  color: var(--text-on-accent);
+  color: var(--accent-contrast);
   box-shadow: var(--shadow-accent);
 }
-.sidebar-user-card.active .user-avatar-circle { background-color: var(--text-on-accent); color: var(--accent); }
-.sidebar-user-card.active .user-name { color: var(--text-on-accent); }
-.sidebar-user-card.active .user-role { color: var(--text-on-accent); opacity: 0.72; }
+.sidebar-user-card.active .user-avatar-circle { background-color: var(--accent-contrast); color: var(--accent); }
+.sidebar-user-card.active .user-name { color: var(--accent-contrast); }
+.sidebar-user-card.active .user-role { color: var(--accent-contrast); opacity: 0.78; }
 
 /* Toggle tema di dalam drawer (ikon flow, tanpa absolute positioning) */
 .sidebar-theme-toggle {
@@ -370,7 +376,7 @@ a.sidebar-nav-link.active .nav-icon { color: var(--text-on-accent) !important; }
   cursor: pointer;
   transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
-.sidebar-theme-toggle:hover { background-color: var(--nav-hover-bg); border-color: var(--white-24); }
+.sidebar-theme-toggle:hover { background-color: var(--nav-hover-bg); border-color: var(--border-strong); }
 .sidebar-theme-toggle svg { flex-shrink: 0; }
 .sidebar-theme-toggle .icon-moon { display: none; }
 [data-theme="dark"] .sidebar-theme-toggle .icon-moon { display: block; }

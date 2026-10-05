@@ -153,12 +153,15 @@
   white-space: nowrap;
 }
 
+/* Tren naik: hijau lembut + teks hijau tua. Ikon panah + tanda "+" tetap
+   menjadi pembawa makna utama, warna hanya penguat. */
 .badge-growth-pill {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background-color: var(--gold-a25);
-  color: var(--gold-200);
+  background-color: var(--status-done-bg);
+  color: var(--status-done-fg);
+  border: 1px solid var(--status-done-border);
   font-size: 0.72rem;
   font-weight: 700;
   padding: 3px 8px;
@@ -472,9 +475,10 @@
   text-overflow: ellipsis;
 }
 
+/* Stok menipis: merah lembut + teks merah tua */
 .badge-stock-danger {
-  background-color: var(--accent-soft);
-  color: var(--text-link);
+  background-color: var(--status-danger-bg);
+  color: var(--status-danger-fg);
   font-size: 0.74rem;
   font-weight: 700;
   padding: 3px 8px;

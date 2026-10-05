@@ -454,19 +454,25 @@
   border-radius: var(--radius-md);
 }
 
+/* Selesai (Paid): hijau lembut + teks hijau tua */
 .status-paid {
-  background-color: var(--accent-soft);
-  color: var(--text-1);
+  background-color: var(--status-done-bg);
+  color: var(--status-done-fg);
+  border: 1px solid var(--status-done-border);
 }
 
+/* Menunggu (Pending): emas lembut + teks charcoal */
 .status-pending {
-  background-color: var(--accent-soft);
-  color: var(--text-link);
+  background-color: var(--status-progress-bg);
+  color: var(--status-progress-fg);
+  border: 1px solid var(--status-progress-border);
 }
 
+/* Dibatalkan: outline abu transparan (bukan emas) */
 .status-cancelled {
-  background-color: var(--accent-soft);
-  color: var(--text-link);
+  background-color: var(--status-cancel-bg);
+  color: var(--status-cancel-fg);
+  border: 1px solid var(--status-cancel-border);
 }
 
 .btn-detail-receipt {
@@ -542,28 +548,32 @@
 
 .modal-footer-row {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
   border-top: 1px solid var(--border);
   padding-top: 12px;
 }
-
-.btn-print-receipt {
-  background-color: var(--surface-contrast);
-  color: var(--text-on-contrast);
-  border: none;
-  padding: 8px 16px;
-  border-radius: var(--radius-md);
-  font-weight: 700;
-  cursor: pointer;
+.modal-footer-row .btn {
+  white-space: nowrap;
 }
 
-.btn-modal-close-action {
-  background-color: var(--surface-2);
-  border: 1px solid var(--border);
-  padding: 8px 16px;
-  border-radius: var(--radius-md);
-  font-weight: 700;
-  cursor: pointer;
+@media (max-width: 479px) {
+  .modal-footer-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+  }
+  .modal-footer-row .btn {
+    width: 100%;
+    min-width: 0;
+    padding-left: var(--sp-2);
+    padding-right: var(--sp-2);
+  }
+}
+
+@media (max-width: 359px) {
+  .modal-footer-row { grid-template-columns: 1fr; }
 }

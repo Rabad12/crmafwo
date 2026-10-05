@@ -297,10 +297,13 @@
   margin-bottom: var(--sp-2);
 }
 
+/* Ikon AI: emas gelap di light agar >=3:1 di atas --accent-soft,
+   emas terang di dark (latar gelap, kontras tinggi). */
 .ai-sparkle-icon {
-  color: var(--accent);
+  color: var(--text-link);
   flex-shrink: 0;
 }
+[data-theme="dark"] .ai-sparkle-icon { color: var(--accent); }
 
 .ai-insight-title {
   font-size: var(--fs-16);
@@ -445,9 +448,12 @@
 .progress-fill {
   height: 100%;
   border-radius: 999px;
-  background-color: var(--text-on-accent);
+  background-color: var(--accent);
 }
 
+/* Tren perubahan metrik: hijau lembut + teks hijau tua. Warna tidak
+   menjadi satu-satunya penanda - ikon panah dan tanda "+" sudah membawa
+   makna. */
 .metric-change-pill {
   display: inline-flex;
   align-items: center;
@@ -455,8 +461,8 @@
   align-self: flex-start;
   padding: 4px var(--sp-2);
   border-radius: 999px;
-  background-color: var(--accent-soft);
-  color: var(--text-link);
+  background-color: var(--status-done-bg);
+  color: var(--status-done-fg);
   font-size: var(--fs-12);
   font-weight: var(--fw-bold);
 }
@@ -501,10 +507,13 @@
   text-align: center;
 }
 
+/* Ikon kategori: emas gelap di light (>=3:1 di atas abu terang),
+   emas terang di dark. */
 .cat-tile-icon {
-  color: var(--accent);
+  color: var(--text-link);
   flex-shrink: 0;
 }
+[data-theme="dark"] .cat-tile-icon { color: var(--accent); }
 
 .cat-tile-percentage {
   font-size: var(--fs-20);

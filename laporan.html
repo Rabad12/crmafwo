@@ -39,7 +39,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/global.css">
-  <script>(function(){try{var k="afwo_theme",t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
+  <meta name="theme-color" content="#F7F6F3">
+  <script>(function(){try{var k="afwo_theme",t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");t="light";}var m=document.querySelector('meta[name="theme-color"]');if(m){m.setAttribute("content",t==="dark"?"#141414":"#F7F6F3");}})();</script>
   <link rel="stylesheet" href="styles/nav.css">
   <link rel="stylesheet" href="styles/riwayat.css">
   <link rel="stylesheet" href="styles/laporan.css">
@@ -373,9 +374,11 @@
             <div id="chart-floating-tooltip" class="chart-tooltip-floating"></div>
             <svg viewBox="0 0 700 150" id="svg-bar-chart" preserveAspectRatio="none" role="img" aria-label="Grafik batang omset harian">
               <defs>
+                <!-- Batang normal: netral (--chart-bar, >=3:1 di surface).
+                     Batang puncak: emas solid via barGradientPeak. -->
                 <linearGradient id="barGradientPrimary" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="var(--surface-contrast)"></stop>
-                  <stop offset="100%" stop-color="var(--surface-contrast)"></stop>
+                  <stop offset="0%" stop-color="var(--chart-bar)"></stop>
+                  <stop offset="100%" stop-color="var(--chart-bar)"></stop>
                 </linearGradient>
                 <linearGradient id="barGradientPeak" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stop-color="var(--accent)"></stop>

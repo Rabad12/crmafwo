@@ -388,7 +388,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const x = (index * slotWidth) + (slotWidth - barWidth) / 2;
       const y = paddingTop + chartHeight - height;
       const isPeak = index === peakIndex;
-      const barColor = isPeak ? 'var(--accent)' : 'var(--surface-contrast)';
+      // Normal = netral (--chart-bar >=3:1 terhadap surface), puncak = emas solid.
+      const barColor = isPeak ? 'var(--accent)' : 'var(--chart-bar)';
       const fillRef = isPeak ? 'url(#barGradientPeak)' : 'url(#barGradientPrimary)';
 
       barsHtml += `

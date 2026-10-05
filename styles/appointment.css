@@ -449,7 +449,8 @@
 
 .dot-confirmed { background-color: var(--accent); }
 .dot-pending { background-color: var(--gold-400); }
-.dot-done { background-color: var(--text-3); }
+.dot-done { background-color: var(--status-done-fg); }
+.dot-cancelled { background-color: var(--status-cancel-fg); }
 
 /* ==========================================================================
    3. CALENDAR VIEWPORT (MONTH, WEEK, DAY, YEAR)
@@ -1056,53 +1057,40 @@
   line-height: 1.4;
 }
 
+/* Aksi popover: destruktif dulu, Edit, lalu utama (Selesaikan) paling akhir */
 .popover-footer {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
+  gap: var(--sp-3);
   padding-top: 10px;
   border-top: 1px solid var(--border);
 }
-
-.btn-pop-action {
-  padding: 8px 14px;
-  border-radius: var(--radius-md);
-  font-size: 0.82rem;
-  font-weight: 700;
-  font-family: var(--font-sans);
-  cursor: pointer;
-  border: none;
-  text-decoration: none;
-  transition: all 0.12s ease;
+.popover-footer .btn {
+  white-space: nowrap;
 }
 
-.btn-pop-complete {
-  background-color: var(--accent-soft);
-  color: var(--text-1);
+/* <480px: tiga tombol jadi dua kolom, utama tetap di kolom kanan baris terakhir */
+@media (max-width: 479px) {
+  .popover-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+  }
+  .popover-footer .btn {
+    width: 100%;
+    min-width: 0;
+    padding-left: var(--sp-2);
+    padding-right: var(--sp-2);
+  }
+  .popover-footer .btn-primary { grid-column: 2; }
 }
 
-.btn-pop-complete:hover {
-  background-color: var(--accent-soft);
-}
-
-.btn-pop-edit {
-  background-color: var(--surface-2);
-  color: var(--text-1);
-  border: 1px solid var(--border);
-}
-
-.btn-pop-edit:hover {
-  background-color: var(--surface-2);
-}
-
-.btn-pop-delete {
-  background-color: var(--accent-soft);
-  color: var(--text-link);
-}
-
-.btn-pop-delete:hover {
-  background-color: var(--accent-soft);
+@media (max-width: 359px) {
+  .popover-footer { grid-template-columns: 1fr; }
+  .popover-footer .btn-primary { grid-column: 1; }
 }
 
 /* ==========================================================================
@@ -1397,19 +1385,22 @@
   border-radius: var(--radius-sm);
 }
 
+/* Terkonfirmasi: emas lembut + teks charcoal */
 .gcal-status-pill.confirmed {
-  background-color: var(--accent-soft);
-  color: var(--text-1);
+  background-color: var(--status-progress-bg);
+  color: var(--status-progress-fg);
 }
 
+/* Menunggu: sama dengan terkonfirmasi (keduanya status aktif) */
 .gcal-status-pill.pending {
-  background-color: var(--accent-soft);
-  color: var(--text-link);
+  background-color: var(--status-progress-bg);
+  color: var(--status-progress-fg);
 }
 
+/* Selesai: hijau lembut */
 .gcal-status-pill.done {
-  background-color: var(--surface-2);
-  color: var(--text-1);
+  background-color: var(--status-done-bg);
+  color: var(--status-done-fg);
 }
 
 .gcal-empty-notice {

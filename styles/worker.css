@@ -6,9 +6,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: var(--sp-4);
   flex-wrap: wrap;
   gap: 16px;
+}
+
+/* Tombol "Tambah" ada di dalam header row, jadi jarak vertikalnya
+   ditangani oleh margin-bottom header row - bukan oleh margin tombol,
+   supaya tidak ada margin dobel. */
+.worker-page-header-row .page-primary-action {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .worker-title-group {
@@ -279,14 +287,18 @@
   white-space: nowrap;
 }
 
+/* Tier VIP: emas lembut + border emas lembut, teks charcoal */
 .badge-vip {
-  background-color: var(--accent-soft);
-  color: var(--text-link);
+  background-color: var(--accent-soft-2);
+  color: var(--text-1);
+  border: 1px solid var(--border-accent-soft);
 }
 
+/* Tier Loyal: outline netral */
 .badge-loyal {
-  background-color: var(--accent-soft);
-  color: var(--text-1);
+  background-color: transparent;
+  color: var(--text-2);
+  border: 1px solid var(--border-strong);
 }
 
 /* Action Buttons - Nempel rapi di kanan dengan margin wajar */
@@ -436,27 +448,26 @@
 
 .worker-modal-footer {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
+  gap: var(--sp-3);
   padding: 14px 20px;
   background-color: var(--surface);
   border-top: 1px solid var(--border);
 }
-
-.btn-modal-edit {
-  background-color: var(--surface-contrast);
-  color: var(--text-on-contrast);
-  font-size: 0.84rem;
-  font-weight: 700;
-  padding: 8px 18px;
-  border-radius: var(--radius-md);
-  text-decoration: none;
-  transition: all 0.15s ease;
+.worker-modal-footer .btn {
+  white-space: nowrap;
 }
 
-.btn-modal-edit:hover {
-  background-color: var(--surface-contrast);
+@media (max-width: 479px) {
+  .worker-modal-footer .btn {
+    width: 100%;
+    min-width: 0;
+    padding-left: var(--sp-2);
+    padding-right: var(--sp-2);
+  }
 }
 
 /* Empty State */

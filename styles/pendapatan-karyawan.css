@@ -405,44 +405,38 @@
   height: 50px;
 }
 
+/* Aksi slip: Tutup (sekunder) selalu lebih dulu, Cetak (utama) paling akhir */
 .slip-modal-actions {
   padding: 14px 20px;
   background-color: var(--accent-soft);
   border-top: 1px solid var(--border);
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.btn-print-slip {
-  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  background-color: var(--accent);
-  color: var(--text-on-accent);
-  border: none;
-  border-radius: var(--radius-md);
-  padding: 9px 18px;
-  font-size: 0.85rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.15s ease;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+}
+.slip-modal-actions .btn {
+  white-space: nowrap;
 }
 
-.btn-print-slip:hover {
-  background-color: var(--surface-contrast);
-  color: var(--text-on-contrast);
+@media (max-width: 479px) {
+  .slip-modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+  }
+  .slip-modal-actions .btn {
+    width: 100%;
+    min-width: 0;
+    padding-left: var(--sp-2);
+    padding-right: var(--sp-2);
+  }
 }
 
-.btn-cancel-modal {
-  background-color: var(--surface);
-  color: var(--text-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 9px 16px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
+@media (max-width: 359px) {
+  .slip-modal-actions { grid-template-columns: 1fr; }
 }
 
 /* Print Styles */

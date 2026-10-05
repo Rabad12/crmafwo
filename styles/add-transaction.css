@@ -650,31 +650,3 @@
   opacity: 0;
   pointer-events: none;
 }
-
-/* Dual Bottom Buttons: BATAL & SIMPAN (utama selalu di atas saat bertumpuk) */
-.dual-actions-container {
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: stretch;
-  gap: 10px;
-  margin-top: var(--sp-5);
-  margin-bottom: 24px;
-  padding-top: var(--sp-4);
-  border-top: 1px solid var(--border-subtle);
-}
-
-.dual-actions-container .btn {
-  width: 100%;
-}
-
-@media (min-width: 640px) {
-  .dual-actions-container {
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-  }
-
-  .dual-actions-container .btn {
-    width: auto;
-  }
-}

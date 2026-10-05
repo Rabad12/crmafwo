@@ -44,12 +44,22 @@
     return root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
   }
 
+  // Warna address bar / UI browser ikut mode tema.
+  // Nilainya sama dengan --bg-page di styles/global.css.
+  var THEME_COLOR = { light: '#F7F6F3', dark: '#141414' };
+
+  function syncThemeColor(theme) {
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', THEME_COLOR[theme] || THEME_COLOR.light);
+  }
+
   /**
    * Pasang tema. `animate` menambah class sementara supaya transisi 200ms
    * berjalan pada pergantian manual, tetapi tidak pada render awal.
    */
   function apply(theme, animate) {
     var next = theme === 'dark' ? 'dark' : 'light';
+    syncThemeColor(next);
     if (currentTheme() === next) {
       syncToggles(next);
       return;
