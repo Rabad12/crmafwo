@@ -1,5 +1,5 @@
 ﻿/**
- * AFWO Hair Design - Product Management Script
+ * AFWO Hair Design - Script Manajemen Produk
  * Manages live horizontal pill category filtering (Semua, Dijual per Pcs, Produk Layanan).
  */
 

@@ -205,7 +205,7 @@
           
           <!-- Client / Customer Name Field with Suggestions -->
           <div class="combobox-group-item">
-            <label class="form-label" for="customer-name-input">CLIENT / CUSTOMER</label>
+            <label class="form-label" for="customer-name-input">NAMA PELANGGAN</label>
             <div class="combobox-wrapper" id="name-combobox-wrapper">
               <div class="combobox-input-box">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -227,7 +227,7 @@
 
           <!-- Phone Number Field with Suggestions (Unique Database Key) -->
           <div class="combobox-group-item">
-            <label class="form-label" for="customer-phone-input">PHONE NUMBER <span class="unique-key-hint">(ID Unik Database)</span></label>
+            <label class="form-label" for="customer-phone-input">NOMOR TELEPON <span class="unique-key-hint">(ID Unik Database)</span></label>
             <div class="combobox-wrapper" id="phone-combobox-wrapper">
               <div class="combobox-input-box">
                 <svg class="input-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -282,8 +282,8 @@
           <article id="service-item-1" class="card service-item-card" data-field="service-item-card">
             
             <div class="service-item-header">
-              <span class="label-caps service-item-number">SERVICE ITEM #1</span>
-              <button type="button" class="btn-delete-service" data-action="delete-service" title="Hapus Service Item Ini" style="display: none;">
+              <span class="label-caps service-item-number">ITEM LAYANAN #1</span>
+              <button type="button" class="btn-delete-service" data-action="delete-service" title="Hapus Item Layanan Ini" style="display: none;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="3 6 5 6 21 6"></polyline>
                   <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -316,7 +316,7 @@
 
             <!-- Assigned Stylists (Multi-Karyawan Support) -->
             <div class="assigned-stylists-group">
-              <label class="form-label">ASSIGNED STYLIST / KARYAWAN</label>
+              <label class="form-label">STYLIST / KARYAWAN DITUGASKAN</label>
               <div class="input-container-icon">
                 <svg class="input-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -333,13 +333,13 @@
               <div class="extra-stylists-container"></div>
               <button type="button" class="btn-dashed-mini" data-action="add-worker">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                <span>+ ADD KARYAWAN</span>
+                <span>+ TAMBAH KARYAWAN</span>
               </button>
             </div>
 
             <!-- Hair Length Surcharge (S / M / L / XL) -->
             <div>
-              <label class="form-label">HAIR LENGTH (PANJANG RAMBUT)</label>
+              <label class="form-label">PANJANG RAMBUT</label>
               <div class="segmented-pill-group">
                 <label class="segmented-pill-label active">
                   <input type="radio" name="hair-length-1" value="S" data-field="hair-length" data-surcharge="0" checked>
@@ -372,23 +372,23 @@
                     <option value="loreal">L'Oréal Majirel</option>
                   </select>
                 </div>
-                <div class="dosage-stepper">
-                  <button type="button" class="btn-step btn-step-minus" aria-label="Kurang 10ml">−</button>
-                  <input type="number" step="10" min="10" value="30" class="stepper-input" data-field="product-amount-ml" readonly>
-                  <button type="button" class="btn-step btn-step-plus" aria-label="Tambah 10ml">+</button>
+<div class="dosage-stepper">
+                  <button type="button" class="btn btn-secondary btn-icon btn-step-minus" aria-label="Kurangi 10 ml">&minus;</button>
+                  <input type="number" step="10" min="10" value="30" class="stepper-input" data-field="product-amount-ml" readonly aria-label="Jumlah produk dalam mililiter">
+                  <button type="button" class="btn btn-secondary btn-icon btn-step-plus" aria-label="Tambah 10 ml">+</button>
                   <span class="unit-label">ml</span>
                 </div>
               </div>
               <div class="extra-products-container"></div>
-              <button type="button" class="btn-dashed-mini" data-action="add-product">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                <span>ADD PRODUCT</span>
+<button type="button" class="btn-dashed-mini" data-action="add-product">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                <span>Tambah Produk</span>
               </button>
             </div>
 
             <!-- Hair Thickness -->
             <div>
-              <label class="form-label">HAIR THICKNESS (KETEBALAN RAMBUT)</label>
+              <label class="form-label">KETEBALAN RAMBUT</label>
               <div class="segmented-pill-group">
                 <label class="segmented-pill-label">
                   <input type="radio" name="hair-thickness-1" value="thin" data-field="hair-thickness">
@@ -407,7 +407,7 @@
 
             <!-- Worker Commission & Hint -->
             <div>
-              <label class="form-label">WORKER COMMISSION</label>
+              <label class="form-label">KOMISI KARYAWAN</label>
               <div class="input-container-icon">
                 <span style="font-weight: 700; color: var(--text-3); font-size: 0.88rem;">Rp</span>
                 <input type="number" class="text-input-field" data-field="worker-commission" placeholder="180000" value="180000">
@@ -421,23 +421,23 @@
 
         </div>
 
-        <!-- Full-Width ADD SERVICE Button -->
-        <button type="button" id="btn-add-service" class="btn-add-service-full" data-action="add-service">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+<!-- Full-Width ADD SERVICE Button -->
+        <button type="button" id="btn-add-service" class="btn btn-secondary btn-block" data-action="add-service">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" focusable="false">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="12" y1="8" x2="12" y2="16"></line>
             <line x1="8" y1="12" x2="16" y2="12"></line>
           </svg>
-          <span>ADD SERVICE</span>
+          <span>Tambah Layanan</span>
         </button>
 
         <!-- Card: Special Notes (Editable Textarea) -->
         <article class="card" data-field="notes-card">
-          <label class="form-label" for="notes-textarea">SPECIAL NOTES (OPTIONAL)</label>
+          <label class="form-label" for="notes-textarea">CATATAN KHUSUS (OPSIONAL)</label>
           <textarea id="notes-textarea" class="notes-textarea" data-field="notes" placeholder="Client requested warm blonde tones for the balayage.">Client requested warm blonde tones for the balayage.</textarea>
         </article>
 
-        <!-- Card: Service Summary -->
+        <!-- Card: Ringkasan Layanan -->
         <article class="card" data-field="service-summary-card">
           <div class="card-section-header">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -447,7 +447,7 @@
               <line x1="16" y1="17" x2="8" y2="17"></line>
               <polyline points="10 9 9 9 8 9"></polyline>
             </svg>
-            <h2 class="card-section-title">Service Summary</h2>
+            <h2 class="card-section-title">Ringkasan Layanan</h2>
           </div>
 
           <div class="summary-rows">
@@ -470,14 +470,14 @@
           </div>
         </article>
 
-        <!-- Card: Payment Method -->
+        <!-- Card: Metode Pembayaran -->
         <article class="card" data-field="payment-method-card">
           <div class="card-section-header">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="4" width="20" height="16" rx="2"></rect>
               <line x1="2" y1="10" x2="22" y2="10"></line>
             </svg>
-            <h2 class="card-section-title">Payment Method</h2>
+            <h2 class="card-section-title">Metode Pembayaran</h2>
           </div>
 
           <div class="payment-methods-list" id="payment-methods-group">
@@ -506,7 +506,7 @@
               </div>
             </label>
 
-            <!-- Option 2: Credit / Debit Card -->
+            <!-- Opsi 2: Kartu Kredit / Debit -->
             <label class="payment-option-item" for="pay-card">
               <div class="payment-option-left">
                 <div class="payment-icon-box">
@@ -516,8 +516,8 @@
                   </svg>
                 </div>
                 <div class="payment-texts">
-                  <span class="payment-title">Credit / Debit Card</span>
-                  <span class="payment-subtitle">Terminal or Manual Entry</span>
+<span class="payment-title">Kartu Kredit / Debit</span>
+          <span class="payment-subtitle">Input Manual atau Terminal</span>
                 </div>
               </div>
               <input type="radio" id="pay-card" name="payment-method" value="card" data-field="payment-method">
@@ -538,7 +538,7 @@
                 </div>
                 <div class="payment-texts">
                   <span class="payment-title">Cash</span>
-                  <span class="payment-subtitle">Pay at front desk</span>
+                  <span class="payment-subtitle">Bayar di Kasir</span>
                 </div>
               </div>
               <input type="radio" id="pay-cash" name="payment-method" value="cash" data-field="payment-method">
@@ -549,13 +549,13 @@
           </div>
         </article>
 
-        <!-- Bottom Dual Actions: DISCARD & SAVE CHANGES -->
+<!-- Bottom Dual Actions: BATAL & SIMPAN -->
         <div class="dual-actions-container">
-          <button type="button" id="btn-save-changes" class="btn-dark" data-field="btn-save-changes">
-            <span>SAVE CHANGES</span>
+          <button type="button" id="btn-discard" class="btn btn-secondary" data-field="btn-discard">
+            <span>Batal</span>
           </button>
-          <button type="button" id="btn-discard" class="btn-outline" data-field="btn-discard">
-            <span>DISCARD</span>
+          <button type="button" id="btn-save-changes" class="btn btn-primary" data-field="btn-save-changes">
+            <span>Simpan Transaksi</span>
           </button>
         </div>
 

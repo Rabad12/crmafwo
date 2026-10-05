@@ -1,7 +1,8 @@
 /**
  * AFWO Hair Design - Appointment Calendar Script
  * Full Google Calendar-inspired interactive calendar with Month, Week, Day, and Year views,
- * client & worker checkbox filtering, quick jump mini calendar, and appointment detail popovers.
+ * client & worker checkbox filtering, multi view calendar (month/week/day/year),
+ * and appointment detail popovers.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -164,11 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
     day: document.getElementById('view-day'),
     year: document.getElementById('view-year')
   };
-
-  const miniCalGrid = document.getElementById('mini-cal-grid');
-  const miniCalTitle = document.getElementById('mini-cal-title');
-  const miniPrevBtn = document.getElementById('btn-mini-prev');
-  const miniNextBtn = document.getElementById('btn-mini-next');
 
   const clientCheckboxList = document.getElementById('client-checkbox-list');
   const workerCheckboxList = document.getElementById('worker-checkbox-list');
@@ -561,61 +557,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /**
-   * 4E. MINI CALENDAR WIDGET RENDERER
-   */
-  function renderMiniCalendar() {
-    if (!miniCalGrid) return;
-    const y = currentDate.getFullYear();
-    const m = currentDate.getMonth();
-
-    if (miniCalTitle) miniCalTitle.textContent = `${monthNames[m]} ${y}`;
-
-    const firstDay = (new Date(y, m, 1).getDay() === 0 ? 6 : new Date(y, m, 1).getDay() - 1);
-    const totalDays = new Date(y, m + 1, 0).getDate();
-    const prevTotalDays = new Date(y, m, 0).getDate();
-
-    const filteredApts = getFilteredAppointments();
-    const todayStr = '2026-08-26';
-    const activeDateStr = formatDateStr(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-
-    let html = `
-      <span class="mini-cal-day-label">S</span>
-      <span class="mini-cal-day-label">S</span>
-      <span class="mini-cal-day-label">R</span>
-      <span class="mini-cal-day-label">K</span>
-      <span class="mini-cal-day-label">J</span>
-      <span class="mini-cal-day-label">S</span>
-      <span class="mini-cal-day-label">M</span>
-    `;
-
-    for (let i = firstDay - 1; i >= 0; i--) {
-      html += `<span class="mini-cal-cell other-month">${prevTotalDays - i}</span>`;
-    }
-
-    for (let d = 1; d <= totalDays; d++) {
-      const dStr = formatDateStr(y, m, d);
-      const isToday = dStr === todayStr;
-      const isActive = dStr === activeDateStr;
-      const hasEvent = filteredApts.some(a => a.date === dStr);
-
-      html += `
-        <span class="mini-cal-cell ${isToday ? 'today' : ''} ${isActive ? 'active-selected' : ''} ${hasEvent ? 'has-event' : ''}" data-date="${dStr}" style="cursor: pointer;">
-          ${d}
-        </span>
-      `;
-    }
-
-    miniCalGrid.innerHTML = html;
-
-    miniCalGrid.querySelectorAll('.mini-cal-cell:not(.other-month)').forEach(cell => {
-      cell.addEventListener('click', () => {
-        const dStr = cell.getAttribute('data-date');
-        openDayScheduleModal(dStr);
-      });
-    });
-  }
-
   // =========================================================================
   // 5. GOOGLE CALENDAR DAILY SCHEDULE POPUP (TIMELINE LIST BERDASARKAN JAM)
   // =========================================================================
@@ -707,7 +648,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dayAppointments.length === 0) {
       timelineHtml += `
         <div class="gcal-empty-notice">
-          <span>Tidak ada reservasi pada tanggal ini. Klik <strong>+ Tambah Appointment</strong> untuk membuat jadwal baru.</span>
+          <span>Tidak ada reservasi pada tanggal ini. Klik <strong>+ Tambah Janji Temu</strong> untuk membuat jadwal baru.</span>
         </div>
       `;
     }
@@ -799,7 +740,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const apt = appointmentsData.find(a => a.id === selectedAppointmentId);
       if (apt) {
         apt.status = 'done';
-        showToast(`✓ Appointment ${getClient(apt.clientId).name} diselesaikan!`);
+        showToast(`✓ Janji temu ${getClient(apt.clientId).name} diselesaikan!`);
         closeAppointmentDetail();
         renderCalendar();
       }
@@ -811,7 +752,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!selectedAppointmentId) return;
       const apt = appointmentsData.find(a => a.id === selectedAppointmentId);
       appointmentsData = appointmentsData.filter(a => a.id !== selectedAppointmentId);
-      showToast(`Appointment berhasil dibatalkan.`);
+      showToast(`Janji temu berhasil dibatalkan.`);
       closeAppointmentDetail();
       renderCalendar();
     });
@@ -895,7 +836,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // =========================================================================
   function renderCalendar() {
     updatePeriodHeading();
-    renderMiniCalendar();
 
     Object.keys(viewPanels).forEach(v => {
       if (viewPanels[v]) {
@@ -964,19 +904,6 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (currentView === 'day') {
         currentDate.setDate(currentDate.getDate() + 1);
       }
-      renderCalendar();
-    });
-  }
-
-  if (miniPrevBtn) {
-    miniPrevBtn.addEventListener('click', () => {
-      currentDate.setMonth(currentDate.getMonth() - 1);
-      renderCalendar();
-    });
-  }
-  if (miniNextBtn) {
-    miniNextBtn.addEventListener('click', () => {
-      currentDate.setMonth(currentDate.getMonth() + 1);
       renderCalendar();
     });
   }

@@ -40,28 +40,6 @@
   color: var(--text-2);
 }
 
-.btn-add-worker-gold {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background-color: var(--accent);
-  color: var(--text-on-accent);
-  font-size: 0.88rem;
-  font-weight: 700;
-  padding: 10px 20px;
-  border-radius: var(--radius-md);
-  text-decoration: none;
-  box-shadow: 0 2px 8px var(--gold-a25);
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.btn-add-worker-gold:hover {
-  background-color: var(--surface-contrast);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px var(--gold-a35);
-}
-
 /* Toolbar Card */
 .worker-toolbar-card {
   background-color: var(--surface);

@@ -419,24 +419,18 @@
   gap: 6px;
 }
 
-.btn-step {
+/* Tombol stepper memakai btn-secondary btn-icon dari sistem global */
+.btn-step-minus,
+.btn-step-plus {
   width: 28px;
+  min-width: 28px;
   height: 28px;
+  min-height: 28px;
+  padding: 0;
   border-radius: var(--radius-sm);
-  background-color: var(--surface-2);
-  border: none;
-  color: var(--text-1);
   font-weight: 800;
   font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.15s ease;
-}
-
-.btn-step:hover {
-  background-color: var(--accent-soft);
+  line-height: 1;
 }
 
 .stepper-input {
@@ -465,29 +459,20 @@
   font-weight: 500;
 }
 
-/* Full Width ADD SERVICE button */
-.btn-add-service-full {
+/* Full Width "Tambah Layanan" button: dasar btn-secondary + garis putus-putus */
+#btn-add-service {
+  border-style: dashed;
+  border-width: 1.5px;
+  border-color: var(--border-accent);
   background: transparent;
-  border: 1.5px dashed var(--border-accent);
-  border-radius: var(--radius-lg);
-  padding: 14px 18px;
   color: var(--text-2);
-  font-size: 0.9rem;
   font-weight: 800;
-  letter-spacing: 0.05em;
-  font-family: var(--font-sans);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.2s ease;
 }
 
-.btn-add-service-full:hover {
+#btn-add-service:hover {
+  border-style: solid;
   border-color: var(--text-1);
   color: var(--text-1);
-  background-color: var(--black-04);
 }
 
 /* Special Notes Editable Textarea */
@@ -666,17 +651,30 @@
   pointer-events: none;
 }
 
-/* Dual Bottom Buttons: DISCARD & SAVE CHANGES */
+/* Dual Bottom Buttons: BATAL & SIMPAN (utama selalu di atas saat bertumpuk) */
 .dual-actions-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
+  align-items: stretch;
   gap: 10px;
-  margin-top: 8px;
+  margin-top: var(--sp-5);
   margin-bottom: 24px;
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.dual-actions-container .btn {
+  width: 100%;
 }
 
 @media (min-width: 640px) {
   .dual-actions-container {
-    flex-direction: row-reverse;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .dual-actions-container .btn {
+    width: auto;
   }
 }

@@ -31,18 +31,6 @@
   color: var(--text-2);
 }
 
-.btn-create-order {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border-radius: var(--radius-md);
-  text-decoration: none;
-  font-size: 0.88rem;
-  font-weight: 700;
-  box-shadow: 0 2px 8px var(--gold-a18);
-}
-
 /* KPI Sparkline Grid (Sesuai Referensi Gambar 1) */
 .trans-kpi-summary-grid {
   display: grid;
@@ -108,7 +96,10 @@
   height: 100%;
 }
 
-/* Toolbar Card (Tabs + Search + Dates) */
+/* Toolbar Card (Tabs + Search + Dates)
+   - Desktop (>=900px): tab di kiri, seluruh kontrol filter dalam SATU BARIS.
+   - Tablet (641-899px): tetap satu baris, kotak pencarian boleh menyempit.
+   - Mobile (<=640px): kontrol ditumpuk penuh lebar agar tidak terpotong. */
 .trans-toolbar-card {
   background-color: var(--surface);
   border: 1px solid var(--border);
@@ -166,6 +157,7 @@
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+  min-width: 0;
 }
 
 .trans-search-box {
@@ -178,12 +170,30 @@
   padding: 7px 12px;
   width: 100%;
   max-width: 260px;
+  min-width: 0;
+}
+
+.trans-search-box .search-input {
+  min-width: 0;
+  flex: 1 1 auto;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--text-1);
+}
+
+.trans-search-box .search-icon {
+  flex: 0 0 auto;
+  color: var(--text-3);
 }
 
 .trans-date-filter-group {
   display: flex;
   align-items: center;
   gap: 6px;
+  min-width: 0;
 }
 
 .date-input-inline {
@@ -195,28 +205,86 @@
   color: var(--text-1);
   background-color: var(--surface);
   outline: none;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .date-separator {
   color: var(--text-3);
   font-weight: 700;
+  flex: 0 0 auto;
 }
 
-.btn-date-reset {
-  background-color: var(--surface-2);
-  border: 1px solid var(--border);
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--text-2);
-  padding: 6px 10px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all 0.15s ease;
+/* --- Desktop: seluruh kontrol dalam satu baris --- */
+@media (min-width: 900px) {
+  .trans-search-filter-controls {
+    flex-wrap: nowrap;
+    flex: 0 1 auto;
+    justify-content: flex-end;
+  }
+
+  .trans-search-box {
+    flex: 1 1 200px;
+    max-width: 320px;
+  }
+
+  .trans-date-filter-group {
+    flex: 0 0 auto;
+  }
 }
 
-.btn-date-reset:hover {
-  background-color: var(--surface-2);
-  color: var(--text-1);
+/* --- Tablet: satu baris tetap, kotak pencarian menyempit --- */
+@media (min-width: 641px) and (max-width: 899px) {
+  .trans-search-filter-controls {
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+
+  .trans-search-box {
+    flex: 1 1 140px;
+    max-width: none;
+    min-width: 120px;
+  }
+
+  .trans-date-filter-group {
+    flex: 0 1 auto;
+  }
+
+  .date-input-inline {
+    flex: 1 1 auto;
+    width: 120px;
+  }
+}
+
+/* --- Mobile: kontrol ditumpuk, setiap kontrol penuh lebar --- */
+@media (max-width: 640px) {
+  .trans-toolbar-card {
+    padding: 12px;
+  }
+
+  .trans-search-filter-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .trans-search-box {
+    max-width: none;
+  }
+
+  .trans-date-filter-group {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .date-input-inline {
+    flex: 1 1 130px;
+    width: auto;
+  }
+
+  .trans-date-filter-group .btn {
+    flex: 1 1 100%;
+  }
 }
 
 /* Daily Groups Container */

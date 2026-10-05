@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update Top Highlight Banner
     if (summaryMonthTitle) {
-      summaryMonthTitle.textContent = `Total Pendapatan Semua Karyawan — ${monthData.monthLabel}`;
+      summaryMonthTitle.textContent = `Total Pendapatan Semua Karyawan - ${monthData.monthLabel}`;
     }
     if (summaryTotalAmount) {
       summaryTotalAmount.textContent = formatIDR(aggGrandTotal);

@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.id = `service-item-${num}`;
       const titleLabel = card.querySelector('.service-item-number');
       if (titleLabel) {
-        titleLabel.textContent = `SERVICE ITEM #${num}`;
+        titleLabel.textContent = `ITEM LAYANAN #${num}`;
       }
 
       const lengthRadios = card.querySelectorAll('input[data-field="hair-length"]');
@@ -404,9 +404,9 @@ document.addEventListener('DOMContentLoaded', () => {
             </select>
           </div>
           <div class="dosage-stepper">
-            <button type="button" class="btn-step btn-step-minus">−</button>
-            <input type="number" step="10" min="10" value="20" class="stepper-input" data-field="product-amount-ml">
-            <button type="button" class="btn-step btn-step-plus">+</button>
+            <button type="button" class="btn btn-secondary btn-icon btn-step-minus" aria-label="Kurangi 10 ml">&minus;</button>
+            <input type="number" step="10" min="10" value="20" class="stepper-input" data-field="product-amount-ml" aria-label="Jumlah produk dalam mililiter">
+            <button type="button" class="btn btn-secondary btn-icon btn-step-plus" aria-label="Tambah 10 ml">+</button>
             <span class="unit-label">ml</span>
           </div>
           <button type="button" class="btn-remove-row" aria-label="Hapus Produk">✕</button>

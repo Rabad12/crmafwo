@@ -211,8 +211,8 @@
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
               <input type="text" id="cal-quick-search" placeholder="Cari appointment..." aria-label="Cari jadwal appointment">
-            </div>
-_
+</div>
+
             <!-- View Selector Dropdown (Tahunan, Bulanan, Mingguan, Harian) -->
             <div class="cal-view-dropdown-wrapper" id="cal-view-dropdown-wrapper">
               <button type="button" class="btn-cal-view-select" id="btn-view-toggle" aria-haspopup="true" aria-expanded="false">
@@ -257,13 +257,13 @@ _
               </div>
             </div>
 
-            <!-- Primary Action: + Jadwalkan Temu -->
-            <a href="add-appointment.html" class="btn-primary-gold btn-schedule-action" id="btn-new-appointment" data-field="btn-new-appointment">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+<!-- Primary Action: Appointment Baru -->
+            <a href="add-appointment.html" class="btn btn-primary" id="btn-new-appointment" data-field="btn-new-appointment">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
-              <span>+ Appointment</span>
+              <span>Appointment</span>
             </a>
 
           </div>
@@ -273,22 +273,8 @@ _
         <!-- Main Calendar Split Grid (Left: Filter Panel / Right: Calendar Viewport) -->
         <div class="calendar-workspace-grid">
           
-          <!-- SISI KIRI: Panel Filter Klien & Mini Datepicker (Google Calendar Style) -->
+<!-- SISI KIRI: Panel Filter Klien -->
           <aside class="calendar-side-panel" id="calendar-side-panel">
-            
-            <!-- Mini Calendar Widget -->
-            <div class="mini-calendar-card">
-              <div class="mini-cal-header">
-                <span class="mini-cal-month" id="mini-cal-title">Agustus 2026</span>
-                <div class="mini-cal-arrows">
-                  <button type="button" id="btn-mini-prev" class="mini-arrow-btn">‹</button>
-                  <button type="button" id="btn-mini-next" class="mini-arrow-btn">›</button>
-                </div>
-              </div>
-              <div class="mini-cal-grid" id="mini-cal-grid">
-                <!-- Injected via JavaScript -->
-              </div>
-            </div>
 
             <!-- Filter Klien (Sesuai Referensi Gambar 2) -->
             <div class="filter-section-card">
@@ -316,7 +302,7 @@ _
 
             <!-- Status Indicator Legend -->
             <div class="filter-section-card status-legend-card">
-              <span class="filter-section-title">Status Appointment</span>
+              <span class="filter-section-title">Status Janji Temu</span>
               <div class="status-legend-list">
                 <div class="legend-item"><span class="status-dot dot-confirmed"></span> Terkonfirmasi</div>
                 <div class="legend-item"><span class="status-dot dot-pending"></span> Menunggu</div>
@@ -401,7 +387,7 @@ _
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
-            <span>+ Tambah Appointment</span>
+            <span>+ Tambah Janji Temu</span>
           </a>
           <button type="button" id="btn-close-day-schedule" class="btn-close-schedule" aria-label="Tutup Jadwal Harian">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -472,7 +458,7 @@ _
 
   <!-- Toast Notification -->
   <div id="toast-success" class="toast-box" role="status" aria-live="polite">
-    <span id="toast-message">Jadwal appointment berhasil diperbarui!</span>
+    <span id="toast-message">Jadwal janji temu berhasil diperbarui!</span>
   </div>
 
   <script src="scripts/theme.js"></script>

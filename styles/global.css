@@ -642,6 +642,11 @@ body.is-locked { overflow: hidden; }
 
 /* ==========================================================================
    7. BUTTON
+   Sistem tombol tunggal. Semua tombol di aplikasi memakai .btn plus satu
+   varian: .btn-primary | .btn-secondary | .btn-dark | .btn-danger | .btn-ghost.
+   Ukuran: .btn-sm (36px), .btn-icon (persegi 44px), .btn-block, .btn-lg.
+   Warna hanya dari token (emas, netral, charcoal). Teks di atas emas selalu
+   charcoal (--text-on-accent), tidak pernah putih.
    ========================================================================== */
 .btn {
   display: inline-flex;
@@ -661,6 +666,10 @@ body.is-locked { overflow: hidden; }
   white-space: nowrap;
   cursor: pointer;
   background: none;
+  /* Reset gaya tombol bawaan browser (termasuk ::-webkit-file-upload-button) */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   transition: background-color var(--dur-fast) var(--ease),
               border-color var(--dur-fast) var(--ease),
               color var(--dur-fast) var(--ease),
@@ -670,7 +679,15 @@ body.is-locked { overflow: hidden; }
 
 .btn svg { flex-shrink: 0; }
 
-.btn:active { transform: scale(0.98); }
+.btn:active:not(:disabled) { transform: scale(0.98); }
+
+/* Fokus keyboard: ring emas 3px (cukup kontras di atas putih maupun charcoal) */
+.btn:focus-visible {
+  outline: 3px solid var(--accent-ring);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
 .btn:disabled,
 .btn[aria-disabled="true"] {
   opacity: 0.5;
@@ -680,54 +697,65 @@ body.is-locked { overflow: hidden; }
 }
 
 /* Utama = emas, teks charcoal */
-.btn--primary {
+.btn-primary {
   background-color: var(--accent);
   color: var(--text-on-accent);
   border-color: var(--accent);
   box-shadow: var(--shadow-accent);
   font-weight: var(--fw-bold);
 }
-.btn--primary:hover:not(:disabled) { background-color: var(--accent-hover); border-color: var(--accent-hover); }
-.btn--primary:active:not(:disabled) { background-color: var(--accent-active); border-color: var(--accent-active); }
+.btn-primary:hover:not(:disabled) { background-color: var(--accent-hover); border-color: var(--accent-hover); }
+.btn-primary:active:not(:disabled) { background-color: var(--accent-active); border-color: var(--accent-active); }
 
 /* Gelap = charcoal, teks putih */
-.btn--dark {
+.btn-dark {
   background-color: var(--ink);
   color: var(--text-on-ink);
   border-color: var(--ink);
 }
-.btn--dark:hover:not(:disabled) { background-color: var(--ink-hover); border-color: var(--ink-hover); }
+.btn-dark:hover:not(:disabled) { background-color: var(--ink-hover); border-color: var(--ink-hover); }
 
-/* Sekunder = outline netral */
-.btn--secondary {
+/* Sekunder = outline netral. Dipakai juga sebagai varian terang di panel
+   gelap/gold-soft karena --surface dan --border-strong mengikuti tema. */
+.btn-secondary {
   background-color: var(--surface);
   color: var(--text-1);
   border-color: var(--border-strong);
 }
-.btn--secondary:hover:not(:disabled) { background-color: var(--surface-3); border-color: var(--n-400); }
+.btn-secondary:hover:not(:disabled) { background-color: var(--surface-3); border-color: var(--border-strong); }
 
-/* Lembut = abu sangat muda */
-.btn--ghost {
+/* Lembut = tanpa latar, untuk aksi tier-3 di dalam kartu */
+.btn-ghost {
   background-color: transparent;
   color: var(--text-2);
   border-color: transparent;
 }
-.btn--ghost:hover:not(:disabled) { background-color: var(--surface-3); color: var(--text-1); }
+.btn-ghost:hover:not(:disabled) { background-color: var(--surface-3); color: var(--text-1); }
 
-/* Destruktif = outline charcoal + konfirmasi modal */
-.btn--danger {
+/* Destruktif = outline charcoal (bukan merah) + konfirmasi modal */
+.btn-danger {
   background-color: transparent;
   color: var(--text-1);
   border-color: var(--ink);
   border-style: solid;
 }
-.btn--danger:hover:not(:disabled) { background-color: var(--ink); color: var(--text-on-ink); }
+.btn-danger:hover:not(:disabled) { background-color: var(--ink); color: var(--text-on-ink); }
+.btn-danger svg { flex-shrink: 0; }
 
-.btn--block { width: 100%; }
-.btn--sm { min-height: 36px; padding: 0 var(--sp-3); font-size: var(--fs-13); border-radius: var(--radius-sm); }
-.btn--lg { min-height: 52px; padding: 0 var(--sp-5); font-size: var(--fs-16); border-radius: var(--radius-lg); }
+.btn-sm { min-height: 36px; padding: 0 var(--sp-3); font-size: var(--fs-13); border-radius: var(--radius-sm); }
+.btn-lg { min-height: 52px; padding: 0 var(--sp-5); font-size: var(--fs-16); border-radius: var(--radius-lg); }
+.btn-block { width: 100%; }
 
-/* Ikon bulat (sasar sentuh 44px) */
+/* Tombol ikon-only, persegi, sasar sentuh 44px */
+.btn-icon {
+  width: var(--touch);
+  min-width: var(--touch);
+  height: var(--touch);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+/* Ikon bulat di appbar/nav (sasar sentuh 44px) */
 .icon-btn {
   display: inline-flex;
   align-items: center;
@@ -740,30 +768,47 @@ body.is-locked { overflow: hidden; }
   background: none;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
+  font-family: var(--font-sans);
   color: var(--text-2);
   cursor: pointer;
   text-decoration: none;
+  appearance: none;
+  -webkit-appearance: none;
   transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
 .icon-btn:hover { background-color: var(--surface-3); color: var(--text-1); }
 .icon-btn:active { transform: scale(0.94); }
 .icon-btn--bordered { border-color: var(--border); background-color: var(--surface); }
 
-/* Badge/pill kecil yang bisa diklik */
-.btn-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sp-1);
-  min-height: 36px;
-  padding: 0 var(--sp-3);
-  border-radius: var(--radius-md);
-  font-size: var(--fs-13);
-  font-weight: var(--fw-semibold);
-  text-decoration: none;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+/* ==========================================================================
+   7b. AREA AKSI FORM
+   Pola: "Batal" (secondary) lalu "Simpan" (primary), rata kanan di desktop.
+   Di bawah 640px tombol bertumpuk full-width dengan tombol utama di atas.
+   ========================================================================== */
+.form-actions-row {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: stretch;
+  gap: var(--sp-2);
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--border-subtle);
+}
+/* Tombol utama selalu paling atas saat bertumpuk (visual order) */
+.form-actions-row .btn-primary,
+.form-actions-row .btn-dark {
+  order: -1;
+}
+.form-actions-row .btn {
+  width: 100%;
+}
+@media (min-width: 640px) {
+  .form-actions-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .form-actions-row .btn { width: auto; }
 }
 
 /* ==========================================================================
@@ -881,19 +926,6 @@ input[type="date"], input[type="time"], input[type="month"], input[type="week"] 
 }
 
 .form-group-item { display: flex; flex-direction: column; min-width: 0; }
-
-.form-actions-row {
-  display: flex;
-  flex-direction: column-reverse;
-  gap: var(--sp-2);
-  margin-top: var(--sp-4);
-}
-@media (min-width: 640px) {
-  .form-actions-row { flex-direction: row; justify-content: flex-end; }
-}
-@media (max-width: 639px) {
-  .form-actions-row .btn { width: 100%; }
-}
 
 /* Input dengan ikon di dalam */
 .input-container-icon,

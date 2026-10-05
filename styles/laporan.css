@@ -1,5 +1,5 @@
 /* ==========================================================================
-   laporan.css — Halaman Laporan Penjualan
+   laporan.css - Halaman Laporan Penjualan
    Struktur memakai komponen global (page-header, card, segmented, stat-card,
    btn, badge). File ini hanya menangani susunan khusus halaman ini.
    Semua warna memakai token dari styles/global.css.
@@ -146,6 +146,119 @@
 
 .combobox-wrapper.open .combobox-dropdown-panel {
   display: block;
+  animation: combobox-drop var(--dur-fast) var(--ease);
+}
+
+@keyframes combobox-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Baris karyawan kedua hanya tampil saat Jenis Pengerjaan = Berdua. */
+#report-worker-filter-2-row[hidden] {
+  display: none;
+}
+
+/* Opsi yang sudah dipilih di box lain dinonaktifkan agar tidak dobel. */
+.combobox-option-row.is-disabled {
+  color: var(--text-3);
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.combobox-option-row.is-disabled:hover {
+  background-color: transparent;
+}
+
+/* Pengumuman filter untuk pembaca layar; disembunyikan secara visual. */
+.report-filter-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Riwayat transaksi: badge metode, status, dan ringkasan harian
+   -------------------------------------------------------------------------- */
+.payment-method-badge {
+  display: inline-block;
+  font-size: var(--fs-12);
+  font-weight: var(--fw-bold);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background-color: var(--surface-2);
+  color: var(--text-2);
+}
+
+.payment-method-badge.qris,
+.payment-method-badge.transfer {
+  background-color: var(--accent-soft);
+  color: var(--text-link);
+}
+
+.payment-method-badge.tunai {
+  background-color: var(--surface-3);
+  color: var(--text-1);
+}
+
+.trans-status-badge {
+  display: inline-block;
+  font-size: var(--fs-12);
+  font-weight: var(--fw-bold);
+  padding: 3px 10px;
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+}
+
+.trans-status-badge.selesai {
+  background-color: var(--accent-soft);
+  color: var(--text-1);
+}
+
+.trans-status-badge.dibatalkan {
+  background-color: var(--surface-3);
+  color: var(--text-3);
+  text-decoration: line-through;
+}
+
+.daily-count-badge {
+  display: inline-block;
+  font-size: var(--fs-12);
+  font-weight: var(--fw-bold);
+  padding: 3px 10px;
+  border-radius: var(--radius-md);
+  background-color: var(--accent-soft);
+  color: var(--text-1);
+}
+
+.daily-total-revenue {
+  font-size: var(--fs-13);
+  font-weight: var(--fw-bold);
+  color: var(--text-1);
+}
+
+/* Placeholder saat filter tidak menghasilkan transaksi. */
+.category-empty-note,
+.report-history-empty {
+  margin: var(--sp-4) 0 0;
+  padding: var(--sp-4);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-3);
+  font-size: var(--fs-13);
+  text-align: center;
 }
 
 .combobox-option-row {
@@ -565,5 +678,12 @@
 
   .cat-detail-total {
     font-size: var(--fs-16);
+  }
+}
+
+/* Hormati preferensi pengguna yang mengurangi animasi. */
+@media (prefers-reduced-motion: reduce) {
+  .combobox-wrapper.open .combobox-dropdown-panel {
+    animation: none;
   }
 }

@@ -25,34 +25,9 @@
   line-height: 1.4;
 }
 
-/* Add New Service Button */
-.btn-add-full {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background-color: var(--ink);
-  color: var(--text-on-ink);
-  padding: 13px 18px;
-  border-radius: var(--radius-md);
-  font-size: 0.92rem;
-  font-weight: 700;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.15s ease;
+/* Add New Service Button: sistem tombol global (btn-block) + jarak bawah */
+#add-service-btn {
   margin-bottom: 18px;
-}
-
-.btn-add-full:hover {
-  background-color: var(--ink-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
-
-.btn-add-full:active {
-  transform: scale(0.98);
 }
 
 /* Horizontal Pill Filter Tabs */

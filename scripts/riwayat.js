@@ -149,8 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const monthName = months[d.getMonth()];
     const year = d.getFullYear();
 
-    if (dateStr === '2026-08-26') return `Hari Ini — ${dayName}, ${dayNum} ${monthName} ${year}`;
-    if (dateStr === '2026-08-25') return `Kemarin — ${dayName}, ${dayNum} ${monthName} ${year}`;
+    if (dateStr === '2026-08-26') return `Hari Ini - ${dayName}, ${dayNum} ${monthName} ${year}`;
+    if (dateStr === '2026-08-25') return `Kemarin - ${dayName}, ${dayNum} ${monthName} ${year}`;
     return `${dayName}, ${dayNum} ${monthName} ${year}`;
   }
 
@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modalBody.innerHTML = `
       <div style="text-align: center; border-bottom: 1px dashed var(--border); padding-bottom: 12px; margin-bottom: 12px;">
         <h2 style="font-size: 1.3rem; font-weight: 900; margin: 0; color: var(--text-1);">Afwo. Hair Design</h2>
-        <p style="font-size: 0.78rem; color: var(--text-3); margin: 2px 0 0 0;">Official Salon Payment Receipt</p>
+        <p style="font-size: 0.78rem; color: var(--text-3); margin: 2px 0 0 0;">Struk Pembayaran Salon Resmi</p>
       </div>
 
       <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 8px;">
@@ -380,10 +380,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  filterTabs.forEach(tab => {
+filterTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      filterTabs.forEach(t => t.classList.remove('active'));
+      filterTabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
       tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
       activeStatus = tab.getAttribute('data-status') || 'all';
       renderTransactions();
     });

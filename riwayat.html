@@ -183,8 +183,8 @@
             <p class="trans-page-subtitle">Kelola dan tinjau seluruh riwayat penjualan salon per hari.</p>
           </div>
           
-          <a href="add-transaction.html" class="btn-primary-gold btn-create-order" id="btn-add-transaction">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+<a href="add-transaction.html" class="btn btn-primary" id="btn-add-transaction">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
@@ -253,31 +253,31 @@
 
         </div>
 
-        <!-- Filter & Search Toolbar (Sesuai Referensi Gambar 1) -->
+<!-- Filter & Search Toolbar: satu baris di desktop/tablet, bertumpuk di mobile -->
         <div class="trans-toolbar-card">
-          <div class="trans-tabs-row">
-            <button type="button" class="trans-filter-tab active" data-status="all">Semua Transaksi</button>
-            <button type="button" class="trans-filter-tab" data-status="paid">Selesai</button>
-            <button type="button" class="trans-filter-tab" data-status="pending">Menunggu</button>
-            <button type="button" class="trans-filter-tab" data-status="cancelled">Dibatalkan</button>
+          <div class="trans-tabs-row" role="tablist" aria-label="Filter status transaksi">
+            <button type="button" class="trans-filter-tab active" data-status="all" role="tab" aria-selected="true">Semua Transaksi</button>
+            <button type="button" class="trans-filter-tab" data-status="paid" role="tab" aria-selected="false">Selesai</button>
+            <button type="button" class="trans-filter-tab" data-status="pending" role="tab" aria-selected="false">Menunggu</button>
+            <button type="button" class="trans-filter-tab" data-status="cancelled" role="tab" aria-selected="false">Dibatalkan</button>
           </div>
 
           <div class="trans-search-filter-controls">
             <!-- Search Input -->
             <div class="trans-search-box">
-              <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" focusable="false">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
-              <input type="text" id="transaction-search" class="search-input" placeholder="Cari ID, nama pelanggan, layanan...">
+              <input type="text" id="transaction-search" class="search-input" placeholder="Cari ID, nama pelanggan, layanan..." aria-label="Cari transaksi">
             </div>
 
             <!-- Date Filters -->
             <div class="trans-date-filter-group">
-              <input type="date" id="filter-date-from" class="date-input-inline" title="Dari Tanggal">
-              <span class="date-separator">-</span>
-              <input type="date" id="filter-date-to" class="date-input-inline" title="Sampai Tanggal">
-              <button type="button" class="btn-date-reset" id="btn-reset-dates" title="Reset Filter Tanggal">Reset</button>
+              <input type="date" id="filter-date-from" class="date-input-inline" title="Dari Tanggal" aria-label="Dari Tanggal">
+              <span class="date-separator" aria-hidden="true">-</span>
+              <input type="date" id="filter-date-to" class="date-input-inline" title="Sampai Tanggal" aria-label="Sampai Tanggal">
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-reset-dates" title="Reset Filter Tanggal">Reset</button>
             </div>
           </div>
         </div>
