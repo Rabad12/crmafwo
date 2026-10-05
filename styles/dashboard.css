@@ -83,7 +83,7 @@
 
 /* Featured Dark Card (Pemasukan Hari Ini) */
 .stat-kpi-card.featured-dark-card {
-  background: var(--surface-contrast);
+  background: #edb92f;
   border: 1px solid var(--gold-a25);
   box-shadow: 0 4px 16px var(--accent-shadow);
 }
@@ -108,7 +108,7 @@
 }
 
 .featured-dark-card .stat-card-label {
-  color: var(--text-on-contrast-2);
+  color: #ffffff;
 }
 
 .stat-card-icon {
