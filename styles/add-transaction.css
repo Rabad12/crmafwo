@@ -2,43 +2,6 @@
    AFWO HAIR DESIGN - ADD TRANSACTION / RESERVATION STYLES (RESPONSIVE)
    ========================================================================== */
 
-/* Consistent Header (Back Arrow + Title/Subtitle Left, Hamburger Right) */
-.add-header {
-  position: sticky;
-  top: 0;
-  z-index: 30;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 18px;
-  background-color: var(--bg-page);
-  border-bottom: 1px solid var(--black-04);
-}
-
-.header-left-group {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.header-titles {
-  display: flex;
-  flex-direction: column;
-}
-
-.page-title {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--text-1);
-  line-height: 1.2;
-}
-
-.page-subtitle {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-3);
-}
-
 /* Form Stack */
 .form-stack {
   display: flex;

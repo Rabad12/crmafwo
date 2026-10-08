@@ -2,27 +2,6 @@
    AFWO HAIR DESIGN - EDIT / ADD SERVICE STYLES (FORM DESAIN SESUAI REFERENSI)
    ========================================================================== */
 
-/* Form Header Title & Subtitle */
-.edit-layanan-header {
-  margin-top: 4px;
-  margin-bottom: 20px;
-}
-
-.edit-layanan-title {
-  font-size: 1.65rem;
-  font-weight: 800;
-  color: var(--text-1);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
-.edit-layanan-subtitle {
-  font-size: 0.88rem;
-  color: var(--text-2);
-  margin-top: 4px;
-  font-weight: 400;
-}
-
 /* Form Stack */
 .edit-layanan-stack {
   display: flex;
